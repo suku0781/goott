@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vanilla js로 비동기 통신</title>
+  <script>
+    // 로딩 버튼을 누르면 서버에 이쓴 hello.txt파일을 비동기 방식으로 가져와서 div영역에 내용을 출력
+    function txtLoad() {
+      let xhr = new XMLHttpRequest(); // 비동기 통신해주는 객체
+      if(xhr !== null) {
+        xhr.onreadystatechange = function() {
+          if(this.readyState == 4 && this.status == 200){
+            // 통신 성공
+            document.getElementById('output').innerHTML=this.responseText;
+          }
+        }
+      } else {
+        alert("웹 브라우저가 비동기 통신을 지원하지 않습니다.")
+      }
+      xhr.open('get','http://nullishh.cafe24.com/shk/hello.txt');
+      xhr.send(); // 요청 전송 (통신 시작)
+    }
+
+  </script>
+</head>
+<body>
+  <input type="button" value="ajax!" onclick="txtLoad()">
+  <div id="output"></div>
+</body>
+</html>

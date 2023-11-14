@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container{
+      width: 960px;
+      margin: 0 auto;
+    }
+    ul li{
+      margin: 15px 0;
+    }
+    li.newItem::after{
+      content: 'NEW';
+      font-size: x-small;
+      padding: 2px 4px;
+      margin: 0 10px;
+      background-color: red;
+      color: white;
+      border-radius: 5px;
+
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    
+    <h1>item list</h1>
+    <ul>
+      <li class="newItem">item 1</li>
+      <li>item 2</li>
+      <li class="newItem">item 3</li>
+      <li>item 4</li>
+    </ul>
+  </div>
+</body>
+</html>

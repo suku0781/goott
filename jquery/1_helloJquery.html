@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+  <title>Hello, jQuery</title>
+  <script>
+
+    // onload = function() {
+    //   // document.getElementsByTagName('h1')[0].style.color = 'red';
+    // };
+    $(document).ready(function () {
+      $('h1').css('color','pink')
+      $('h2').eq(0).css('color', 'red')
+      $('div').click(function() {
+        $(this).html('참쉽죠?')
+      })
+
+      $('.small').mouseover(function() {
+        $('.big').show('slow', () => {
+          alert("짠")
+        }) // slow | fast | 2000 milliseconds
+      })
+      $('.small').mouseout(function() {
+        $('.big').hide('slow') // slow | fast | 2000 milliseconds
+      })
+
+    })
+
+    function justDo(obj){
+      obj.innerHTML = '이렇게 바꾸기';
+    }
+
+    function dp() {
+      document.getElementsByClassName[0].style.display = 'block';
+    }
+
+    function hide() {
+      document.getElementsByClassName[0].style.display = 'none';
+    }
+
+  </script>
+  <style>
+    .big{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hello, jQuery!</h1>
+  <h2>첫번째 h2</h2>
+  <h2>두번째 h2</h2>
+  <div onclick="justDo(this)">제이쿼리는 자바스크립트 코딩을 좀 더 빠르고 편하게 사용할 수 있는 라이브러리 입니다.</div>
+  <div>
+    <img src="img/1.jpg" alt="" width="25%" class="small" >
+  </div>
+  <div>
+    <img src="img/2.png" alt="" width="50%" class="big">
+  </div>
+  <!-- <div>
+    <img src="img/1.jpg" alt="" width="25%" onmouseover="dp()" onmouseout="hide()">
+  </div>
+  <div><img src="img/2.jpg" alt="" class="big" width="50%" ></div> -->
+</body>
+</html>

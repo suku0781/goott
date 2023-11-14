@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jquery Ajax로 비동기 통신</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    // 로딩 버튼을 누르면 서버에 이쓴 hello.txt파일을 비동기 방식으로 가져와서 div영역에 내용을 출력
+    function txtLoad() {
+     $.ajax({
+      url : 'http://nullishh.cafe24.com/shk/hello.txt', // 데이터가 송수신될 서버 주소
+      type : 'GET', // 통신 방식 (GET, POST, PUT, DELETE)
+      dataType : 'text', //수신받을 데이터의 타입 (MIME TYPE)
+      success : function (data) {
+        // 통신 성공 시 수행하는 함수
+        $('#output').html(data);
+        console.log('ajax success!',data);
+      },
+      error : function(e) {
+        console.log('ajax fail!', e);
+      },
+      complete : function() {
+        console.log('ajax success!');
+        
+      }
+
+
+     })
+    }
+
+  </script>
+</head>
+<body>
+  <input type="button" value="ajax!" onclick="txtLoad()">
+  <div id="output"></div>
+</body>
+</html>

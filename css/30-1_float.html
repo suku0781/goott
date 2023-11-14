@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>clear속성을 사용한 예제</title>
+  <style>
+    .left{
+      width: 100px;
+      height: 100px;
+      background-color: lightgray;
+      float: left;
+    }
+    .right{
+      width: 100px;
+      height: 100px;
+      background-color: gray;
+      color: white;
+      float: right;
+    }
+    p{
+      clear: both; /* float를 적용한 후에는 clear로 속성을 해제해주어야 다시 블록 속성으로 돌아감. */
+      background-color: aquamarine;
+    }
+  </style>
+</head>
+<body>
+  <h1>clear속성을 사용한 float 예제</h1>
+  <div>
+    <div class="left">왼쪽 끝 요소</div>
+    <div class="right">오른쪽 끝 요소</div>
+  </div>
+  <p>이 글자는 어디로 갈까?</p>
+  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iure sed voluptate praesentium odio perspiciatis fuga est distinctio, nam cumque temporibus. Atque alias repudiandae suscipit molestiae ullam quam, doloribus necessitatibus at.</p>
+</body>
+</html>

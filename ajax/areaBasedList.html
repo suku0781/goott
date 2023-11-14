@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap 5 Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <title>지역기반 관광api사용 예시</title>
+</head>
+<script>
+
+  let pageNo = 1;
+  let numOfRows = 10;
+  let totalCnt = 0;
+  let totalPage = 0;
+
+  $(function() {
+    getTourData(pageNo);
+    // debugger
+    if(numOfRows !== 0) {
+      totalPage = Number((totalCnt % numOfRows == 0) ? Math.floor(totalCnt / numOfRows) : Math.floor(totalCnt / numOfRows) + 1);
+    } else {
+      numOfRows = 10;
+    }
+
+    $('#more').click(function() {
+      // debugger
+      // 다음 페이지 버튼 클릭 시 실행
+      if(pageNo<totalPage) {
+        pageNo++;
+        console.log('pageNo : ', pageNo, 'totalPage : ', totalPage)
+        
+        getTourData(pageNo);
+
+      } else if(pageNo == totalPage){
+        alert('마지막 페이지 입니다.');
+        
+        $(this).attr('disabled', 'true'); // 더보기 버튼을 비활성화
+      }
+    })
+  })
+
+  
+
+  
+  function baseurl (pageNo) { return `http://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=Y8spoZTd4XGG9NIZv6Q04TUKs7ktWz4SwTQPy5EdnUeTmjOt4zD6glXJHaJhn61eSz66u8sXKAXlFdNlNCIRNg%3D%3D&pageNo=${pageNo}&numOfRows=10&MobileApp=AppTest&MobileOS=ETC&arrange=A&areaCode=1&_type=json` };
+
+  function getTourData(pageNo){
+    $('.loading').show();
+    $.ajax({
+      url: baseurl(pageNo),
+      type: 'GET',
+      dataType: 'JSON',
+      async: false, // 동기로 통신한다.
+      success : function(data){
+        console.log('success!', data, 'baseurl',baseurl(pageNo))
+
+        pageNo == 1 ? $('#result').html(parsingJson(data)) : $('.list-group').append(parsingJson(data, null, 1));
+        $('#totalCnt').html('전체 <b>'+parsingJson(data, 1)+'</b>개');
+      }, 
+      fail : function(data){
+        // console.log('fail!', data)
+      }, 
+      complete : function(data){
+        // console.log('complete!', data)
+        $('.loading').hide();
+      }
+    });
+
+    // type이 1일 경우 data.length 를 반환
+    function parsingJson(data, type, append){
+      let tourArr = data.response.body.items.item;
+      let pageNo = data.response.body.pageNo;
+
+      numOfRows = data.response.body.numOfRows;
+      totalCnt = data.response.body.totalCount;
+
+      console.log('tourArr',tourArr)
+      let count = 0;
+      let appendHtml = ``;
+      let html = `<div class="container mt-3">
+                    <ul class="list-group">`;
+          
+      $(tourArr).each((idx, item) => {
+        if(append){
+          appendHtml+=` <li class="list-group-item">
+                          <div class='itemNo'>${(pageNo-1) * numOfRows+(count+1)}</div>
+                          <a href='areaBasedDetail.html?contentId=${tourArr[idx].contentid}'>
+                            <div class='tourThumnail'><img src='${(item.firstimage)? item.firstimage : './img/noImage.png'}'></div>
+                            <div class='item'>
+                              <div class='title'>${item.title}</div>
+                              <div class='address'>${item.addr1} ${item.addr2}</div>
+                            </div>
+                          </a>
+                        </li>`
+        } else {
+          html+=` <li class="list-group-item">
+                    <div class='itemNo'>${(count+1)}</div>
+                    <a href='areaBasedDetail.html?contentid=${tourArr[idx].contentid}'>
+                      <div class='tourThumnail'><img src='${(item.firstimage)? item.firstimage : './img/noImage.png'}'></div>
+                      <div class='item'>
+                        <div class='title'>${item.title}</div>
+                        <div class='address'>${item.addr1} ${item.addr2}</div>
+                      </div>
+                    </a>
+                  </li>`
+        }
+        count++;
+        console.log('item.firstimage',item.firstimage, 'item.contentid',item.contentid)
+      });
+                      
+      html+= `</ul></div>`;
+
+      return type ? count : (append ? appendHtml : html);
+    }
+  }
+</script>
+<style>
+  .loading{
+    display: none;
+  }
+  .list-group-item, a{
+    display: flex;
+  }
+  a{
+    text-decoration: none;
+    color: black;
+  }
+  img{
+    width: 100px;
+    height: 100px;
+    border: 1px dashed gray;
+    border-radius: 50%;
+  }
+  .tourThumnail{
+    margin: 0 15px;
+  }
+  .itemNo{
+    color: gray;
+    font-size: 10px;
+  }
+</style>
+<body>
+
+<div class="container-fluid p-5 bg-primary text-white text-center">
+  <h1>tour api</h1>
+  <p>Resize this responsive page to see the effect!</p> 
+</div>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a href="nav-link active" href="./index.html">홈</a>
+      </li>
+      <li class="nav-item">
+        <a href="nav-link" href="./areaBasedList.html">홈</a>
+      </li>
+      <li class="nav-item">
+        <a href="nav-link" href="#">link</a>
+      </li>
+      <li class="nav-item">
+        <a href="nav-link disabled" href="#">disabled</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+  
+<div class="container mt-5">
+  <img src="./img/snailLoading.gif" alt="" class="loading" width="50">
+  <p id="totalCnt"></p>
+  <div id="result"></div>
+  <div class=""><input type="button" id="more" class="btn btn-primary btn-sm" value="더보기"></div>
+</div>
+
+</body>
+</html>

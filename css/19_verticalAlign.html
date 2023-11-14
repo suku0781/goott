@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>요소 간의 세로정렬</title>
+  <style>
+    img{
+      width: 100px;
+    }
+    .valign-baseline img{
+      vertical-align: baseline; /* 기본값이 baseline 이므로 변화x */
+    }
+    .valign-middle img{
+      vertical-align: middle;
+    }
+    .valign-bottom img{
+      vertical-align: bottom;
+    }
+    .valign-top img{
+      vertical-align: top;
+    }
+    p .base-text{
+      background-color: orange;
+      
+    }
+
+    p .badge{
+      background-color: tomato;
+      vertical-align: top;
+      color: white;
+      vertical-align: top;
+      padding: 0.2em 0.8em;
+
+    }
+  </style>
+</head>
+<body>
+  <h1>요소의 세로 정렬</h1> <!-- 블럭 레벨 요소 -->
+  <p class="valign-baseline"><!-- 인라인 레벨 요소 -->
+    <span>verticla Align baseline</span>
+    <img src="../html/img/choonsikHead.png" alt="춘식이">
+  </p>
+  <p class="valign-middle">
+    <span>verticla Align middle</span>
+    <img src="../html/img/choonsikHead.png" alt="춘식이">
+  </p>
+  <p class="valign-bottom">
+    <span>verticla Align bottom</span>
+    <img src="../html/img/choonsikHead.png" alt="춘식이">
+  </p>
+  <p class="valign-top">
+    <span>verticla Align top</span>
+    <img src="../html/img/choonsikHead.png" alt="춘식이">
+  </p>
+  <p class="valign-top">
+    <span class="base-text">verticla Align</span>
+    <span class="badge">top</span>
+  </p>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    p{
+      width: 500px;
+      height: 100px;
+      /* background-color: aqua; */
+    }
+    #static{
+      position: static;
+    }
+    #relative-1{
+      position: relative;
+      opacity: 0.7; /* 불투명도 조절 */
+    }
+    #relative-2{
+      position: relative;
+      left: 100px; /* 왼쪽에서 100px 떨어지도록 위치잡기 */
+      top: -50px; /* 위에서 50px 떨어지도록 위치잡기  + : 흐름 방향대로 / - : 반대방향으로 */
+      opacity: 0.8; 
+    }
+    #fixed{
+      background-repeat: no-repeat;
+      border-radius: 50%;
+      border: 1px solid;
+      bottom: 30px;
+      right: 30px;
+      position: fixed;
+    }
+  </style>
+</head>
+<body>
+  <p id="static">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium tempora consectetur id sed aliquid, quas vel atque. Unde, laudantium, alias veritatis perferendis accusantium at, esse minus voluptates corporis facere eius?</p>
+  <p id="relative-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium tempora consectetur id sed aliquid, quas vel atque. Unde, laudantium, alias veritatis perferendis accusantium at, esse minus voluptates corporis facere eius?</p>
+  <p id="relative-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium tempora consectetur id sed aliquid, quas vel atque. Unde, laudantium, alias veritatis perferendis accusantium at, esse minus voluptates corporis facere eius?</p>
+  <div>
+    <img src="../html/img/choonsikHead.png" alt="">
+    <img src="../html/img/iphone15.jpg" alt="">
+    <img src="../html/img/dog.jpg" alt="">
+    <img src="../html/img/mail.png" alt="">
+    <img src="../html/img/choonsik.jpg" alt="">
+  </div>
+  <a href="#static" id="fixed"><img src="../html/img/up-arrow.png" width="40px" alt="맨위로 이동"></a>
+  
+</body>
+</html>

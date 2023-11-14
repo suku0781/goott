@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .navi{
+      text-align: center;
+      /* float: left; */
+    }
+    ul{
+      display: inline-flex;
+    }
+    li{
+      display:table;
+      table-layout:fixed;
+      text-align:center;
+      width: 50px;
+      height: 50px;
+      border: 1px solid rgb(240, 240, 240);
+      border-radius: 10px 10px 10px 10px;
+      margin: 0 10px;
+    }
+    li a{
+      display:table-cell;
+      vertical-align:middle;
+    }
+    a, a:active{
+      text-decoration: none;
+      color: black;
+      
+    }
+    li:hover{
+      border: 1px solid rgb(192, 192, 192);
+    }
+
+
+
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="navi">
+      <ul>
+        <li><a href="#">메일</a></li>
+        <li><a href="#">카페</a></li>
+        <li><a href="#">블로그</a></li>
+        <li><a href="#">쇼핑</a></li>
+        <li><a href="#">뉴스</a></li>
+        <li><a href="#">증권</a></li>
+        <li><a href="#">부동산</a></li>
+        <li><a href="#">지도</a></li>
+        <li><a href="#">웹툰</a></li>
+        <li class="contentBox"><a class="contentBox__item" href="#">테스트</a></li>
+      </ul>
+    </nav>
+  </div>
+</body>
+</html>

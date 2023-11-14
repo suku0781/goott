@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+  <style>
+    *{
+      /* font-family: 'Noto Sans KR', sans-serif; */
+      font-family: 'Poor Story', cursive;
+      /* box-sizing: border-box; */
+    }
+    header{
+      border: 1px solid;
+      width: 100%;
+      height: 120px;
+      text-align: center;
+    }
+    
+    .container{
+      margin: 0 auto;
+      border: 1px solid ;
+      width: 1200px;
+      height: 820px;
+      overflow: hidden;
+    }
+    #left-sidebar{
+      border: 1px solid;
+      float: left;
+      width: 20%;
+      height: 600px;
+      text-align: center;
+    }
+    #contents{
+      border: 1px solid;
+      width: 64.5%;
+      height: 600px;
+      float: left;
+    }
+    #right-sidebar{
+      border: 1px solid;
+      float: right;
+      width: 15%;
+      height: 600px;
+      text-align: center;
+    }
+    #footer{
+      /* border: 1px solid; */
+      margin: 0 auto;
+      vertical-align: middle;
+      width: 100%;
+      height: 95px;
+      clear: right;
+      text-align: center;
+      background-color: rgb(59, 59, 59);
+      color: white;
+    }
+    #footerMsg{
+      display: inline-block;
+    }
+
+    h1{
+      margin: 40px;
+      
+    }
+    
+
+    .navi{
+      text-align: center;
+      /* float: left; */
+    }
+    li{
+      display:table;
+      table-layout:fixed;
+      text-align:center;
+      width: 50px;
+      height: 50px;
+      border: 1px solid rgb(240, 240, 240);
+      border-radius: 10px 10px 10px 10px;
+      margin: 0 10px;
+    }
+    li a{
+      display:table-cell;
+      vertical-align:middle;
+    }
+    a, a:active{
+      text-decoration: none;
+      color: black;
+      
+    }
+    li:hover{
+      border: 1px solid rgb(192, 192, 192);
+    }
+
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header id="header">
+      <h1>naver 페이지 기능 가져오기</h1>
+    </header>
+    <aside id="left-sidebar">
+      <h2>왼쪽 사이드바</h2>
+      <nav class="navi">
+        <ul>
+          <li><a href="#">메일</a></li>
+          <li><a href="#">카페</a></li>
+          <li><a href="#">블로그</a></li>
+          <li><a href="#">쇼핑</a></li>
+          <li><a href="#">뉴스</a></li>
+          <li><a href="#">증권</a></li>
+          <li><a href="#">부동산</a></li>
+          <li><a href="#">지도</a></li>
+          <li><a href="#">웹툰</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <section id="contents">
+      <h2>본문</h2>
+    </section>
+    <aside id="right-sidebar">
+      <h2>오른쪽 사이드바</h2>
+    </aside>
+    <footer id="footer">
+      <div id="footerMsg">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+        <p>Corporis, sed! Dolore doloribus, alias atque veniam dignissimos officiis nihil eligendi id reprehenderit aspernatur tempora voluptatum necessitatibus earum, excepturi amet, modi consequuntur.</p>
+      </div>
+    </footer>
+
+  </div>
+  <script>
+  </script> 
+</body>
+</html>

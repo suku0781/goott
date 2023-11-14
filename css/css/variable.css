@@ -1,0 +1,6 @@
+:root{
+  --blue: rgb(194, 222, 255);
+  --gray: rgb(155, 155, 155);
+  --main-border : 1px solid gray;
+  --block-width: 100px;
+}

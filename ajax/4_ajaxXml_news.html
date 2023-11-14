@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <title>MBN뉴스 기사를 xml로 받아와서 parsing해보기</title>
+  <script>
+    // ajax로 데이터를 받아와서 함수를 만들어서 그 함수를 호출하면 뿌리기
+    function transData() {
+      $.ajax({
+        url: "https://www.mbn.co.kr/rss/", 
+        type: 'GET',
+        dataType : 'xml',
+        success : function (data){
+          console.log('success',data);
+          parsingXml(data);
+          // parsingXML(data); // 선생님코드
+        },
+        fail : function (data){
+          console.log('fail',data);
+        },
+        complete: function(data) {
+          console.log("complete!" , data)
+        }
+      })
+    }
+
+    
+
+    function parsingXml(data){
+      const target = data.lastChild.children[0].getElementsByTagName('item');
+      const cdataRemover = (str) => {
+        str = str.replaceAll('<![CDATA[', '');
+        str = str.replaceAll(']]>', '');
+        return str;
+      };
+      const transformNumToStr = (num) => { // 재귀함수를 사용해서 다시 만들어보기
+        const number = ['one', 'two', 'three', 'four', 'five' ,'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen' ,'seventeen', 'eighteen', 'nineteen', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety', 'hundred']
+        const length = num.toString().length;
+        if(length == 1){ // 1단위
+          return number[num].charAt(0).toUpperCase() + number[num].slice(1);
+        } else if(length == 2){ // 10단위
+          if(num <= 20) {
+            return number[num-1].charAt(0).toUpperCase() + number[num-1].slice(1);
+          } else {
+            return number[Number(num.toString().split('')[0] + '0')-1].charAt(0).toUpperCase() + number[Number(num.toString().split('')[0] + '0')-1].slice(1) + number[Number(num.toString().split('')[1])-1].charAt(0).toUpperCase() + number[Number(num.toString().split('')[1])-1].slice(1)
+          }
+        }
+      };
+      const navBar = ``;
+      let html = ``;
+      // transformNumToStr(21)
+      
+
+      for(let i in target){
+        if(!isNaN(i)){
+          const title = cdataRemover(target[i].getElementsByTagName('title')[0].innerHTML);
+          const link = cdataRemover(target[i].getElementsByTagName('link')[0].innerHTML);
+          const description = cdataRemover(target[i].getElementsByTagName('description')[0].innerHTML);
+          const pubDate = cdataRemover(target[i].getElementsByTagName('pubDate')[0].innerHTML);
+          const category = cdataRemover(target[i].getElementsByTagName('category')[0].innerHTML);
+          // debugger;
+          // console.log('잘 나오는지 테스트', title, link, guid, description, pubDate, category)
+          html += `<div class="accordion-item">
+                    <h2 class="accordion-header" id="heading${transformNumToStr(i)}">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${transformNumToStr(i)}" aria-expanded="true" aria-controls="collapse${transformNumToStr(i)}">${title}</button>
+                    </h2>
+                    <div id="collapse${transformNumToStr(i)}" class="accordion-collapse collapse" aria-labelledby="heading${transformNumToStr(i)}" data-bs-parent="#accordionExample">
+                      <div class="accordion-body flex space"><div>${category}</div><div>${new Date(pubDate).getFullYear()+'년'+ ' '+ (new Date(pubDate).getMonth()+1)+'월'+ ' '+ new Date(pubDate).getDate()+'일'}</div></div>
+                      <div class="accordion-body">${description}</div>
+                      <div class="accordion-body"><a href="${link}">뉴스 페이지 이동</a></div>
+                    </div>
+                  </div>`;
+        } else {
+          break;
+        }
+      }
+      
+      document.getElementById('accordion').innerHTML = html;
+
+    }
+
+    function searchItem(el) {
+      const value = el.value;
+      const item = $('.accordion-item');
+
+      if(event.keyCode === 13){
+        $.each(item, function(i, tem) {
+          const title = $(this).children().eq(0).text();
+          const category = $(this).children().eq(1).children().eq(0).text();
+
+          (title.includes(value) || category.includes(value) ) ? this.style.display = '' : this.style.display='none';
+        })
+      }
+    }
+
+    // 선생님 코드
+    function parsingXML(xml) {
+      // 부트스트랩 아코디언으로 출력해보기
+      let channel = xml.getElementsByTagName('channel')[0];
+      let items = channel.getElementsByTagName('item');
+      let html = '';
+
+      $.each(items, function(i, item) {
+        const title = $(item).children().eq(0).html().replace('<![CDATA[', '').replace(']]>', '');
+        const link = $(item).children().eq(1).html().replace('<![CDATA[', '').replace(']]>', '');
+        const description = $(item).children().eq(3).html().replace('<![CDATA[', '').replace(']]>', '');
+        const pubDate = $(item).children().eq(4).html().replace('<![CDATA[', '').replace(']]>', '');
+
+        console.log('타이틀',title,'디스크립션',description,'링크',link,'날짜',pubDate)
+
+        // 아코디언 태그 생성
+        html += `<div class="accordion-item">
+                    <h2 class="accordion-header" id="heading${i}">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${i}" aria-expanded="true" aria-controls="collapse${i}">${title}</button>
+                    </h2>
+                    <div id="collapse${i}" class="accordion-collapse collapse" aria-labelledby="heading${i}" data-bs-parent="#accordionExample">
+                      <div class="accordion-body"><div>${pubDate}</div></div>
+                      <div class="accordion-body">${description}</div>
+                      <div class="accordion-body"><a href="${link}">뉴스 페이지 이동</a></div>
+                    </div>
+                  </div>`;
+      })
+    }
+
+
+
+    
+    $(function(){
+      transData(); 
+
+      setInterval(() => { transData(); }, 50000); 
+      
+      // 엔터키 이벤트 감지
+      $('input[type="search"]').keyup(function() { searchItem(this) })
+
+    })
+  </script>
+  <style>
+    a{
+      text-decoration: none;
+    }
+    .flex{
+      display: flex;
+    }
+    .space{
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>MBN 뉴스</h1>
+    <div id="output"></div>
+  </div>
+
+  <hr>
+
+  <nav class="navbar navbar-light bg-light" style="justify-content:center;">
+    <input class="form-control mr-sm-2" type="search" placeholder="검색어 입력 후 enter" aria-label="Search">
+  </nav>
+  <div class="accordion" id="accordion"></div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <title>JQuery를 이용해 태그를 탐색 및 조작해보자.</title>
+  <script>
+    $(function() {
+      $("#list1 li:odd").css("background-color", "yellow");
+      $("#list1 li:even").css("background-color", "orange");
+      $("#list1 li:first").css("background-color", "red");
+      $("#list1 li:last").css("color", "red");
+
+    //find
+    $("#list2 li").find("a").css("text-decoration","none");
+    $("#list2 li").find("a").css("border","1px solid red");
+
+    //html()
+    console.log($(".theTitle").html()); // .innerHTML ~ getter역활
+    $(".theTitle").html("jquery 이상하네유"); // .innerHTML = "jqyery 이상하네유"~setter역활
+
+    //속성
+    console.log($("ul").eq(0).attr("id"));
+    console.log($("#list2 li").eq(1).attr("class"));
+    $("#list2 li").eq(1).attr("class","newClass");
+    $("#list1 li").eq(0).attr("id","id1");
+    console.log($(".newClass").text());
+    $(".newClass").text("배고프다");
+
+    //
+    $("#list3").append("<ul><li>새로운 리스트 추가 by append()</li></ul>"); //끝에 추가
+
+    $("#list3").prepend("<li>역시 새로운 태그 추가 by prepend()</li>");
+
+    $("#list3").after("<ul><li>새로운 리스트 추가 by after()</li></ul>");
+    //append의 경우 추가된 html태그를 자식 객체로 인식해서 자신에게 포함시키고,after경우 현재 ul태그를 벗어나 바로 다음 요소로써 html태그를 추가 시킨다.
+    $("<li>새로운 태그</li>").insertBefore($("#list3 li").eq(4));
+
+    //삭제
+    $("#list1 li").eq(1).remove();
+    //remove () vs empty()
+    //remove () 자식 태그까지 모두삭제
+    // empty () : 안에 있는 하위 태그만 삭제
+
+      $('#btn1').click(function() {
+        $('#div1').remove();
+      })
+      $('#btn2').click(function() {
+        $('#div2').empty();
+      })
+    });
+  </script>
+</head>
+<body>
+  <div id="wrap">
+    <h1>탐색 및 조작</h1>
+    <h2>탐색을 위해 css3선택자를 이용한다.</h2>
+    <h3>LIST 1</h3>
+    <ul id="list1">
+      <li>리스트1</li>
+      <li>리스트2</li>
+      <li>리스트3</li>
+      <li>리스트4</li>
+      <li>리스트5</li>
+      <li>리스트6</li>
+      <li>리스트7</li>
+    </ul>
+    <ul id="list2">
+      <li>리스트8</li>
+      <li>리스트9</li>
+      <li>리스트10</li>
+      <li>리스트11</li>
+      <li><a href="#">리스트12</a></li>
+      <li>리스트13</li>
+      <li>리스트14</li>
+    </ul>
+
+    <hr>
+    <div id="div1">
+      <button id="btn1">remove div1</button>
+      <div style="height: 100px; width: 300px; border: 1px solid; background-color: yellow;">
+        <p>paragraph1</p>
+        <p>paragraph2</p>
+      </div>
+    </div>
+    <hr>
+    <div id="div2">
+      <button id="btn2">empty div2</button>
+      <div style="height: 100px; width: 300px; border: 1px solid; background-color: yellow;">
+        <p>paragraph1</p>
+        <p>paragraph2</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

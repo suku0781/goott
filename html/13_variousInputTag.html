@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다양한 input type들</title>
+</head>
+<body>
+  <form action="13-1_result.html" >
+    <div>아이디 : <input type="text" maxlength="10" autofocus name="userId" autocomplete="off" placeholder="아이디를 입력하십시오." value=""></div>
+    <div>비밀번호 : <input type="password" name="userPw" placeholder="비밀번호를 입력하십시오."></div>
+    <!-- textarea : 대량의 문자열을 입력받는 도구 -->
+    <div>메모 : <textarea name="memo" id="" cols="20" rows="4"></textarea></div>
+    <div>
+      <fieldset>
+      <legend>좋아하는 음식</legend>
+      <input type="checkbox" name="favoriteFood" value="chickenBreast">닭가슴살
+      <input type="checkbox" name="favoriteFood" value="chicken">치킨
+      <input type="checkbox" name="favoriteFood" value="kimchiJjigae">김치찌개
+      <input type="checkbox" name="favoriteFood" value="samgyupsal">삼겹살
+      <input type="checkbox" name="favoriteFood" value="beefSoup">소고기무국
+      <input type="checkbox" name="favoriteFood" value="salad">샐러드
+      </fieldset>
+    </div>
+    <div>
+      <fieldset>
+        <legend>취미</legend>
+        <input type="checkbox" name="hobby" value="cycling">사이클링
+        <input type="checkbox" name="hobby" value="swimming">수영
+        <input type="checkbox" name="hobby" value="running">달리기
+        <input type="checkbox" name="hobby" value="climbMountain">등산
+        <input type="checkbox" name="hobby" value="camping">캠핑
+        <input type="checkbox" name="hobby" value="readABook">독서
+        <input type="checkbox" name="hobby" value="game">게임
+        <input type="checkbox" name="hobby" value="watchAMovie">영화강상
+        <input type="checkbox" name="hobby" value="napping">낮잠
+        <input type="checkbox" name="hobby" value="coding">코딩
+      </fieldset>
+    </div>
+    <div>
+      <!-- 단일선택 가능 (name 속성의 값을 맞춰 줘야 한가지만 선택 가능.) -->
+      성별
+      <input type="radio" name="gender" value="m" checked>남성
+      <input type="radio" name="gender" value="f">여성
+      <input type="radio" name="gender" value="noChoice">선택하지 않음
+    </div>
+    <div>
+      통신사
+      <select name="telecom" id="" >
+        <option value="skt">SKT</option>
+        <option value="kt">KT</option>
+        <option value="lg">LG U+</option>
+        <option value="skt알뜰폰">SKT 알뜰폰</option>
+        <option value="kt알뜰폰">KT 알뜰폰</option>
+        <option value="lg알뜰폰">LG U+ 알뜰폰</option>
+      </select>
+    </div>
+    <div>
+      생년월일
+      <input type="date" name="birth" min="2022-01-01" max="2023-12-31">
+    </div>
+    <div>
+      이메일
+      <input type="email" name="email">
+    </div>
+    <div>
+      파일
+      <input type="file" name="file">
+    </div>
+    <div>
+      좋아하는 색상
+      <input type="color" name="favoriteColor">
+    </div>
+    <div>
+      나이
+      <input type="number" name="age" min="0" max="100">
+    </div>
+    <div>
+      희망 연봉
+      <input type="range" step="100" name="salary" min="2400" max="5000" onchange="document.getElementById('salaryValue').innerText = this.value + '만원'">
+      <p id="salaryValue"></p>
+    </div>
+    <div>
+      숨겨진 값
+      <input type="hidden" name="hiddenValue" value="100">
+    </div>
+    <button type="submit">전송</button>
+    <button type="reset">취소</button>
+  </form>
+  
+</body>
+</html>

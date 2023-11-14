@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    h1{
+      text-align: center;
+    }
+    div.outer{
+      border: 1px solid;
+      width: 500px;
+      height: 400px;
+
+    }
+    div.inner{
+      /* border: 1px solid; */
+      width: 450px;
+      height: 250px;
+      
+    }
+    p{
+      border: 1px solid;
+      width: 45%;
+      margin: 0 10px;
+      box-sizing: border-box;
+
+    }
+    p.p1{
+      float: left;
+    }
+    p.p2{
+      float: right;
+    }
+    .clear::after{  /* 가상으로 빈 컨텐츠를 넣고 float를 clear함 */
+      content: '';
+      display: block;
+      clear: both;
+    }
+  </style>
+</head>
+<body>
+  <div class="outer clear">
+    <h1>title</h1>
+    <div class="inner">
+      <p class="p1">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel eligendi cum illo consequatur illum temporibus nisi eveniet a! Voluptatibus natus facere at exercitationem repudiandae dignissimos velit quis vitae labore accusamus.</p>
+      <p class="p2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel eligendi cum illo consequatur illum temporibus nisi eveniet a! Voluptatibus natus facere at exercitationem repudiandae dignissimos velit quis vitae labore accusamus.</p>
+    </div>
+  </div>
+  
+</body>
+</html>

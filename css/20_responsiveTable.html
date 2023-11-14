@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>반응형 테이블</title>
+</head>
+<style>
+  .container{
+    width: fit-content;
+    height: 100px;
+    overflow: auto; /* 가로,세로 스크롤 바 */
+  }
+  table , th, td {
+    border: 1px solid;
+    border-collapse: collapse;
+  }
+  table{
+    width: 950px;
+  }
+  td{
+    text-align: center;
+  }
+  .title{
+    background-color: darkgray;
+    position: sticky; /* 위치를 잡아줌 */
+    top: 0px;
+
+  }
+  .box{
+    width: 100%;
+    background-color: yellow;
+  }
+</style>
+<body>
+  <div class="container">
+    <table>
+      <!-- 학번, 이름, 국어, 영어, 수학, 물리, 지리, 국사, 미술, 음악, 체육, 총점, 평균, 등수 -->
+      <caption>성적표</caption>
+      <tr class="title">
+        <th>학번</th>
+        <th>이름</th>
+        <th>국어</th>
+        <th>영어</th>
+        <th>수학</th>
+        <th>물리</th>
+        <th>지리</th>
+        <th>국사</th>
+        <th>미술</th>
+        <th>음악</th>
+        <th>체육</th>
+        <th>총점</th>
+        <th>평균</th>
+        <th>등급</th>
+      </tr>
+      <tr>
+        <td>230912</td>
+        <td>홍길동</td>
+        <td>70</td>
+        <td>90</td>
+        <td>20</td>
+        <td>60</td>
+        <td>90</td>
+        <td>80</td>
+        <td>90</td>
+        <td>90</td>
+        <td>90</td>
+        <td>680</td>
+        <td>75.6</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <td>230912</td>
+        <td>홍길동</td>
+        <td>70</td>
+        <td>90</td>
+        <td>20</td>
+        <td>60</td>
+        <td>90</td>
+        <td>80</td>
+        <td>90</td>
+        <td>90</td>
+        <td>90</td>
+        <td>680</td>
+        <td>75.6</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <td>230912</td>
+        <td>홍길동</td>
+        <td>70</td>
+        <td>90</td>
+        <td>20</td>
+        <td>60</td>
+        <td>90</td>
+        <td>80</td>
+        <td>90</td>
+        <td>90</td>
+        <td>90</td>
+        <td>680</td>
+        <td>75.6</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <td>230912</td>
+        <td>홍길동</td>
+        <td>70</td>
+        <td>90</td>
+        <td>20</td>
+        <td>60</td>
+        <td>90</td>
+        <td>80</td>
+        <td>90</td>
+        <td>90</td>
+        <td>90</td>
+        <td>680</td>
+        <td>75.6</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <td>230912</td>
+        <td>홍길동</td>
+        <td>70</td>
+        <td>90</td>
+        <td>20</td>
+        <td>60</td>
+        <td>90</td>
+        <td>80</td>
+        <td>90</td>
+        <td>90</td>
+        <td>90</td>
+        <td>680</td>
+        <td>75.6</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <td>230912</td>
+        <td>홍길동</td>
+        <td>70</td>
+        <td>90</td>
+        <td>20</td>
+        <td>60</td>
+        <td>90</td>
+        <td>80</td>
+        <td>90</td>
+        <td>90</td>
+        <td>90</td>
+        <td>680</td>
+        <td>75.6</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <td>230912</td>
+        <td>홍길동</td>
+        <td>70</td>
+        <td>90</td>
+        <td>20</td>
+        <td>60</td>
+        <td>90</td>
+        <td>80</td>
+        <td>90</td>
+        <td>90</td>
+        <td>90</td>
+        <td>680</td>
+        <td>75.6</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <td>230912</td>
+        <td>홍길동</td>
+        <td>70</td>
+        <td>90</td>
+        <td>20</td>
+        <td>60</td>
+        <td>90</td>
+        <td>80</td>
+        <td>90</td>
+        <td>90</td>
+        <td>90</td>
+        <td>680</td>
+        <td>75.6</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <td>230912</td>
+        <td>홍길동</td>
+        <td>70</td>
+        <td>90</td>
+        <td>20</td>
+        <td>60</td>
+        <td>90</td>
+        <td>80</td>
+        <td>90</td>
+        <td>90</td>
+        <td>90</td>
+        <td>680</td>
+        <td>75.6</td>
+        <td>C</td>
+      </tr>
+      <tr>
+        <td>230912</td>
+        <td>홍길동</td>
+        <td>70</td>
+        <td>90</td>
+        <td>20</td>
+        <td>60</td>
+        <td>90</td>
+        <td>80</td>
+        <td>90</td>
+        <td>90</td>
+        <td>90</td>
+        <td>680</td>
+        <td>75.6</td>
+        <td>C</td>
+      </tr>
+    </table>
+  </div>
+  <div class="box">div태그</div>
+</body>
+</html>

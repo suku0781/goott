@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>속성 선택자</title>
+  <style>
+    /* a태그 안에 target 속성에 스타일 주기 */
+    a[target="_blank"]{
+      font-weight: bold;
+      font-size: 20px;
+      color: green;
+      text-decoration: none;
+      background: url(../html/img/choonsikHead.png)  left center;
+      background-size: cover;
+    }
+
+    /* a태그 중 class 속성이 있는 태그 스타일 주기 */
+    a[class]{
+      color: brown;
+      font-size: 50px;
+      box-shadow: 5px 5px 5px gray;
+    }
+
+    /* a태그의 class속성 값 중에서 flat단어가 포함되어있는 요소 스타일 주기 */
+    a[class ~= "flat"]{
+      border: 1px solid red;
+    }
+
+    /* a태그의 class속성 값이 'b'로 시작하는 요소 스타일 주기 */
+    a[class ^= 'b']{
+      color: skyblue;
+    }
+
+    /* a태그의 class속성 값이 'y'로 끝나는 요소 스타일 주기 */
+    a[class $= 'y']{
+      color: salmon;
+      
+    }
+
+    /* a태그의 class속성 값이 'cl'이거나 'cl'이 포함된 요소 스타일 주기 */
+    a[class |= 'cl']{
+      color: white;
+      background-color: black;
+    }
+  </style>
+</head>
+<body>
+  <h1>WEB의 프론트 기술</h1>
+  <ul class="firstUl">
+    <li><a target="_blank" class="btn flat" href="https://developer.mozilla.org/ko/docs/Learn/Getting_started_with_the_web/HTML_basics">html</a></li>
+    <li><a target="_blank" class="flat" href="https://developer.mozilla.org/ko/docs/Learn/Getting_started_with_the_web/CSS_basics">css</a></li>
+    <li><a target="_blank" class="btn" href="https://developer.mozilla.org/ko/docs/Web/JavaScript">js</a></li>
+    <li><a target="_blank" class="very" href="https://jquery.com/">jquery</a></li>
+    <li><a target="_blank" href="https://www.tcpschool.com/ajax/ajax_intro_basic">ajax</a></li>
+    <li><a target="_blank" href="https://www.naver.com">naver</a></li>
+    <li><a target="_blank" href="https://www.nate.net">nate</a></li>
+    <li><a href="#" class="cl-name">clName</a></li>
+  </ul>
+  <ul>
+    <li>
+      <input type="radio" name="subway" id="halfSub">
+      <label for="halfSub">서브웨이 half</label>
+    </li>
+    <li>
+      <input type="radio" name="subway" id="footLongSub" checked>
+      <label for="footLongSub">서브웨이 foot Long</label>
+    </li>
+  </ul>
+  
+</body>
+</html>

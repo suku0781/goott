@@ -1,0 +1,24 @@
+img{
+  width: 50px;
+
+}
+
+.selectUnits [type="radio"]{
+  opacity: 0;
+}
+.selectUnits [type="radio"]:checked + img {
+  /* opacity: 0; */
+  border: 2px solid skyblue;
+  /* border-radius: 50%; */
+}
+
+ul{
+  list-style: none;
+}
+
+.weatherIcon{
+  background-color: skyblue;
+  width: 100px;
+  border-radius: 50%;
+
+}

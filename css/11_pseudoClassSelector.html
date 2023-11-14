@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>의사(가상, pseudo) 클래스</title>
+  <style>
+    /* 
+      :link (방문하지않은 링크에 스타일 적용)
+      :visited (방문한 링크에 스타일 적용)
+      :hover (마우스 포인터를 올려 놓을 때 스타일 적용)
+      :active (활성화된 요소에 마우스 포인터를 올려 놓으면 스타일 적용)
+      :focus (요소에 초점이 맞춰졌을 때)
+    */
+    li:hover{
+      background-color: yellow;
+    }
+    
+    /* 방문했던 페이지 */
+    /* 
+      : 가상 클래스
+      :: 가상 요소
+    */
+    a:visited{ 
+      color : violet;
+    }
+
+    /* 첫번째 글자만 효과 주기 */
+    h1::first-letter{
+      font-size: 100px;
+      color: blue;
+    }
+
+    /* 홀수만 스타일 주기 */
+    .firstUl li:nth-child(odd){
+      border: 1px dotted blue;
+    }
+
+    input:checked + label{
+      border: 1px solid green;
+    }
+  </style>
+</head>
+<body>
+  <h1>WEB의 프론트 기술</h1>
+  <ul class="firstUl">
+    <li><a href="https://developer.mozilla.org/ko/docs/Learn/Getting_started_with_the_web/HTML_basics">html</a></li>
+    <li><a href="https://developer.mozilla.org/ko/docs/Learn/Getting_started_with_the_web/CSS_basics">css</a></li>
+    <li><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript">js</a></li>
+    <li><a href="https://jquery.com/">jquery</a></li>
+    <li><a href="https://www.tcpschool.com/ajax/ajax_intro_basic">ajax</a></li>
+    <li><a href="https://www.naver.com">naver</a></li>
+    <li><a href="https://www.nate.net">nate</a></li>
+
+  </ul>
+  <ul>
+    <li>
+      <input type="radio" name="subway" id="halfSub">
+      <label for="halfSub">서브웨이 half</label>
+    </li>
+    <li>
+      <input type="radio" name="subway" id="footLongSub" checked>
+      <label for="footLongSub">서브웨이 foot Long</label>
+    </li>
+  </ul>
+</body>
+</html>

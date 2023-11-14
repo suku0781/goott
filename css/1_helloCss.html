@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS를 기술하는 3가지 방법</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    p{
+      color: red !important; /* !important는 가급적 안쓰는 것을 추천*/
+    }
+    h1{
+      background-color: yellow;
+    }
+    div p{
+      color: green;
+    }
+    p{
+      color: gray;
+    }
+    </style>
+</head>
+<body>
+  <h1 style="background-color: brown; color: blue; font-weight: bold;">inline CSS법(지양)</h1>
+  <h1 >또 다른 h1 태그</h1>
+  <p>외부 스타일 적용</p>
+  <div>
+    <p>div 태그 안에 있는 p태그</p>
+  </div>
+</body>
+</html>

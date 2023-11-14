@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <title>Document</title>
+  <script>
+    $(function() {
+      console.log($('.tr td').eq(0).html()); // 1
+      console.log($('.tr td').eq(0).next().next().prev().prev().html()); // 1
+      console.log($('.tr').eq(0).children().eq(0).next().next().html()); // 3
+      console.log($('.tr td#td5').prev().html()); // 4
+      console.log($('.tr').eq(1).children().eq(1).prev().html()); // 4
+
+      // parent() , children()
+      console.log($('#td5').parent().next().children().eq(2).html()) // 9
+      console.log($('tr td').parent())
+      console.log($('tr td').parents())
+      console.log($('tr td').parentsUntil('body')) // body 이전까지 부모를 찾아줌
+      console.log($('tr td').eq(0).parent().next().children().eq(0).html()) // 4
+      // console.log($('tr td').eq(0).css('background-color', 'yellow')) // 1번의 배경색 노란색을 바꿈.
+      console.log($('tr td:first').css('background-color', 'yellow')) // 1번의 배경색 노란색을 바꿈.
+      console.log($('tr td').parentsUntil('body').eq(4).css('width', '200')) // 테이블 width : 200px
+      console.log($('tr td#td5').prepend('<b>a</b>&nbsp;&nbsp;&nbsp;&nbsp;')) // 5번 5글자 앞에 a라는 글자 진하게 넣기
+      console.log($('tr td#td5').before('<b>a</b>')) // 5번 앞에 a라는 글자가 추가됨
+      // console.log($('tr td#td9').css('background-color','blue').css('color', 'white')) // 9번의 배경색 파란색으로 바꾸고 글자색은 하얀색으로 바꾸기
+      console.log($('tr td#td9').css({'background-color' : 'blue', 'color' : 'white'})) // css를 한번에 작성하기
+      console.log($('tr td#td9').prev().css({backgroundColor : 'blue', color : 'white'})) // css를 한번에 작성하기
+      console.log($('tr td#td9').prev().html('100')) // 8번을 100으로 변경
+      
+    });
+  </script>
+  <style>
+    table, tr, td{
+      border-collapse: collapse;
+      /* text-align: center; */
+    }
+  </style>
+</head>
+<body>
+  <table border="1">
+    <tr class="tr">
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr class="tr">
+      <td>4</td>
+      <td id="td5">5</td>
+      <td>6</td>
+    </tr>
+    <tr class="tr">
+      <td>7</td>
+      <td>8</td>
+      <td id="td9">9</td>
+    </tr>
+  </table>
+</body>
+</html>

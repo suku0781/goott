@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<head>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      // Define the chart to be drawn.
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', '혈액형');
+      data.addColumn('number', 'count');
+      data.addRows([
+        ['A', 3],
+        ['B', 2],
+        ['O', 4],
+        ['AB', 2]
+      ]);
+
+      // Instantiate and draw the chart.
+      let option ={ title : '5반의 혈액형 분포', width : 400, height : 300}
+      var chart = new google.visualization.PieChart(document.getElementById('myPieChart'));
+      chart.draw(data, option);
+    }
+  </script>
+</head>
+<body>
+  <!-- Identify where the chart should be drawn. -->
+  <div id="myPieChart"/>
+</body>
+</html>

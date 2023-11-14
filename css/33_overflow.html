@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    div.overflow{
+      width: 200px;
+      height: 200px;
+      background-color: antiquewhite;
+      overflow: auto;
+    }
+    div.ellipse{
+      width: 200px;
+      height: 200px;
+      background-color: aquamarine;
+      overflow: hidden; /* 100px 이상 되는 내용을 보이지 않게 처리 */ 
+      text-overflow: ellipsis; /* 100px 이상 되는 내용은 ...으로 처리 */ 
+      white-space: pre; /* 연속 공백을 유지 <br>로 띄어쓰기  */
+    }
+  </style>
+</head>
+<body>
+  <div class="overflow">
+    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos reiciendis inventore, amet necessitatibus recusandae sequi, eligendi illum earum deleniti adipisci cumque dicta expedita. Molestiae, porro veritatis? Molestiae ab consequuntur possimus.
+  </div>
+  <div class="ellipse">
+    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos reiciendis inventore, amet necessitatibus recusandae sequi, eligendi illum earum deleniti adipisci cumque dicta expedita. Molestiae, porro veritatis? Molestiae ab consequuntur possimus.
+  </div>
+  
+</body>
+</html>

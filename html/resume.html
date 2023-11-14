@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이력서</title>
+  <style>
+    form{
+      text-align: -webkit-center;
+    }
+    h3{
+      text-align: center;
+    }
+    h4{
+      text-align: left;
+      /* margin: 10px 0 ; */
+    }
+    table{
+      border: 1px solid black;
+      width: 100%;
+    }
+    table, td, th {
+      border : 1px solid black;
+      border-collapse : collapse;
+    }
+    td{
+      text-align: center;
+    }
+    #bgdg{
+      background-color: darkgray;
+    }
+    #hei22{
+      height: 22px;
+    }
+    input[type="text"],input[type="email"],input[type="number"]{
+      border: 0;
+      outline: none;
+      width: -webkit-fill-available;
+      height: -webkit-fill-available;;
+      text-align: center;
+    }
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="file"]{
+      width: 100px;
+    }
+
+  </style>
+</head>
+<body>
+  <h3 >이력서</h3>
+  <form action="./resume_result.html" method="post" id="resumeForm">
+    <!-- 1. 인적사항 테이블 -->
+    <div style="width: 805px;">
+      <h4 >1. 인적사항</h4>
+      <table>
+        <colgroup>
+          <col>
+          <col width="150px">
+          <col >
+          <col width="150px">
+          <col >
+        </colgroup>
+        <tr>
+          <!-- 사진 -->
+          <td rowspan="5" width=150 height=150 style='word-break:break-all; table-layout: fixed;'>
+            <input type="file" id="uploadPhoto" onchange="uploadPhotoPreview(this)"><img id="photo" onclick="isDelete(this)">
+          </td>
+          <td id="bgdg">성명(한글)</td>
+          <td><input type="text" name="korName" require autocomplete="off"></td>
+          <td id="bgdg">이름(영문)</td>
+          <td><input type="text" name="engName" ></td>
+        </tr>
+        <tr>
+          <td id="bgdg">생년월일</td>
+          <td><input type="number" maxlength="8" name="birthday" ></td>
+          <td id="bgdg">성별</td>
+          <td><input type="radio" name="gender" value="m">남성<input type="radio" name="gender" value="f">여성</td>
+        </tr>
+        <tr>
+          <td id="bgdg">병역사항</td>
+          <td><input type="radio" name="militaryYn" value="Y">필<input type="radio" name="militaryYn" value="N">미필</td>
+          <td id="bgdg">보훈대상여부</td>
+          <td><input type="radio" name="veteransYn" value="Y">여<input type="radio" name="veteransYn" value="N">부</td>
+        </tr>
+        <tr>
+          <td id="bgdg">현주소</td>
+          <td colspan="3"><input type="text" name="address" ></td>
+        </tr>
+        <tr>
+          <td id="bgdg">연락처</td>
+          <td><input type="number" name="phone"  ></td>
+          <td id="bgdg">E-Mail</td>
+          <td><input type="email" name="email" ></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 2. 학력사항 테이블 -->
+    <div style="width: 805px;">
+      <h4 >2. 학력사항</h4>
+      <table>
+        <colgroup>
+          <col >
+          <col >
+          <col >
+          <col >
+          <col >
+        </colgroup>
+        <tr>
+          <td id="bgdg">기간 (년, 월)</td>
+          <td id="bgdg">학교명 (학위)</td>
+          <td id="bgdg">전공학과</td>
+          <td id="bgdg">학점 / 인정</td>
+          <td id="bgdg">소재지</td>
+        </tr>
+        <tr>
+          <td id="hei22"><input type="month" name="eduStartDay" style="width: 100px;">~<input type="month" name="edufinishDay"></td>
+          <td id="hei22"><input type="text" name="schoolName1"  ></td>
+          <td id="hei22"><input type="text" name="majorDepartment1"  ></td>
+          <td id="hei22"><input type="text" name="score1"  ></td>
+          <td id="hei22"><input type="text" name="schoolLocation1"  ></td>
+        </tr>
+        
+        <tr>
+          <td id="hei22"><input type="month" name="eduStartDay2" style="width: 100px;">~<input type="month" name="edufinishDay2"></td>
+          <td id="hei22"><input type="text" name="schoolName2" ></td>
+          <td id="hei22"><input type="text" name="majorDepartment2" ></td>
+          <td id="hei22"><input type="text" name="score2" ></td>
+          <td id="hei22"><input type="text" name="schoolLocation2" ></td>
+        </tr>
+        
+        <tr>
+          <td id="hei22"><input type="month" name="eduStartDay3" style="width: 100px;">~<input type="month" name="edufinishDay3"></td>
+          <td id="hei22"><input type="text" name="schoolName3" ></td>
+          <td id="hei22"><input type="text" name="majorDepartment3" ></td>
+          <td id="hei22"><input type="text" name="score3" ></td>
+          <td id="hei22"><input type="text" name="schoolLocation3" ></td>
+        </tr>
+        
+        <tr>
+          <td id="hei22"><input type="month" name="eduStartDay4" style="width: 100px;">~<input type="month" name="edufinishDay4"></td>
+          <td id="hei22"><input type="text" name="schoolName4" ></td>
+          <td id="hei22"><input type="text" name="majorDepartment4" ></td>
+          <td id="hei22"><input type="text" name="score4" ></td>
+          <td id="hei22"><input type="text" name="schoolLocation4" ></td>
+        </tr>
+        
+      </table>
+    </div>
+
+    <!-- 3. 자격증 및 교육사항 테이블 -->
+    <div style="width: 805px;">
+      <h4 >3. 자격증 및 교육사항</h4>
+      <table>
+        <colgroup>
+          <col width="10%">
+          <col>
+          <col>
+          <col>
+          <col>
+        </colgroup>
+        <tr>
+          <td rowspan="4" id="bgdg">자격 <br>/<br> 면허</td>
+          <td id="bgdg">취득일자(년, 월)</td>
+          <td id="bgdg">자격 및 교육명</td>
+          <td id="bgdg">발급기관</td>
+          <td id="bgdg">점수 / 등급</td>
+        </tr>
+        <tr>
+          <td id="hei22"><input type="month" name="acquisitionDate"></td>
+          <td id="hei22"><input type="text" name="licenseName" style="text-align: center;" ></td>
+          <td id="hei22"><input type="text" name="IssuingAgency" style="text-align: center;" ></td>
+          <td id="hei22"><input type="text" name="licenseScore" style="text-align: center;" ></td>
+        </tr>
+        <tr>
+          <td id="hei22"><input type="month" name="acquisitionDate"></td>
+          <td id="hei22"><input type="text" name="licenseName" style="text-align: center;" ></td>
+          <td id="hei22"><input type="text" name="IssuingAgency" style="text-align: center;" ></td>
+          <td id="hei22"><input type="text" name="licenseScore" style="text-align: center;" ></td>
+        </tr>
+        <tr>
+          <td id="hei22"><input type="month" name="acquisitionDate"></td>
+          <td id="hei22"><input type="text" name="licenseName" style="text-align: center;" ></td>
+          <td id="hei22"><input type="text" name="IssuingAgency" style="text-align: center;" ></td>
+          <td id="hei22"><input type="text" name="licenseScore" style="text-align: center;" ></td>
+        </tr>
+
+        <tr>
+          <td rowspan="4" id="bgdg">외국어 <br>공인시험</td>
+        </tr>
+        <tr>
+          <td id="hei22"><input type="month" name="acquisitionDate" ></td>
+          <td id="hei22"><input type="text"  name="licenseName"></td>
+          <td id="hei22"><input type="text"  name="IssuingAgency"></td>
+          <td id="hei22"><input type="text"  name="licenseScore"></td>
+        </tr>
+        <tr>
+          <td id="hei22"><input type="month" name="acquisitionDate" ></td>
+          <td id="hei22"><input type="text"  name="licenseName"></td>
+          <td id="hei22"><input type="text"  name="IssuingAgency"></td>
+          <td id="hei22"><input type="text"  name="licenseScore"></td>
+        </tr>
+        <tr>
+          <td id="hei22"><input type="month" name="acquisitionDate" ></td>
+          <td id="hei22"><input type="text"  name="licenseName"></td>
+          <td id="hei22"><input type="text"  name="IssuingAgency"></td>
+          <td id="hei22"><input type="text"  name="licenseScore"></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 4. 수상경력 테이블 -->
+    <div style="width: 805px;">
+      <h4 >4. 수상경력</h4>
+      <table>
+        <colgroup>
+          <col width="300">
+          <col width="300">
+          <col width="300">
+        </colgroup>
+        <tr>
+          <td id="bgdg">일자</td>
+          <td id="bgdg">단체</td>
+          <td id="bgdg">내용</td>
+        </tr>
+        <tr>
+          <td id="hei22"><input type="month" name="awardCareerDate"></td>
+          <td id="hei22"><input type="text" name="awardCareerAgency"></td>
+          <td id="hei22"><input type="text" name="awardCareerContent"></td>
+        </tr>
+        <tr>
+          <td id="hei22"><input type="month" name="awardCareerDate"></td>
+          <td id="hei22"><input type="text" name="awardCareerAgency"></td>
+          <td id="hei22"><input type="text" name="awardCareerContent"></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 5. 경력사항 테이블 -->
+    <div style="width: 805px;">
+      <h4 >5. 경력사항</h4>
+      <table>
+        <colgroup>
+          <col width="150">
+          <col width="850">
+        </colgroup>
+        <tr>
+          <td id="bgdg">회사명</td>
+          <td id="hei22"><input type="text" name="beforeCompanyName"></td>
+        </tr>
+        <tr>
+          <td id="bgdg">근무기간</td>
+          <td id="hei22"><input type="month" name="beforeCompanyStart">~<input type="month" name="beforeCompanyEnd" ></td>
+        </tr>
+        <tr>
+          <td id="bgdg">근무부서 <br>/ 직위</td>
+          <td id="hei22"><input type="text" name="beforeCompanyDepartment"></td>
+        </tr>
+
+        
+      </table>
+    </div>
+    <input type="submit" value="등록">
+    <input type="reset">
+
+
+  </form>
+  <script>
+    init()
+
+    function init(){
+      console.log('test')
+    }
+
+    function uploadPhotoPreview(input) {
+      if (input.files && input.files[0]) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('photo').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+        document.getElementById('uploadPhoto').remove();
+        document.getElementById('photo').style.width = '150px'
+      } else {
+        document.getElementById('photo').src = "";
+      }
+    }
+    function isDelete(el){
+      if(el.src){
+        if(confirm('이미지를 수정하시겠습니까?')){
+          el.src = '';
+          el.parentElement.innerHTML += `<input type="file" id="uploadPhoto" onchange="uploadPhotoPreview(this)">`;
+        }
+      }
+    }
+
+  </script>
+</body>
+</html>

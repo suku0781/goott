@@ -1,0 +1,26 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+}
+
+#contents{
+  background: url(../../html/img/dog.jpg) no-repeat;
+  width: 700px;
+  height: 400px;
+  margin: 0 auto;
+  position: relative; /* 기준이 됨. */
+}
+
+h1{
+  position: absolute; /* position이 relative인 요소 안에서 absolute 어느 위치로 보낼 것인지 위치시키면 됨. */
+  /* 만약 relative로 지정된 요소가 없다면 body가 기준이되어서 위치를 잡는다.  */
+  left: 325px;
+  top: 100px;
+}
+h2{
+  position: absolute;
+  top: 150px;
+  left: 285px;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <title>jquery에서 for-Each문 사용하기(each함수)</title>
+  <script>
+    // js의 forEach()와 같으나 활용도는 높다.
+    let arr = [3, 5, 7, 8, 9]
+    for(let i = 0 ; i < arr.length ; i++) {
+      console.log(arr[i])
+    }
+
+    
+
+    $(function() {
+      // $.each(arr, function(i, e){ // i는 인덱스, e는 요소(값)
+      //   console.log(i+'번째 요소는 '+e+' 입니다.')
+      //   document.write(`<li>${i}번재요소 : ${e}</li>`)
+      // })
+
+      $('li').each(function(i, e){
+        $(this).css('color','red')
+        console.log(i, e)
+      })
+
+
+
+    })
+  </script>
+</head>
+<body>
+  <ul>
+    <li>0번째 li</li>
+    <li>1번째 li</li>
+    <li>2번째 li</li>
+    <li>3번째 li</li>
+    <li>4번째 li</li>
+    <li>5번째 li</li>
+  </ul>
+  
+</body>
+</html>

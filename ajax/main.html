@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head id="mainPage">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./localStyle.css" />
+    <script src="./localApp.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- 캐시를 바로 만료시킴. -->
+    <meta http-equiv="Expires" content="-1" />
+
+    <script>
+      $(function () {
+        document.getElementsByClassName("navbar")[0].style.backgroundColor =
+          "rgba( 255, 255, 255, 0 )";
+        window.addEventListener("scroll", () => {
+          document.getElementsByClassName("navbar")[0].style.backgroundColor =
+            window.scrollY > 3 ? "rgb(24, 24, 24)" : "";
+        });
+        $("a").on("mouseenter", function () {
+          $(this).append(">");
+        });
+        $("a").on("mouseleave", function () {
+          this.innerText = this.innerText.slice(0, this.innerText.indexOf(">"));
+        });
+
+        importData();
+
+        // #beforeBtn,#nextBtn
+        $("#top_10").on("mouseenter", () => {
+          $("#top10BeforeBtn,#top10AfterBtn").css("display", "");
+        });
+        $("#top_10").on("mouseleave", () => {
+          $("#top10BeforeBtn,#top10AfterBtn").css("display", "none");
+        });
+        $("#now_playing").on("mouseenter", () => {
+          $("#nowPlayingBeforeBtn,#nowPlayingAfterBtn").css("display", "");
+        });
+        $("#now_playing").on("mouseleave", () => {
+          $("#nowPlayingBeforeBtn,#nowPlayingAfterBtn").css("display", "none");
+        });
+        $("#popular").on("mouseenter", () => {
+          $("#popularBeforeBtn,#popularAfterBtn").css("display", "");
+        });
+        $("#popular").on("mouseleave", () => {
+          $("#popularBeforeBtn,#popularAfterBtn").css("display", "none");
+        });
+        $("#top_rated").on("mouseenter", () => {
+          $("#topRatedBeforeBtn,#topRatedAfterBtn").css("display", "");
+        });
+        $("#top_rated").on("mouseleave", () => {
+          $("#topRatedBeforeBtn,#topRatedAfterBtn").css("display", "none");
+        });
+        $("#upcoming").on("mouseenter", () => {
+          $("#upcomingBeforeBtn,#upcomingAfterBtn").css("display", "");
+        });
+        $("#upcoming").on("mouseleave", () => {
+          $("#upcomingBeforeBtn,#upcomingAfterBtn").css("display", "none");
+        });
+        $("#genre").on("mouseenter", () => {
+          $("#genreBeforeBtn,#genreAfterBtn").css("display", "");
+        });
+        $("#genre").on("mouseleave", () => {
+          $("#genreBeforeBtn,#genreAfterBtn").css("display", "none");
+        });
+        $("#jjimList").on("mouseenter", () => {
+          $("#jjimListBeforeBtn,#jjimListAfterBtn").css("display", "");
+        });
+        $("#jjimList").on("mouseleave", () => {
+          $("#jjimListBeforeBtn,#jjimListAfterBtn").css("display", "none");
+        });
+
+        $(document).on("click", "#top10BeforeBtn", function (e) {
+          document.getElementById("top_10").scrollBy(-1300, 0);
+        });
+        $(document).on("click", "#top10AfterBtn", function (e) {
+          document.getElementById("top_10").scrollBy(1300, 0);
+        });
+        $(document).on("click", "#nowPlayingBeforeBtn", function (e) {
+          document.getElementById("now_playing").scrollBy(-1300, 0);
+        });
+        $(document).on("click", "#nowPlayingAfterBtn", function (e) {
+          document.getElementById("now_playing").scrollBy(1300, 0);
+        });
+        $(document).on("click", "#popularBeforeBtn", function (e) {
+          document.getElementById("popular").scrollBy(-1300, 0);
+        });
+        $(document).on("click", "#popularAfterBtn", function (e) {
+          document.getElementById("popular").scrollBy(1300, 0);
+        });
+        $(document).on("click", "#topRatedBeforeBtn", function (e) {
+          document.getElementById("top_rated").scrollBy(-1300, 0);
+        });
+        $(document).on("click", "#topRatedAfterBtn", function (e) {
+          document.getElementById("top_rated").scrollBy(1300, 0);
+        });
+        $(document).on("click", "#upcomingBeforeBtn", function (e) {
+          document.getElementById("upcoming").scrollBy(-1300, 0);
+        });
+        $(document).on("click", "#upcomingAfterBtn", function (e) {
+          document.getElementById("upcoming").scrollBy(1300, 0);
+        });
+        $(document).on("click", "#genreBeforeBtn", function (e) {
+          document.getElementById("genre").scrollBy(-1300, 0);
+        });
+        $(document).on("click", "#genreAfterBtn", function (e) {
+          document.getElementById("genre").scrollBy(1300, 0);
+        });
+        $(document).on("click", "#jjimListBeforeBtn", function (e) {
+          document.getElementById("jjimList").scrollBy(-1300, 0);
+        });
+        $(document).on("click", "#jjimListAfterBtn", function (e) {
+          document.getElementById("jjimList").scrollBy(1300, 0);
+        });
+
+        let mvObj = "";
+
+        // 메인 리스트에서 영화를 클릭 시
+        $(document).on(
+          "click",
+          ".top10Movie, .jjimList, .movieItemPoster, .movieItem, .card-item",
+          function (e) {
+            if (e.target.id.includes("jjim")) {
+              // 찜리스트 클릭 시
+              mvObj = $("#" + e.target.id)
+                .parent()
+                .eq(0)
+                .data()
+                .movieInfo.split("|")[1];
+              searchMovie("srchMv", { title: mvObj });
+              console.log("movieId 설정했음.", $('#movieId').val(e.target.parentElement.dataset.movieInfo.split('|')[0]))
+            } else {
+              // 그외 리스트 클릭 시
+              mvObj = JSON.parse(e.target.parentElement.dataset.movieInfo);
+              searchMovie("srchMv", { title: mvObj.title });
+            }
+
+            if ($("#mvActors").text().includes("정보없음"))
+              searchMovie2(e.target.id);
+            if (!$(".mdtitle").text())
+              $(".mdtitle").text(mvObj.title || mvObj.original_title);
+            if (!$("#mvYnd").text())
+              $("#mvYnd").text(mvObj.repRlsDate || mvObj.release_date);
+            if (!$(".mvDesc2").text()) $(".mvDesc2").text(mvObj.overview);
+            if (!$("#mvVoteCnt").html())
+              $("#mvVoteCnt").html(
+                "<p><b>" +
+                  Math.floor(mvObj.vote_count) +
+                  "</b>명이 좋아요 함.</p>"
+              );
+            if (!$("#mvvoteAvg").html())
+              $("#mvvoteAvg").html(
+                "<p>평점: <b>" + Math.floor(mvObj.vote_average) + "</b></p>"
+              );
+
+            // 모달이 보여질때 이벤트
+            $("#movieDetailModal").on("shown.bs.modal", function (e) {
+              if (
+                document.getElementsByClassName("mvPlayerArea")[0].children[0]
+                  .className !== "mdPlayer"
+              )
+                $(".mvPlayerArea").prepend(
+                  '<div class="mdPlayer" id="mdPlayer" style="width: 100%; height: 500px; background-color: gray; position: relative; overflow: hidden;"></div>'
+                );
+                document.getElementById("likeBtn").children[0].className = "fa-solid fa-heart";
+                
+              importMovieTrailer4Modal(mvObj);
+            });
+
+            // 모달 닫을때 이벤트
+            $("#movieDetailModal").on("hidden.bs.modal", function (e) {
+              $(".mdPlayer").remove();
+              $("#mvGrd").text("");
+              $("#mvRunningTime").text("");
+              $("#mvDirector").html("");
+              $("#mvActors").html("");
+              $("#mvGenre").html("");
+              $("#mvKeyword").html("");
+              $("#mvNation").html("");
+              $(".mdtitle").text("");
+              $("#mvYnd").text("");
+              $("#mvDesc2").text("");
+              $(".otherMovieInfoItem").remove();
+            });
+          }
+        );
+
+        // 검색 후 이미지 클릭 시
+        $(document).on(
+          "click",
+          ".srchMovieItem, .searchMovieItemPoster",
+          function (e) {
+            const mvObj = JSON.parse(e.target.parentElement.dataset.movieInfo);
+            searchMovie("srchMv", { title: mvObj.title });
+
+            if ($("#mvActors").text().includes("정보없음"))
+              searchMovie2(e.target.id);
+            if (!$(".mdtitle").text())
+              $(".mdtitle").text(mvObj.title || mvObj.original_title);
+            if (!$("#mvYnd").text())
+              $("#mvYnd").text(mvObj.repRlsDate || mvObj.release_date);
+            if (!$(".mvDesc2").text()) $(".mvDesc2").text(mvObj.overview);
+            if (!$("#mvVoteCnt").html())
+              $("#mvVoteCnt").html(
+                "<p><b>" +
+                  Math.floor(mvObj.vote_count) +
+                  "</b>명이 좋아요 함.</p>"
+              );
+            if (!$("#mvvoteAvg").html())
+              $("#mvvoteAvg").html(
+                "<p>평점: <b>" + Math.floor(mvObj.vote_average) + "</b></p>"
+              );
+
+            // 모달이 보여질때 이벤트
+            $("#movieDetailModal").on("shown.bs.modal", function (e) {
+              if (
+                document.getElementsByClassName("mvPlayerArea")[0].children[0]
+                  .className !== "mdPlayer"
+              )
+                $(".mvPlayerArea").prepend(
+                  '<div class="mdPlayer" id="mdPlayer" style="width: 100%; height: 500px; background-color: gray; position: relative; overflow: hidden;"></div>'
+                );
+
+                this.childNodes[1].classList.value.replace("fa-heart", "").trim() ==
+                "fa-solid"
+                  ? console.log("쿠키 생성", cookie(1, $("#movieId").val()))
+                  : console.log("쿠키 삭제", cookie(0, $("#movieId").val()));
+              importMovieTrailer4Modal(mvObj);
+            });
+
+            // 모달 닫을때 이벤트
+            $("#movieDetailModal").on("hidden.bs.modal", function (e) {
+              $(".mdPlayer").remove();
+              $("#mvGrd").text("");
+              $("#mvRunningTime").text("");
+              $("#mvDirector").html("");
+              $("#mvActors").html("");
+              $("#mvGenre").html("");
+              $("#mvKeyword").html("");
+              $("#mvNation").html("");
+              $(".mdtitle").text("");
+              $("#mvYnd").text("");
+              $("#mvDesc2").text("");
+              $(".otherMovieInfoItem").remove();
+            });
+          }
+        );
+
+        // 찜버튼을 클릭할 경우 쿠키에 영화코드를 저장
+        $("#likeBtn").on("click", function (e) {
+          e.target.classList.contains("fa-solid")
+            ? e.target.classList.remove("fa-solid")
+            : e.target.classList.add("fa-solid");
+          e.target.classList.contains("fa-regular")
+            ? e.target.classList.remove("fa-regular")
+            : e.target.classList.add("fa-regular");
+          this.childNodes[1].classList.value.replace("fa-heart", "").trim() ==
+          "fa-solid"
+            ? console.log("쿠키 생성", cookie(1, $("#movieId").val()))
+            : console.log("쿠키 삭제", cookie(0, $("#movieId").val()));
+        });
+      });
+    </script>
+    <title>메인</title>
+  </head>
+  <body>
+    <input type="hidden" id="movieId2" value="TEST">
+    <!-- 부트스트랩 사용 -->
+    <nav class="navbar navbar-expand-lg navbar-dark modal-content">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./main.html">2Team</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">현재 상영작</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../popular/popular_page.html"
+                >인기 영화</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">Top Rated</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">Up Comming</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../genre/html/mainTest.html"
+                >장르별 영화</a
+              >
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button
+              class="btn btn-outline-success"
+              onclick="searchMovie('search', {title : $('.form-control').val()}, 100)"
+            >
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="mainPage">
+      <div class="ytElem">
+        <div class="e1_3">
+          <div class="e7_34">
+            <div class="e7_35">
+              <div class="e7_36" id="player"></div>
+              <div class="e5_103"></div>
+              <div class="e5_104"></div>
+              <div class="e5_105"></div>
+              <a class="e2_19">상세정보</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mainList">
+        <div class="listTitle">오늘 대한민국의 Top 10 영화</div>
+        <div class="list" id="top_10"></div>
+
+        <div class="listTitle">
+          <a
+            class="listAnchor jjimListAnchor"
+            data-bs-toggle="modal"
+            href="#jjimListModal"
+            data-movie-info=""
+            >찜목록</a
+          >
+        </div>
+        <div class="list" id="jjimList"></div>
+
+        <div class="listTitle">
+          <a class="listAnchor" href="../nowPlaying/now playing.html"
+            >현재 상영작</a
+          >
+        </div>
+        <div class="list" id="now_playing"></div>
+
+        <div class="listTitle">
+          <a class="listAnchor" href="../popular/popular_page.html"
+            >인기 영화</a
+          >
+        </div>
+        <div class="list" id="popular"></div>
+
+        <div class="listTitle">
+          <a class="listAnchor" href="../">Top Rated</a>
+        </div>
+        <div class="list" id="top_rated"></div>
+
+        <div class="listTitle">
+          <a class="listAnchor" href="../upcomming/jkw_upcomingList1.html"
+            >Up Comming</a
+          >
+        </div>
+        <div class="list" id="upcoming"></div>
+
+        <div class="listTitle">
+          <a class="listAnchor" href="#">장르별 영화</a>
+        </div>
+        <div class="list" id="genre"></div>
+      </div>
+    </div>
+
+    <div class="srchPage">
+      <div class="listTitle">
+        <div class="sourceInfo"></div>
+      </div>
+      <div class="list" id="srchMv"></div>
+    </div>
+
+    <div
+      class="modal fade modal-xl"
+      id="movieDetailModal"
+      aria-hidden="true"
+      aria-labelledby="movieDetailModalLabel"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgb(24, 24, 24)">
+          <div>
+            <div class="modal-body" style="padding: 0">
+              <div
+                class="mvDtHeader"
+                style="
+                  width: 100%;
+                  height: 500px;
+                  background-color: gray;
+                  position: relative;
+                  z-index: 1;
+                "
+              >
+                <div
+                  class="mvPlayerArea"
+                  style="width: 100%; height: 100%; position: absolute"
+                >
+                  <div
+                    class="mdPlayer"
+                    id="mdPlayer"
+                    style="
+                      width: 100%;
+                      height: 500px;
+                      background-color: gray;
+                      position: relative;
+                      z-index: 0;
+                    "
+                  ></div>
+                  <div
+                    class="mdtitle"
+                    style="z-index: 1; left: 80px; top: 60%"
+                  ></div>
+                  <div
+                    class="JJim"
+                    style="z-index: 1; position: relative; left: 7%; top: -20%"
+                  >
+                    <button id="likeBtn">
+                      <i class="fa-regular fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="mvDtBody">
+                <div class="movieDetailInfo">
+                  <div class="mvDtleft">
+                    <div class="mvDesc1" style="width: 500px; height: 25px">
+                      <b id="mvYnd"></b>
+                      <span id="mvGrd"></span>
+                      <span id="mvRunningTime"></span>
+                      <input type="hidden" id="movieId" value="" />
+                      <input type="hidden" id="movieObj" value="" />
+                    </div>
+                    <div class="mvDesc2"></div>
+                  </div>
+                  <div class="mvDtRight">
+                    <div id="mvActors"></div>
+                    <div id="mvGenre"></div>
+                    <div id="mvKeyword"></div>
+                    <div id="mvDirector"></div>
+                    <div id="mvNation"></div>
+                  </div>
+                </div>
+                <div class="stillImg" style="margin: 0 auto; width: 95%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade modal-xl"
+      id="jjimListModal"
+      aria-hidden="true"
+      aria-labelledby="jjimListModalLabel"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div
+          class="modal-content movieListModal"
+          style="background-color: rgb(24, 24, 24)"
+        >
+          <div class="list-container">
+            <h1 class="list-title">
+              <i class="fa-solid fa-heart" style="color: red"></i> 찜목록
+            </h1>
+
+            <div class="list-body">
+              <div style="height: 30px">
+                <input
+                  type="text"
+                  class="form-control list-search-bar"
+                  id="search"
+                  placeholder="검색어를 입력하세요"
+                  name="text"
+                />
+              </div>
+
+              <!-- 요기 list-line div를 js에서 추가해줘야함 -->
+              <div class="list-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade modal-xl"
+      id="movieDetailModal2"
+      aria-hidden="true"
+      aria-labelledby="movieDetailModalLabel2"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">출연진 정보</h4>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="actorsNav">
+              <button class="actorNavBtn"><img src="" /></button>
+              <button class="actorNavBtn"><img src="" /></button>
+              <button class="actorNavBtn"><img src="" /></button>
+              <button class="actorNavBtn"><img src="" /></button>
+              <button class="actorNavBtn"><img src="" /></button>
+            </div>
+
+            <h1 class="name" id="actorName"></h1>
+            <h3 class="name" id="charaterName"></h3>
+
+            <div class="imageSlider">
+              <div class="multiple-items"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <a class="btn btn-primary" data-bs-toggle="modal" href="#movieDetailModal" role="button">Open first modal</a> -->
+  </body>
+</html>

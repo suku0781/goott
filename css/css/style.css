@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Poor+Story&display=swap');
+@import "./variable.css";
+
+.main-title{
+  background-color: var(--blue);
+  font-family: 'Poor Story', cursive;
+  border: var(--main-border);
+}
+.content{
+  width: var(--block-width);
+  text-align: center;
+}
+.content:hover{
+  background-color: var(--gray);
+  width: var(--block-width);
+}

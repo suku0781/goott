@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    // input type text로 입력받아서 차트로 그려지게 하는 스크립트 
+    $(function() {
+      $(document).on('click', 'input[type=button]', function() {
+        let array = [];
+        $('.student').each(function() {
+          let object = {}
+          console.log($(this).val())
+          $(this).children().each(function(idx, item) {
+              console.log(item)
+              if($(this).children().eq(0).attr('class') == 'total' || $(this).children().eq(0).attr('class') == 'avg'){
+
+              } else {
+                object[$(this).children().eq(0).attr('class')] = $(this).children().eq(0).val()
+
+              }
+          })
+          array.push(object)
+          // debugger
+        })
+
+        array.forEach((items, idx) => {
+          console.log(items, idx)
+          items.total = Number(items.kor) + Number(items.eng) + Number(items.math);
+          items.avg = Number((items.total / 3).toFixed(2));
+          
+          
+        })
+        console.log(array)
+
+        $('.total').each(function(i) {$(this).val(array[i].total)})
+        $('.avg').each(function(i) {$(this).val(array[i].avg)})
+        let paraArr = [];
+        for (let student in array) { // 여기 obj를 arr로 바꿔서 다시 파라미터로 넘기기
+          let arr = []
+          for(let prop in student){
+              arr.push(objKey);
+          }
+            paraArr.push(arr)
+        }
+        debugger
+        drawChart(array);
+      })
+
+      function drawChart(array){
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawVisualization);
+
+        function drawVisualization() {
+          // Some raw data (not necessarily accurate)
+          var data = google.visualization.arrayToDataTable(array);
+
+          var options = {
+            title : '성적표',
+            vAxis: {title: '점수'}, // x축
+            hAxis: {title: '이름'}, // y축
+            seriesType: 'bars',
+            series: {5: {type: 'line'}}
+          };
+
+          var chart = new google.visualization.ComboChart(document.getElementById('chart'));
+          chart.draw(data, options);
+        }
+      }
+    })
+  </script>
+</head>
+<body>
+  <table>
+    <tr>
+      <td>이름</td>
+      <td>국어</td>
+      <td>영어</td>
+      <td>수학</td>
+      <td>총점</td>
+      <td>평균</td>
+    </tr>
+    <tr class="student">
+      <td><input type="text" class="stuName"></td>
+      <td><input type="text" class="kor"></td>
+      <td><input type="text" class="eng"></td>
+      <td><input type="text" class="math"></td>
+      <td><input type="text" class="total" readonly></td>
+      <td><input type="text" class="avg" readonly></td>
+    </tr>
+    <tr class="student">
+      <td><input type="text" class="stuName"></td>
+      <td><input type="text" class="kor"></td>
+      <td><input type="text" class="eng"></td>
+      <td><input type="text" class="math"></td>
+      <td><input type="text" class="total" readonly></td>
+      <td><input type="text" class="avg" readonly> </td>
+    </tr>
+  </table>
+  <div><input type="button" value="결과"></div>
+  <div id="chart"></div>
+</body>
+</html>
