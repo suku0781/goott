@@ -1,0 +1,10 @@
+
+public class DataTypeAndVariable {
+
+	public static void main(String[] args) {
+		// boolean : true / false 를 저장하는 1byte
+		boolean bool = true;
+		System.out.println(bool);
+	}
+
+}

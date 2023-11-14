@@ -1,0 +1,16 @@
+
+public class OperationEx {
+
+	public static void main(String[] args) {
+		byte result1 = 10 + 20;
+		System.out.println(result1); // 리터럴 함수로 쓰니까 컴파일러가 자동으로 처리해줌.
+		
+		byte b1 = 10;
+		byte b2 = 20;
+		byte result2 = b1 + b2;
+		int result2 = b1 + b2;
+		System.out.println(result2);
+
+	}
+
+}

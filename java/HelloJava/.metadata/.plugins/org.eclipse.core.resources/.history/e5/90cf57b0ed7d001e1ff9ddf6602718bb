@@ -1,0 +1,30 @@
+
+public class DataTypeAndVariable {
+
+	public static void main(String[] args) {
+		// boolean : true / false 를 저장하는 1byte
+		boolean bool = true;
+		System.out.println(bool);
+		
+		// char : 문자형 2byte : 한문자만 저장
+		char character = '\u0041';
+		System.out.println(character); // A
+		char character2 = '가';
+		System.out.println(character2); // 가
+//		char character2 = 'AB'; // Invalid character constant
+//		System.out.println(character2); // 가
+		
+		// byte : 정수형 1byte
+		byte b = 127;
+		System.out.println(b);
+		System.out.println("byte값의 최대값 : " + Byte.MAX_VALUE);
+		System.out.println("byte값의 최소값 : " + Byte.MIN_VALUE);
+		
+		// short : 정수형, 2byte
+		short sInt = 128;
+		System.out.println(sInt);
+		System.out.println("byte값의 최대값 : " + Short.MAX_VALUE);
+		System.out.println("byte값의 최대값 : " + Short.MIN_VALUE);
+	}
+
+}

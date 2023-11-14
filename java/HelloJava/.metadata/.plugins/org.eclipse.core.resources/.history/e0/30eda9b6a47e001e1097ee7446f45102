@@ -1,0 +1,35 @@
+
+public class ScoreV1 {
+
+	public static void main(String[] args) {
+		// 성적표
+		String name = "둘리";
+		int kor = 90;
+		int eng = 89;
+		int math = 75;
+		
+		// 총점, 평균, 학점 구해서 출력
+		int total = kor + eng + math;
+		double avg = total / 3;
+		char grd = ' ';
+		if(Math.floor(avg) > 90) {
+			grd = 'A';
+		} else if(Math.floor(avg) >= 80 && Math.floor(avg) < 90) {
+			grd = 'B';
+		} else if(Math.floor(avg) >= 70 && Math.floor(avg) < 80) {
+			grd = 'C';
+		} else if(Math.floor(avg) >= 60 && Math.floor(avg) < 70) {
+			grd = 'D';
+		} else {
+			grd = 'F';
+		}
+		
+		System.out.println("총점" + total);
+		System.out.println("평균" + avg);
+		System.out.println("학점" + grd);
+		
+		
+
+	}
+
+}

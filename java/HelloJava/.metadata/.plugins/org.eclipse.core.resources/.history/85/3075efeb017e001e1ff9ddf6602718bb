@@ -1,0 +1,15 @@
+
+public class DataTypeCasting {
+
+	public static void main(String[] args) {
+		byte b = 125;
+		System.out.println(b);
+		
+		// 묵시적 자동 형변환
+		int i = b;
+		System.out.println(i);
+		
+
+	}
+
+}

@@ -1,0 +1,36 @@
+import java.util.Arrays;
+
+public class ArrayEx1 {
+
+	public static void main(String[] args) {
+		char[] charArr = new char[3];
+		
+		System.out.println('1');
+		int a; // 지역변수는 초기화 하지 않으면 사용할 수 없음.
+//		System.out.println(a); // The local variable a may not have been initialized
+		System.out.println('2');
+		int[] scores = new int[3]; // 객체는 자동 초기화
+		System.out.println(scores); // I@1db9742 타입@주소(16진수)
+		
+		System.out.println(Arrays.toString(scores)); // [0, 0, 0]
+		
+		String[] names = new String[5];
+		System.out.println(names + " " + Arrays.toString(names)); 
+		
+		
+		System.out.println('3');
+		
+		boolean isOk[] = new boolean[2];
+		System.out.println(isOk);
+		
+		// scores 배열의 요소에 값 할당
+		scores[0] = 45;
+		scores[1] = 23;
+		scores[2] = 99;
+//		scores[3] = 89; // 에러 Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException
+		// 배열의 범위에서 벗어남. - 컴파일 시 문제 없으나 실행시 에러 발생.(예외)
+		
+		System.out.println(scores[2]);
+	}
+
+}

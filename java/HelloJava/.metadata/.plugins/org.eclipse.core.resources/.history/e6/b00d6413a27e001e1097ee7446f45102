@@ -1,0 +1,31 @@
+
+public class OperationEx {
+
+	public static void main(String[] args) {
+		byte result1 = 10 + 20;
+		System.out.println(result1); // 리터럴 함수로 쓰니까 컴파일러가 자동으로 처리해줌.
+		
+		byte b1 = 10;
+		byte b2 = 20;
+//		byte result2 = b1 + b2; 
+		int result2 = b1 + b2; // int타입으로 변환 후 연산
+		System.out.println(result2);
+		
+		byte b3 = 10;
+		int b4 = 100;
+		long b5 = 1000;
+		int result3 = b3 + b4;
+//		byte result4 = b3 + b4; // Type mismatch
+//		int result5 = b3 + b4 + b5; // Type mismatch long타입으로 변환 후 연산
+		long result5 = b3 + b4 + b5;
+		System.out.println(result5);
+		
+		int i1 = 10;
+		int result6 = i1 / 4;
+		System.out.println(result6); // 소수점이 잘리고 정수만 출력
+		int i2 = 10; 
+		double result7 = i2 / 4.0;
+		System.out.println(result7);
+	}
+
+}

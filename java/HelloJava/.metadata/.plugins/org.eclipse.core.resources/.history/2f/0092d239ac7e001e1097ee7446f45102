@@ -1,0 +1,28 @@
+import java.util.Scanner;
+
+public class ForEx {
+
+	public static void main(String[] args) {
+
+		
+		
+		// 출력할 라인수를 입력하십시오. 
+		System.out.println("출력할 라인수를 입력하십시오.");
+		Scanner sc = new Scanner(System.in);
+		
+		String tmp = sc.nextLine();
+		int num = 0;
+		num = Integer.parseInt(tmp);
+		
+		System.out.println("출력할 라인 수 : "+num);
+		for(int i = 0 ; i < num ; i++) {
+			for(int j = 0 ; j < i ; j++) {
+				System.out.print('*');	
+				System.out.println(' ');				
+			}
+
+		}		
+		
+	}
+
+}

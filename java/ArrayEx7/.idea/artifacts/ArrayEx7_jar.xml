@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ArrayEx7:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ArrayEx7_jar</output-path>
+    <root id="archive" name="ArrayEx7.jar">
+      <element id="module-output" name="ArrayEx7" />
+    </root>
+  </artifact>
+</component>

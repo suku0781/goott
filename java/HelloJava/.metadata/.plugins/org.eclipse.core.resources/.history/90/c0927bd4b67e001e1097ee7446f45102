@@ -1,0 +1,17 @@
+
+public class ArrayEx1 {
+
+	public static void main(String[] args) {
+		char[] charArr = new char[3];
+		
+		
+		int a; // 지역변수는 초기화 하지 않으면 사용할 수 없음.
+//		System.out.println(a); // The local variable a may not have been initialized
+		
+		int[] scores = new int[3];
+		System.out.println(scores); // [I@1db9742 타입@주소(16진수)
+		
+
+	}
+
+}

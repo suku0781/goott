@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.metadata/.plugins/org.eclipse.egit.core/.org.eclipse.egit.core.cmp/.org.eclipse.egit.core.cmp.iml" filepath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.egit.core/.org.eclipse.egit.core.cmp/.org.eclipse.egit.core.cmp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ArrayEx1/ArrayEx1.iml" filepath="$PROJECT_DIR$/ArrayEx1/ArrayEx1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DataTypeAndVariable/DataTypeAndVariable.iml" filepath="$PROJECT_DIR$/DataTypeAndVariable/DataTypeAndVariable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DataTypeCasting/DataTypeCasting.iml" filepath="$PROJECT_DIR$/DataTypeCasting/DataTypeCasting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ForEx1/ForEx1.iml" filepath="$PROJECT_DIR$/ForEx1/ForEx1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HelloJava/HelloJava.iml" filepath="$PROJECT_DIR$/HelloJava/HelloJava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Operation/Operation.iml" filepath="$PROJECT_DIR$/Operation/Operation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ScoreV1/ScoreV1.iml" filepath="$PROJECT_DIR$/ScoreV1/ScoreV1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello/hello.iml" filepath="$PROJECT_DIR$/hello/hello.iml" />
+    </modules>
+  </component>
+</project>
