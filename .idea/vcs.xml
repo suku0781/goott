@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/java/ArrayEx2" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/ArrayEx3_ArrayCopy" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/ArrayEx4" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/ArrayEx5" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/ArrayEx6" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/ArrayEx7" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/CardTest" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/ConstructorMethod" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/HelloJava/untitled" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/InstanceCopy" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/MethodCreationEx" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/MethodCreationEx1" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/OOPEx1" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/OOPEx2_Constructor" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/PrimitiveTypeParam" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/ReferenceTypeParam" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/StaticVsInstanceEx1" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/Test" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/mysql-table-document-creator" vcs="" />
+    <mapping directory="$PROJECT_DIR$/java/staticVsInstance" vcs="" />
+    <mapping directory="$PROJECT_DIR$/js" vcs="Git" />
+  </component>
+</project>

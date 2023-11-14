@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기념일 계산기</title>
+    <script>
+      let now = new Date();
+      let days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"]
+
+      onload = function() {
+        document.getElementById("today").innerHTML = `${now.getFullYear()}년 ${now. getMonth() + 1}월 
+        ${now.getDate()}일 ${days[now.getDay()]}`;
+      }
+
+      function getCurrDate() {
+        // 시작날짜 입력 받음
+        let firstDate = new Date(document.getElementById("firstDate").value);
+        // console.log(firstDate);
+
+        // console.log(typeof firstDate);
+        // 입력날짜 기준 며칠 지났는지 계산
+        let stampTemp =  now - firstDate;
+        let pastDate = Math.ceil(stampTemp / 3600000 / 24);
+        // let past100 = new Date(firstDate.getTime() + 100 * 3600000 * 24);
+        // let past200 = new Date(firstDate.getTime() + 200 * 3600000 * 24);
+
+        document.getElementById("toNow").innerHTML = `오늘은 첫날부터 ${pastDate}일 째 되는 날입니다.`;
+        getFutureDate()
+      }
+
+      function getFutureDate() {
+        let firstDate = new Date(document.getElementById("firstDate").value);
+        let targetDate = Number (document.getElementById("wantDate").value);
+        let futureDate = new Date(firstDate.getTime() + targetDate * 3600000 * 24);
+        console.log(targetDate, futureDate);
+        document.getElementById("futureDate").innerHTML = `${futureDate.getFullYear()}년 
+        ${futureDate.getMonth() + 1}월 ${futureDate.getDate() - 1}일 ${days[futureDate.getDay()]}입니다.`;
+      }
+
+      function getDday() {
+        // 각 텍스트 입력 창을 배열에 넣기
+        let anniversary = document.getElementsByClassName("anniversary");
+        // console.log(anniversary);
+        // 입력 받은 값 년 월 일 별 추출
+        let anniYear = anniversary[0].value;
+        let anniMonth = anniversary[1].value;
+        let anniDate = anniversary[2].value;
+        
+        // 해당 값을 Date()로 변환
+        let anniDay = new Date(`${anniYear}-${anniMonth}-${anniDate}`);
+        console.log(anniYear, anniMonth, anniDate, anniDay);
+        // 기념일 기준으로 오늘 날짜 빼서 timestamp 추출
+        let temp = anniDay.getTime() - now.getTime();
+        let dDayCount = 1 + Math.floor(temp / 3600000 / 24);
+        console.log(temp, dDayCount);
+        // 기념일이 현재보다 미래인 경우 오늘을 포함하기 위해 해당 날짜를 포함하기 위헤
+        if (anniDay > now) {
+          dDayCount += 1;
+          dDayCount = ` - ${Math.abs(dDayCount)}`
+        } else {
+          dDayCount = ` + ${Math.abs(dDayCount)}`
+
+        } 
+        if (dDayCount != 0) {
+        document.getElementById("remainDate").innerHTML = `D${dDayCount}일!`
+        } else {
+        document.getElementById("remainDate").innerHTML = `D-Day !!!!`
+        }
+      }
+
+    </script>
+    <style>
+      div {
+        margin: 10px;
+      }
+      .header {
+        width: 800px;
+        height: 50px;
+      }
+      #first {
+        border: 1px solid gray;
+        text-align: center;
+      }
+      #today {
+        background-color: antiquewhite;
+        width: auto;
+        text-align: center;
+        line-height: 45px;
+        font-size: 1.2rem;
+        margin: auto;
+      }
+      .container {
+        display: flex;
+        width: 800px;
+        justify-content: space-around;
+        height: 200px;
+      }
+      /* input [type="text"] {
+        width : 50px;
+      } */
+      .firstRelatedDate {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 350px;
+      }
+      .anniversary {
+        width: 50px;
+        margin-top: 10px;
+      }
+      .anni {
+        /* display: flex; */
+        width: 350px;
+        height : 200px;
+      }
+      #remainDate {
+        margin: 25px;
+        text-align: center;
+        font-size: 3rem;
+        line-height: 100px;
+      }
+      .footer {
+        background-color: aliceblue;
+        width: 800px;
+        height: 50px;
+      }
+      .footer div {
+        text-align: right;
+        line-height: 25px;
+        font-size: 0.8rem;
+        color: darkgrey;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div id="today"></div>
+    </div>
+    <div class="container">
+      <div class="firstRelatedDate">
+        <div id="first">
+          오늘부터 1일 : <input type="date" name="" id="firstDate" placeholder="YYYY-MM-DD" value="2023-09-12">
+          <button id="cal" onclick="getCurrDate()">계산하기</button>
+        </div>
+        <div class="getDate" id="toNow"></div>
+        <div class="getDate">
+          <input type="text" id="wantDate" onchange="getFutureDate()" value="100"> 일 후는 : <p id="futureDate"></p>
+        </div>
+      </div>
+      <div class="anni">
+          <input type="text" class="anniversary" name="year" placeholder="YYYY" value="2024">년</input>
+          <input type="text" class="anniversary" name="month" placeholder="MM" value="04">월</input>
+          <input type="text" class="anniversary" name="date" placeholder="DD" value="01">일</input>
+          <button id="aniCal" onclick="getDday()">계산하기</button>
+          <div id="remainDate"></div>
+      </div>
+    </div>
+    <div class="footer">
+      <div>일수 계산은 기준일을 1일로 포함</div>
+    </div>
+  </body>
+</html>

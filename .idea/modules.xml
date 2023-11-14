@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/java/HelloJava/.metadata/.plugins/org.eclipse.egit.core/.org.eclipse.egit.core.cmp/.org.eclipse.egit.core.cmp.iml" filepath="$PROJECT_DIR$/java/HelloJava/.metadata/.plugins/org.eclipse.egit.core/.org.eclipse.egit.core.cmp/.org.eclipse.egit.core.cmp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/HelloJava/ArrayEx1/ArrayEx1.iml" filepath="$PROJECT_DIR$/java/HelloJava/ArrayEx1/ArrayEx1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/HelloJava/DataTypeAndVariable/DataTypeAndVariable.iml" filepath="$PROJECT_DIR$/java/HelloJava/DataTypeAndVariable/DataTypeAndVariable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/HelloJava/DataTypeCasting/DataTypeCasting.iml" filepath="$PROJECT_DIR$/java/HelloJava/DataTypeCasting/DataTypeCasting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/HelloJava/ForEx1/ForEx1.iml" filepath="$PROJECT_DIR$/java/HelloJava/ForEx1/ForEx1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/HelloJava/HelloJava.iml" filepath="$PROJECT_DIR$/java/HelloJava/HelloJava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/HelloJava/Operation/Operation.iml" filepath="$PROJECT_DIR$/java/HelloJava/Operation/Operation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/HelloJava/ScoreV1/ScoreV1.iml" filepath="$PROJECT_DIR$/java/HelloJava/ScoreV1/ScoreV1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/HelloJava/hello/hello.iml" filepath="$PROJECT_DIR$/java/HelloJava/hello/hello.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/lecture.iml" filepath="$PROJECT_DIR$/.idea/lecture.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/moduleTest/moduleTest.iml" filepath="$PROJECT_DIR$/java/moduleTest/moduleTest.iml" />
+    </modules>
+  </component>
+</project>
