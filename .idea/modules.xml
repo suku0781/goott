@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/java/HelloJava/ScoreV1/ScoreV1.iml" filepath="$PROJECT_DIR$/java/HelloJava/ScoreV1/ScoreV1.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/HelloJava/hello/hello.iml" filepath="$PROJECT_DIR$/java/HelloJava/hello/hello.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/lecture.iml" filepath="$PROJECT_DIR$/.idea/lecture.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java/memberPractice/memberPractice.iml" filepath="$PROJECT_DIR$/java/memberPractice/memberPractice.iml" />
       <module fileurl="file://$PROJECT_DIR$/java/moduleTest/moduleTest.iml" filepath="$PROJECT_DIR$/java/moduleTest/moduleTest.iml" />
     </modules>
   </component>
