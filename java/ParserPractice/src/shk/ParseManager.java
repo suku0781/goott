@@ -30,10 +30,10 @@ public class ParseManager {
 
 
     public static void main(String[] args){
-        Parsable pm = ParseManager.getParser("test.xml");
+        Parsable pm = getParser("test.xml");
         pm.parse("xml");
 
-        Parsable pm2 = ParseManager.getParser("test.json");
+        Parsable pm2 = getParser("test.json");
         pm2.parse("json");
     }
 }

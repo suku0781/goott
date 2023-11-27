@@ -29,10 +29,8 @@ public class Main {
             result = num / 3;
             System.out.println("입력한 숫자 : " + result);
         } catch (InputMismatchException e) { // 예외 발생 당시 호출스택에 있었던 메서드의 정보와 예외메시지를 화면에 출력
-//            e.printStackTrace();
             System.out.println("다음 입력시 정수를 입력하십시오.");
         } catch (ArithmeticException e) { // 발생한 예외 클래스의 인스턴스에 저장된 메시지
-//            e.printStackTrace();
             System.out.println(e.getMessage());
             System.out.println("다음 입력시 0을 제외한 정수를 입력하십시오.");
         } catch(Exception e){ // 모든 예외의 최고 조상이므로 가장 마지막 catch에 입력해주어야한다.
