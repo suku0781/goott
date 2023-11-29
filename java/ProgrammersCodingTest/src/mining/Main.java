@@ -20,17 +20,15 @@ public class Main {
     public static void solution(String[] ore, String[] tools) {
         int count = 0;
         int tireRate = 0;
-        for(String o : ore){
-            for(String t : tools){
+        for(String t : tools){
+            for(String o : ore){
 //                if(o.equals("dia")) System.out.println("test1");
 //                if(o.equals("iron")) System.out.println("test2");
 //                if(o.equals("stone")) System.out.println("test3");
                 if(o.equals(t)) tireRate++;
-                if((o.equals("i") == t.equals(t)) && (o.equals(t) == t.equals(o))){ // 여기 풀고 있었음.
 
-                }
 
-                System.out.println((count++)+ ", " +o  + ", " +  t);
+                System.out.println((count++)+ ", " +t  + ", " +  o);
                 if(count > 4) {
                     count = 0;
                     break;
