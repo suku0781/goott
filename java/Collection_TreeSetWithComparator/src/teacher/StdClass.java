@@ -1,6 +1,8 @@
-package shk;
+package teacher;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * packageName : shk
@@ -20,7 +22,9 @@ public class StdClass {
     // 생성자
     public StdClass(int classNo) {
         this.classNo = classNo;
-        this.stdSet = new TreeSet<Student>(new SortStudentByScoreInAsc());
+//        this.stdSet = new TreeSet<Student>(new DescendingByStdScore());
+//        this.stdSet = new TreeSet<Student>(new AscendingByStdName());
+        this.stdSet = new TreeSet<Student>(new DescendingByStdNo());
     }
 
     // getter, setter 반번호 변경 불가

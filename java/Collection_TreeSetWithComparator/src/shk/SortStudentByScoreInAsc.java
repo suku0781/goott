@@ -16,6 +16,11 @@ import java.util.Comparator;
 public class SortStudentByScoreInAsc implements Comparator<Student>  {
     @Override
     public int compare(Student o1, Student o2) {
-        return Integer.compare(o1.getScore() - o2.getScore(), 0);
+        if(o1.getStdNo().equals(o2.getStdNo())){
+            return 0;
+        } else {
+            return Integer.compare(o2.getScore() - o1.getScore(), 0);
+        }
+
     }
 }

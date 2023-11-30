@@ -1,6 +1,8 @@
 package shk;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * packageName : shk
@@ -20,7 +22,9 @@ public class StdClass {
     // 생성자
     public StdClass(int classNo) {
         this.classNo = classNo;
-        this.stdSet = new TreeSet<Student>(new SortStudentByScoreInAsc());
+//        this.stdSet = new TreeSet<Student>(new DescendingByStdScore());
+//        this.stdSet = new TreeSet<Student>(new AscendingByStdName());
+        this.stdSet = new TreeSet<Student>();
     }
 
     // getter, setter 반번호 변경 불가
@@ -38,11 +42,23 @@ public class StdClass {
     }
 
     public void addStudent(Student s){
-        this.stdSet.add(s);
+        boolean isExist = false;
+
+        for(Student std : this.stdSet) {
+            if(std.getStdNo().equals(s.getStdNo())){
+                isExist = true;
+                break;
+            }
+        }
+        
+        if(!isExist) this.stdSet.add(s);
+        else System.out.println("학번" + s.getStdNo() + " 학생이 이미 존재헙니다.");
     }
 
     // 학생 전체 목록 출력
     public void outputEntireStudent(){
+        boolean isExist = false;
+        
         for(Student std : this.stdSet) {
             System.out.println(std.toString() + ", hashCode : " + std.hashCode());
         }
