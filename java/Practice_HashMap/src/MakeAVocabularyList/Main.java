@@ -33,7 +33,7 @@ public class Main {
             System.out.println("Input English Word To Regist");
             System.out.print(">> ");
         } else if(type.equals("againYn")) {
-            System.out.printf("oneMoreTime(input Y/N) >> ");
+            System.out.print("oneMoreTime(input Y/N) >> ");
         } else if(type.equals("inputMean")) {
             System.out.println("Input mean of English Word To Regist");
         } else if(type.equals("searchingBy")) {
@@ -100,7 +100,6 @@ public class Main {
     }
 
     private static void registWord(String type) throws IOException {
-        System.out.println("출력되나?");
         if(type.equals("first")){
 
             wordMap2 = firstRegist();
