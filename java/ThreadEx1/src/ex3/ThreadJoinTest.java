@@ -11,14 +11,14 @@ package ex3;
  * --------------------------------------------------------
  * 2023-12-04          goott5             최초생성
  **/
-class sumThread extends Thread{
+class SumThread extends Thread{
     private int sum;
 
     public int getSum() {
         return sum;
     }
 
-    sumThread(String name){
+    SumThread(String name){
         super.setName(name);
     }
 
@@ -38,7 +38,7 @@ public class ThreadJoinTest {
     public static void main(String[] args) {
 
         // 스레드 생성
-        sumThread sumThread = new sumThread("sum-Thread");
+        SumThread sumThread = new SumThread("sum-Thread");
 
         sumThread.start(); // runnable 한 상태로 전환.
 

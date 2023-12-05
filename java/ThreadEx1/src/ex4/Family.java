@@ -20,8 +20,6 @@ public class Family implements Runnable{
         this.name = name;
     }
 
-
-
     @Override
     public void run() {
         // 가족들이 acc에서 돈을 인출
