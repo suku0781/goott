@@ -19,9 +19,8 @@
     <mapping directory="$PROJECT_DIR$/java/PrimitiveTypeParam" vcs="" />
     <mapping directory="$PROJECT_DIR$/java/ReferenceTypeParam" vcs="" />
     <mapping directory="$PROJECT_DIR$/java/StaticVsInstanceEx1" vcs="" />
-    <mapping directory="$PROJECT_DIR$/java/Test" vcs="" />
     <mapping directory="$PROJECT_DIR$/java/mysql-table-document-creator" vcs="" />
     <mapping directory="$PROJECT_DIR$/java/staticVsInstance" vcs="" />
-    <mapping directory="$PROJECT_DIR$/js" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/js" vcs="" />
   </component>
 </project>

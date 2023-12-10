@@ -102,7 +102,6 @@ public class FriendMgmDaoImpl implements FriendMgmDao{
         Connection con = DBConnection.getConnection();
         int result = 0;
         if(con != null){
-//            String query = "insert into friends values("+friendNo+", '"+friend.getFriendName()+"', '"+friend.getMobild()+"', '"+friend.getAddr()+"');";
             String query = "insert into friends values(?,?,?,?)";
 
             PreparedStatement pstmt = con.prepareStatement(query);
@@ -182,16 +181,38 @@ public class FriendMgmDaoImpl implements FriendMgmDao{
     }
 
     @Override
-    public void updateFriend(int friendNo, String target, ) throws SQLException, ClassNotFoundException {
+    public int updateFriend(Friend friend, String param, int type) throws SQLException, ClassNotFoundException {
         Connection con = DBConnection.getConnection();
         List<Friend> lst = new ArrayList<>();
-
-        if(con != null){
-            //update emp01 set sal = 300000, ename = '마이콜' where empno = 1001;
-            String query = "update friends set ? = ? where ? = ? ";
+        int result = 0;
+        String query = "";
+        if(con != null) {
+            if(type == 1) query = "update friends set friendname = ? where friendno = ?";
+            if(type == 2) query = "update friends set mobild = ? where friendno = ?";
+            if(type == 3) query = "update friends set addr = ? where friendno = ?";
             PreparedStatement pstmt = con.prepareStatement(query);
-            pstmt.setString(1, );
+            pstmt.setString(1, param);
+            pstmt.setInt(2, friend.getFriendNo());
+
+            result = pstmt.executeUpdate();
+            DBConnection.close(pstmt, con);
         }
+        return result;
+    }
+
+    @Override
+    public int deleteFriend(Friend friend) throws SQLException, ClassNotFoundException {
+        Connection con = DBConnection.getConnection();
+        int result = 0;
+        if(con != null){
+            String query = "delete from friends where friendno = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, friend.getFriendNo());
+
+            result = pstmt.executeUpdate();
+        }
+
+        return result;
     }
 
 

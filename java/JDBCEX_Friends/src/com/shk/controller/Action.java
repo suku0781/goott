@@ -40,15 +40,15 @@ public class Action {
             case 4:
                 result = new EditFriendName();
             break;
-//            case 5:
-//                result = new SaveFriendService();
-//            break;
-//            case 6:
-//                result = new SaveFriendService();
-//            break;
-//            case 7:
-//                result = new SaveFriendService();
-//            break;
+            case 5:
+                result = new EditFriendMobild();
+            break;
+            case 6:
+                result = new EditFriendAddr();
+            break;
+            case 7:
+                result = new DeleteFriend();
+            break;
             case 9:
                 System.exit(0);
             default:

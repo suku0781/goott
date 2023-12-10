@@ -15,5 +15,4 @@ import java.sql.SQLException;
  **/
 public interface FriendManagementService {
     void toDo() throws SQLException, ClassNotFoundException;
-
 }

@@ -33,10 +33,34 @@ public class Friend {
         this.type = 1;
     }
 
-    public Friend(int friendno, String friendname) {
-        this.friendNo = friendno;
-        this.friendName = friendname;
+    public Friend(int friendNo, String friendName) {
+        this.friendNo = friendNo;
+        this.friendName = friendName;
         this.type = 2;
+    }
+
+    public Friend(String name) {
+        this.friendName = name;
+    }
+
+    public int getFriendNo() {
+        return friendNo;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public String getAddr() {
+        return addr;
+    }
+
+    public String getFriendName() {
+        return friendName;
+    }
+
+    public String getMobild() {
+        return mobild;
     }
 
     @Override
@@ -46,6 +70,7 @@ public class Friend {
         if(type >= 2) result += ", friendName='" + friendName;
         if(type >= 3) result += '\'' + ", mobild='" + mobild;
         if(type >= 4) result += '\'' + ", addr='" + addr;
+        result += '\'';
         return result;
     }
 }

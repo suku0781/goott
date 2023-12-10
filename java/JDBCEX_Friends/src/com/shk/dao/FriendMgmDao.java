@@ -34,5 +34,6 @@ public interface FriendMgmDao {
     List<Friend> selectFriend(String name) throws SQLException, ClassNotFoundException;
     List<Friend> selectFriend(int friendNo) throws SQLException, ClassNotFoundException;
 
-    void updateFriend(int friendNo, String name) throws SQLException, ClassNotFoundException;
+    int updateFriend(Friend friend, String name, int type) throws SQLException, ClassNotFoundException;
+    int deleteFriend(Friend friend) throws SQLException, ClassNotFoundException;
 }

@@ -28,7 +28,7 @@ public class FriendDBInsert {
 
         Scanner sc = new Scanner(System.in);
         do {
-            System.out.println("저장할 친구 이름 >> ");
+            System.out.print("저장할 친구 이름 >> ");
             name = sc.nextLine();
         } while (name.equals(""));
         do {
