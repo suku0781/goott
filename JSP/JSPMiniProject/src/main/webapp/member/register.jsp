@@ -40,7 +40,7 @@
 
 			<div class="form-check mb-3">
 				<label for="agree" class="form-check-label">Agree to terms and conditions</label>
-				<input class="form-check-input" type="checkbox" id="agree" name="agree" value="Y">
+				<input class="form-check-input" type="checkbox" id="agree" name="agree" value="">
 				
 			</div>
 
@@ -63,9 +63,9 @@
 				if(data.target == "userIdDuplChk"){
 					if(data.isDuplicatee == "true"){
 						printErrMsg("userId", "Input ID is Unusable. Id is Duplicated", true);
+						result = true;
 					} else {
 						printErrMsg("userId", "Input ID is Usable.", false);
-						result = true;
 					}
 				}
 			},
@@ -82,12 +82,21 @@
 			validUserId();
 		});
 		
+		// 비밀번호 확인 작성을 마쳤을 때 이벤트
+		$("#userPwRepeat").blur(function(){
+			validUserPW();
+		});
+		
+		// 이메일 작성을 마쳤을 때 이벤트
+		$("#userEmail").blur(function(){
+			validUserEmail();
+		});
+		
 		
 	}) // end of doc
 
 	// 아이디 유효성검사 : 3자 이상 ~ 8자 이하 영문 + 숫자조합 
 	function validUserId(){
-		let isValid = false;
 		let userId = $("#userId").val();
 		if(userId.length > 2 && userId.length < 9){
 			// 아이디 중복검사
@@ -101,12 +110,57 @@
 		}
 		
 	}
+	
+	// 비밀번호 유효성검사 : '영문 + 숫자 + 특수문자 조합으로 6~20자리를 사용해야 합니다.
+	function validUserPW(){
+		let userPw = $("#userPw").val();
+		let userPwRepeat = $("#userPwRepeat").val();
+		
+		if(userPw.length > 5 && userPw.length < 21){
+			// 비밀번호 유효성 검사
+			let pattern = /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{6,20}$/;
+			if(pattern.test(userPw)){
+				if(userPw == userPwRepeat){
+					printErrMsg("userPwRepeat",'비밀번호가 일치합니다.', false);
+					return true;
+				} else {
+					printErrMsg("userPwRepeat",'비밀번호가 일치하지 않습니다.', true);
+					return false;
+				}
+			} else {
+				printErrMsg("userPwRepeat",'비밀번호는 6자 이상 ~ 20자 이하 영문 + 숫자 + 특수문자 조합으로 입력하십시오.', true);
+				return false;
+			}
+		} else {
+			printErrMsg("userPwRepeat",'비밀번호는 6자 이상 ~ 20자 이하 영문 + 숫자 + 특수문자 조합으로 입력하십시오.', true);
+			return false;
+		}
+	}
+	
+	function validUserEmail(){
+		let userEmail = $("#userEmail").val();
+		
+		var pattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+		
+		if(pattern.test(userEmail)){
+			let obj = {};
+			obj.userEmail = userEmail;
+			
+			return getData("dulpUserEmail.mem", "GET", obj, "json");
+		} else {
+			printErrMsg("userEmail",'올바른 이메일을 입력하십시오.', true);
+			return false;
+		}
+		
+	}
 
 	// 회원가입 유효성 검사
 	function validation(){
 		let isValid = false;
 		
-		let userIdValid = validUserId();
+		if(validUserId() && validUserPW() && validUserEmail() && $("#agree").prop("checked") ){
+			isValid = true;
+		}
 		
 		return isValid;
 		
