@@ -2,6 +2,7 @@ package com.miniPrj.controller;
 
 import java.io.IOException;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,14 +16,10 @@ public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = -4014011767649223251L;
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("아이디 중복 검사 호출됨.");
 		doService(req, resp);
 	}
 	
 	protected void doService(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// duplicateUserId.mem
-		// registerMember.mem
-		
 		System.out.println("요청한 URL" + req.getRequestURL());
 		System.out.println("요청한 URI" + req.getRequestURI());
 		System.out.println("요청한 통신방식" + req.getMethod());
@@ -37,12 +34,17 @@ public class MemberServlet extends HttpServlet {
 		
 		MemberFactory mf = MemberFactory.getInstance();
 		MemberService service = mf.getService(command);
-		service.executeService(req, resp);
+		try {
+			service.executeService(req, resp);
+		} catch (ServletException | IOException | MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("에러 메시지 :: "+e.getMessage());
+		}
 		
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("아이디 중복 검사 호출됨.");
 		doService(req, resp);
 	}
 
