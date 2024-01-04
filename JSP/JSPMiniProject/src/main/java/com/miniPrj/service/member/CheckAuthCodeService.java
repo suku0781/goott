@@ -26,6 +26,7 @@ public class CheckAuthCodeService implements MemberService {
 		json.put("target", "checkAuthCode");
 		if(userEmailAuthInp.equals(authCode)) {
 			json.put("activation", "success");
+			json.put("authCode", "authCode");
 		} else {
 			json.put("activation", "fail");
 			

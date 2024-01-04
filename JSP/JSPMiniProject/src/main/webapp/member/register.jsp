@@ -14,7 +14,7 @@
 	<div class="container">
 		<h1>register.jsp</h1>
 		
-		<form action="/registerMember.mem" method="POST">
+		<form action="registerMember.mem" method="POST" enctype="multipart/form-data">
 			<div class="mb-3 mt-3">
 				<label for="userId" class="form-label">ID</label> 
 				<input type="text" class="form-control" id="userId" name="userId" placeholder="Input your ID" >
@@ -58,7 +58,10 @@
 	<jsp:include page="../footer.jsp"></jsp:include>	
 </body>
 <script type="text/javascript">
+	let isuserIdValidChkYn = false;
+	let isuserPWValidChkYn = false;
 	let isEmailAuthYn = false;
+	
 	function getData(url, type, data, dataType, async){
 		let result = false;
 		$.ajax({
@@ -71,17 +74,25 @@
 				console.log(data)
 				
 				if(data.target == "userIdDuplChk"){
-					if(data.isDuplicatee == "true"){
-						printErrMsg("userId", "Input ID is Unusable. Id is Duplicated", true);
+					if(data.isDuplicate == "true"){
+						printErrMsg("userId", "Input ID is Unusable. Id is Duplicated", false);
 						result = true;
 					} else {
 						printErrMsg("userId", "Input ID is Usable.", false);
+					}
+				} else if(data.target == "userEmailDuplChk"){
+// 					debugger
+					if(data.isDuplicate == "true"){
+						printErrMsg("userEmail", "Input Email is Unusable. Email is Duplicated", false);
+						result = true;
+					} else {
+						printErrMsg("userEmail", "Input Email is Usable.", false);
 					}
 				} else if(data.target == "authCode"){
 					console.log("인증코드 발송됨.");
 					
 					if(data.status == "success"){
-						
+						console.log("authCode : "+data.authCode)
 					} else {
 						
 					}
@@ -141,7 +152,6 @@
 			let userEmailAuthInp = $("#userEmailAuthInp").val();
 			let obj = {};
 			
-<%-- 			console.log(<%=(String) request.getSession().getAttribute("authCode")%>) --%>
 			obj.userEmailAuthInp = userEmailAuthInp;
 			getData("confirmCode.mem", "GET", obj, "json", false);
 		});
@@ -155,10 +165,10 @@
 			// 아이디 중복검사
 			let obj = {};
 			obj.userId = userId;
-			
-			return getData("dulpUserId.mem", "GET", obj, "json") ? false : true; // 아이디 중복검사 해서 중복이 아니면 true를 리턴하기위해서 반대로 설정함.
+			isuserIdValidChkYn = getData("dulpUserId.mem", "GET", obj, "json") ? false : true; // 아이디 중복검사 해서 중복이 아니면 true를 리턴하기위해서 반대로 설정함.
+			return isuserIdValidChkYn;
 		} else {
-			printErrMsg("userId", "아이디는 3자 이상 ~ 8자 이하 영문 + 숫자조합으로 입력하십시오.", true); // function printErrMsg(id, msg, isFocus)
+			printErrMsg("userId", "아이디는 3자 이상 ~ 8자 이하 영문 + 숫자조합으로 입력하십시오.", false); // function printErrMsg(id, msg, isFocus)
 			return false;
 		}
 		
@@ -175,16 +185,17 @@
 			let pattern = /^[A-Za-z0-9`~!@#\$%\^&\*\(\)\{\}\[\]\-_=\+\\|;:'"<>,\./\?]{6,20}$/;
 			if(pattern.test(userPw)){
 				if(userPw == userPwRepeat){
-					printErrMsg("userPwRepeat",'비밀번호가 일치합니다.', false);
+					printErrMsg("userPwRepeat",'비밀번호가 일치함.', false);
 					isValid = true;
+					isuserPWValidChkYn = true;
 				} else {
-					printErrMsg("userPwRepeat",'비밀번호가 일치하지 않습니다.', false);
+					printErrMsg("userPwRepeat",'비밀번호가 일치하지않음.', false);
 				}
 			} else {
-				printErrMsg("userPwRepeat",'비밀번호는 6자 이상 ~ 20자 이하 영문 + 숫자 + 특수문자 조합으로 입력하십시오.', false);
+				printErrMsg("userPwRepeat",'비밀번호는 6자에서 20자 사이의 영문+숫자+특수문자 조합으로 입력해 주시기 바랍니다.', false);
 			}
 		} else {
-			printErrMsg("userPwRepeat",'비밀번호는 6자 이상 ~ 20자 이하 영문 + 숫자 + 특수문자 조합으로 입력하십시오.', false);
+			printErrMsg("userPwRepeat",'비밀번호는 6자에서 20자 사이의 영문+숫자+특수문자 조합으로 입력해 주시기 바랍니다.', false);
 		}
 		
 		return isValid;
@@ -199,10 +210,10 @@
 			let obj = {};
 			obj.userEmail = userEmail;
 			
-			
-			return (type == "sendCode") ? true : getData("dulpUserEmail.mem", "GET", obj, "json");
+// 			return type == "sendCode" ? true : getData("dulpUserEmail.mem", "GET", obj, "json");
+			return true;
 		} else {
-			printErrMsg("userEmail",'올바른 이메일을 입력하십시오.', false);
+			printErrMsg("userEmail",'유효한 이메일을 입력하십시오.', false);
 			return false;
 		}
 		
@@ -212,12 +223,12 @@
 	function validation(){
 		let isValid = false;
 		let isAgree = $("#agree").prop("checked");
-		
-		if(validUserId() && validUserPW() && isEmailAuthYn){
+		let  = false;
+		if(isuserIdValidChkYn && isuserPWValidChkYn && isEmailAuthYn){
 			if(isAgree){
-				printErrMsg("agree",'약관동의 체크해주십시오.', false);
 				isValid = true;
 			} else {
+				printErrMsg("agree",'이용 약관을 확인해 주시기 바랍니다.', false);
 				isValid = false;
 			}
 		} else {

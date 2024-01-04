@@ -43,6 +43,7 @@ public class SendAuthMailService implements MemberService {
 			SendMail.sendMail(userEmail, code);
 			jsonMap.put("status", "success");
 			jsonMap.put("target", "authCode");
+			jsonMap.put("code", code);
 			
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
