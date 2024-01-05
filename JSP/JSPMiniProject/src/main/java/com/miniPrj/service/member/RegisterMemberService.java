@@ -41,7 +41,7 @@ public class RegisterMemberService implements MemberService {
 		System.out.println(req.getParameter("userId"));
 		
 		// 파일 업로드할 디렉토리 생성
-		String uploadDir = "";
+		String uploadDir = "\\memberImg";
 		
 		// 실제 파일이 저장될 물리적 경로
 		String realPath = req.getSession().getServletContext().getRealPath(uploadDir);
@@ -92,11 +92,12 @@ public class RegisterMemberService implements MemberService {
 					// 파일이름 중복제거
 					// 1. 중복되지않는 새 이름으로 파일명을 변경 :
 					// user_uuid
-//					uf = getNewFileName(item, realPath, userId);
+					uf = getNewFileName(item, realPath, userId);
+					System.out.println(uf.toString());
 					
 					// 2. 파일명(순서번호).확장자
 					// 과제
-					uf = getNewFileNameInOrder(item, realPath, userId);
+					uf = makeNewFileNameWithNumbering(item, realPath);
 					
 					// 파일 하드디스크에 저장
 					File fileToSave = new File(realPath + File.separator + uf.getNewFileName());
@@ -109,9 +110,6 @@ public class RegisterMemberService implements MemberService {
 					
 				}
 			}
-			System.out.println("userId: "+ userId +", userPw : "+ userPw +", userEmail : " + userEmail);
-			System.out.println("uf : "+ uf.toString());
-			
 		} catch (FileUploadException e) {
 			// 파일 업로드될때의 예외
 			e.printStackTrace();
@@ -126,12 +124,27 @@ public class RegisterMemberService implements MemberService {
 				result = mDao.registerMemberWithFile(uf, new Member(userId, userPw, userEmail, null, -1, -1), "회원가입", 100);
 				System.out.print("업로드된파일이 있는 경우");		
 			} else { // 업로드한 파일이 없는 경우
-				result = mDao.registerMemberWithFile(new Member(userId, userPw, userEmail, null, -1, -1), "회원가입", 100);
+				result = mDao.registerMember(new Member(userId, userPw, userEmail, null, -1, -1), "회원가입", 100);
 				System.out.print("업로드된파일이 없는 경우");		
 			}
 		} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
+			// DB에 저장할 때 나오는 예외
 			e.printStackTrace();
+			
+			if (uf != null) {
+				// 업로드된 파일이 있다면 삭제해야 함.
+				System.out.println("삭제할 이미지: " + uf.getNewFileName());
+				// memberImg/aaaa_c6645aaf-131b-4f83-b527-4e97a2dab0dc.png
+				// realPath =
+				// D:\lecture\jsp\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\JSPMiniProject\memberImg
+
+				String without = uf.getNewFileName().substring("memberImg/".length());
+//	             System.out.println(without);
+
+				File deleteFile = new File(realPath + File.separator + without);
+				deleteFile.delete(); // 파일 삭제
+
+			}
 		}
 		System.out.println((result == 0) ? "회원가입 성공!" : "회원가입 실패!");
 		
@@ -160,37 +173,71 @@ public class RegisterMemberService implements MemberService {
 		return uf;
 	}
 	
-	// 파일이름 중복제거(순서대로)
-	private UploadedFile getNewFileNameInOrder(FileItem item, String realPath, String userId) {
-		// userId_복사본, userId_복사본(2), userId_복사본(3) ...
-		String originalFileName = item.getName(); // 업로드된 원본파일 이름
-		String ext = originalFileName.substring(originalFileName.lastIndexOf(".")); // .PNG
-		
-		System.out.println("{test} originalFileName: " + originalFileName + ", ext: " + ext);
-		String newFileName = originalFileName.substring(0, originalFileName.lastIndexOf("."));
-		
-		String path = realPath + "memberImg";
-		
-		System.out.println("{test} path : " + path);
-		
-        // 파일이 존재하는지 확인
-		do {
-			System.out.println("파일이 존재함.");
-		}while(new File(path + originalFileName).exists());
-		
-    	System.out.println("파일이 존재함하지 않음.");
-		
-		System.out.println("realPath : "+realPath);
-		
-		if(item.getSize() > 0) { // 실제 파일이 저장되는 경우
-			
-//			newFileName += originalFileName + + ext;
-		}
-//		System.out.println("newFileName : "+ newFileName);
-		
-		UploadedFile uf = new UploadedFile(originalFileName, ext, newFileName, item.getSize());
-		
-		return uf;
-	}
+	
+	
+	   private UploadedFile makeNewFileNameWithNumbering(FileItem item, String realPath) {
+		      // ex) 파일명(번호).확장자 -> 새파일 이름을 만들기
+		      int cnt = 0;
+		      String tmpFileName = item.getName(); // 업로드된 원본이름
+		      String newFileName = ""; // 실제 저장되는 새파일명
+		      String ext = tmpFileName.substring(tmpFileName.lastIndexOf(".")); // .png
+		      
+		      while(duplicateFileName(tmpFileName, realPath)) { // 파일이 중복되면
+		         // 새파일이름 만들기
+		         cnt++;
+		         tmpFileName = makeNewFileName(tmpFileName, cnt);
+		      }
+		      
+		      newFileName = tmpFileName;
+		      
+		      UploadedFile uf = new UploadedFile(item.getName(), ext, newFileName, item.getSize());
+		      
+		      return uf;
+		   }
 
+		   private String makeNewFileName(String tmpFileName, int cnt) {
+		      //ex) 파일명(번호).확장자
+		      // rock.png -> rock + (1) + .png 
+		      // rock(1).png -> rock(2).png
+		      
+		      String newFileName = "";
+		      String ext = tmpFileName.substring(tmpFileName.lastIndexOf(".")); // .png
+		      String oldFileNameWithoutExt = tmpFileName.substring(0, tmpFileName.lastIndexOf(".")); 
+		      
+		      int openPos = oldFileNameWithoutExt.indexOf("(");
+		      
+		      if (openPos == -1) { // "(" 가 없다면 -> 처음 중복
+		         newFileName = oldFileNameWithoutExt + "(" + cnt + ")" + "_cp" + ext;
+		      } else {
+		         newFileName = oldFileNameWithoutExt.substring(0, openPos) + "(" + cnt + ")" + "_cp" + ext;
+		      }
+		      
+		      return newFileName;
+		         
+		   }
+
+		   private boolean duplicateFileName(String tmpFileName, String realPath) {
+		      boolean result = false;
+		      File tmpFileNamePath = new File(realPath);
+		      File[] files = tmpFileNamePath.listFiles(); // 파일리스트
+		      
+//		      System.out.println(Arrays.toString(files));
+		      
+//		      for (File f : files) {
+//		         if (f.getName().equals(tmpFileName)) {
+//		            System.out.println(tmpFileName + "이 중복됩니다..");
+//		            result = true;
+//		         }
+//		      }
+		      
+		      File tmpFile = new File(realPath + File.separator + tmpFileName);
+		      if (tmpFile.exists()) {
+		         System.out.println(tmpFileName + "이 중복됩니다..");
+		         result = true;
+		      }
+		      
+		      return result;
+		   }
+
+	
 }

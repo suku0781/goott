@@ -18,9 +18,15 @@
    	background-position: center;
  	background-size: cover;
 }
+.userImg{
+	width: 25px;
+	height: 25px;
+	border-radius: 25px;
+}
 
 </style>
 <body>
+<%-- <c:out value="${contextPath }/src/main/webapp/memberImg/${sessionScope.loginMember.userImg }"></c:out> --%>
 	<div class="p-5 bg-primary text-white text-center">
 	  <h1>JSPMiniProject</h1>
 	  <p>2024 Jan</p> 
@@ -34,12 +40,38 @@
 	      <li class="nav-item">
 	        <a class="nav-link" href="#">Board</a>
 	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="${contextPath }/member/register.jsp">Join</a>
-	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="#">login</a>
-	      </li>
+	      
+	      <c:choose>
+	      	<c:when test="${sessionScope.loginMember == null }">
+      		  <li class="nav-item">
+		        <a class="nav-link" href="${contextPath }/member/register.jsp">Join</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="${contextPath }/member/login.jsp">login</a>
+		      </li>
+	      	</c:when>
+	      	<c:otherwise>
+	      	  <li class="nav-item" style="color:white">
+		        <a class="nav-link" href="${contextPath }/member/mypage.jsp">${sessionScope.loginMember.userId }
+		        	<img alt="" src="${contextPath }/${sessionScope.loginMember.isAdmin }" class="userImg">
+		        </a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="${contextPath }/member/logout.jsp">logout</a>
+		      </li>
+	      	</c:otherwise>
+	      </c:choose>
+	      
+	      <c:if test="${sessionScope.loginMember.memberImg == 'y' }">
+	      	<li class="nav-item">
+	      	<a class="nav-link" href="${contextPath }/admin/admin.jsp">adminPage</a>
+	      	</li>
+	      </c:if>
+<!-- 	      과제 -->
+<!-- 	      로그아웃 기능 구현  -->
+<!-- 	      마이페이지 기능 구현 (적립금, 사용자 정보 출력 ) -->
+	      
+	      
 	    </ul>
 	  </div>
 	</nav>

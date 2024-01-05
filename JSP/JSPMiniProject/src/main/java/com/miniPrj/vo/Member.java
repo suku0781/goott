@@ -9,6 +9,8 @@ public class Member {
 	private Date registDate;
 	private int userImg;
 	private int userPoint;
+	private String memberImg;
+	private String isAdmin;
 	
 	public Member(String userId, String userPw, String userEmail, Date registDate, int userImg, int userPoint) {
 		super();
@@ -18,6 +20,21 @@ public class Member {
 		this.registDate = registDate;
 		this.userImg = userImg;
 		this.userPoint = userPoint;
+		this.memberImg = memberImg;
+		this.isAdmin = isAdmin;
+	}
+	
+	public Member(String userId, String userPw, String userEmail, Date registDate, int userImg, int userPoint,
+			String memberImg, String isAdmin) {
+		super();
+		this.userId = userId;
+		this.userPw = userPw;
+		this.userEmail = userEmail;
+		this.registDate = registDate;
+		this.userImg = userImg;
+		this.userPoint = userPoint;
+		this.memberImg = memberImg;
+		this.isAdmin = isAdmin;
 	}
 	
 	public String getUserId() {
@@ -56,11 +73,27 @@ public class Member {
 	public void setUserPoint(int userPoint) {
 		this.userPoint = userPoint;
 	}
+	public String getMemberImg() {
+		return memberImg;
+	}
+	public void setMemberImg(String memberImg) {
+		this.memberImg = memberImg;
+	}
+	public String getIsAdmin() {
+		return isAdmin;
+	}
+	public void setIsAdmin(String isAdmin) {
+		this.isAdmin = isAdmin;
+	}
 	
 	@Override
 	public String toString() {
-		return "Member [userId=" + userId + ", userPw=" + userPw + ", userEmail=" + userEmail + ", registDate=" + registDate + ", userImg=" + userImg + ", userPoint=" + userPoint + "]";
+		return "Member [userId=" + userId + ", userPw=" + userPw + ", userEmail=" + userEmail + ", registDate="
+				+ registDate + ", userImg=" + userImg + ", userPoint=" + userPoint + ", memberImg=" + memberImg
+				+ ", isAdmin=" + isAdmin + "]";
 	}
+	
+	
 	
 	
 }

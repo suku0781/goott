@@ -66,4 +66,30 @@ insert into pointLog(why, howMuch, who) values(?, ?, ?);
 
 select * from uploadedFile;
 insert into member(userId, userPw, userEmail, userImg, userPoint) values("suku0781", sha1(md5("jkl123")), "suku0781@naver.com", 1, 1);
+select * from member where userId = 'asdfas';
+select * from uploadedfile;
+select * from pointLog;
+select * from pointPolicy;
+select * from member where userEmail = ?;
+
+truncate table member;
+truncate table uploadedfile;
+truncate table pointlog;
+truncate table member;
+
+
+
 select * from member;
+select * from uploadedfile;
+select * from pointLog ;
+
+select m.*, u.newFileName from member m inner join uploadedfile u on m.userImg = u.no where userId = test2 and userPw = sha1(md5('jkl123'));
+
+select * from member m inner join uploadedfile u on m.userImg = u.no where userId = 'test' and userPw = sha1(md5('jkl123'));
+
+-- 로그인 성공 시 member테이블 포인트를 update
+select * from pointLog ;
+update member set userPoint = userPoint + 1 where userId = 'test';
+insert into 
+select * from member;
+rollback;

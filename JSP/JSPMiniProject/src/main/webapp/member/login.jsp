@@ -12,9 +12,9 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div class="container">
-		<h1>register.jsp</h1>
+		<h1>login.jsp</h1>
 		
-		<form action="registerMember.mem" method="POST" enctype="multipart/form-data">
+		<form action="loginMember.mem" method="POST">
 			<div class="mb-3 mt-3">
 				<label for="userId" class="form-label">ID</label> 
 				<input type="text" class="form-control" id="userId" name="userId" placeholder="Input your ID" >
@@ -23,34 +23,8 @@
 				<label for="userPw" class="form-label">PW</label> 
 				<input type="password" class="form-control" id="userPw" name="userPw" placeholder="Input your PassWord" >
 			</div>
-			<div class="mb-3 mt-3">
-				<label for="userPwRepeat" class="form-label">PW-repeat</label> 
-				<input type="password" class="form-control" id="userPwRepeat" placeholder="Input your PassWord Repeat" >
-			</div>
-			<div class="mb-3 mt-3">
-				<label for="userEmail" class="form-label">Email</label> 
-				<div style="display:flex;">
-					<input type="text" class="form-control" id="userEmail" name="userEmail" placeholder="Input your Email" >
-					<button type="button" id="sendCode" class="btn btn-secondary sendCode">Auth</button>
-				</div>
-				<div class="codeDiv" style="display:none;">
-					<input type="text" class="form-control" id="userEmailAuthInp" name="userEmailAuthInp" placeholder="Input Email Authentication Code" >
-					<button type="button" class="btn btn-secondary confirmCode">submit</button>
-				</div>
-			</div>
-			
-			<div class="mb-3 mt-3">
-				<label for="userImg" class="form-label">Image</label> 
-				<input type="file" class="form-control" id="userImg" name="userImg" placeholder="Input your Image" >
-			</div>
 
-			<div class="form-check mb-3">
-				<label for="agree" class="form-check-label">Agree to terms and conditions</label>
-				<input class="form-check-input" type="checkbox" id="agree" name="agree" value="">
-				
-			</div>
-
-			<button type="submit" class="btn btn-primary" onclick="return validation();">Submit</button>
+			<button type="submit" class="btn btn-primary" onclick="">Submit</button>
 			<button type="reset" class="btn btn-danger">Cancel</button>
 		</form>
 	</div>

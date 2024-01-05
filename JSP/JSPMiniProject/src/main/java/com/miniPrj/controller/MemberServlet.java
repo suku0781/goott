@@ -34,6 +34,7 @@ public class MemberServlet extends HttpServlet {
 		
 		MemberFactory mf = MemberFactory.getInstance();
 		MemberService service = mf.getService(command);
+		
 		try {
 			service.executeService(req, resp);
 		} catch (ServletException | IOException | MessagingException e) {

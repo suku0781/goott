@@ -19,19 +19,25 @@ public interface MemberDAO {
 	int registerMemberWithFile(UploadedFile uf, Member member, String why, int howMuch) throws NamingException, SQLException;
 
 	// 업로드된 파일이 없는 경우 회원가입
-	int registerMemberWithFile(Member member, String why, int howMuch) throws NamingException, SQLException;
-
+	int registerMember(Member member, String why, int howMuch) throws NamingException, SQLException;
 	// ----- (1)하나의 트랜잭션 -----
 	// 업로드된 파일 정보를 uploadedFile테이블에 insert
 	int insertUploadedFileInfo(UploadedFile uf, Connection con) throws NamingException, SQLException;
 	
 	// 회원정보 insert
 	int insertMember(Member member, Connection con) throws NamingException, SQLException;
+	int insertMember(Member member, Connection con, boolean userImg) throws NamingException, SQLException;
 	
 	// 회원가입이 완료된 후 pointLog테이블에 회원가입포인트 로그를 남김.
 //	int insertPointLog(String why, String howMuch, String userId, Connection con) throws NamingException, SQLException;
 	int insertPointLog(String why, int howMuch, String userId, Connection con) throws NamingException, SQLException;
 	// ----- (1)하나의 트랜잭션 end-----
+
+	// 로그인
+	Member loginMember(String userId, String userPw) throws NamingException, SQLException;
+
+	// member포인트 업데이트
+	int addPointToMember(String userId, String why, int howMuch) throws NamingException, SQLException;
 
 	
 }
