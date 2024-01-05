@@ -115,6 +115,7 @@
 		})
 		return result;
 	}
+	
 
 	$(function(){
 		// 아이디 작성을 마쳤을 때 이벤트
