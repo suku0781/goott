@@ -10,21 +10,21 @@ CREATE TABLE `shk`.`member` (
   UNIQUE INDEX `userEmail_UNIQUE` (`userEmail` ASC) VISIBLE);
   
   -- uploadedfile 테이블 생성
-  CREATE TABLE `uploadedfile` (
-  `no` int(11) NOT NULL,
+CREATE TABLE `uploadedfile` (
+  `no` int(11) NOT NULL AUTO_INCREMENT,
   `originalFileName` varchar(50) DEFAULT NULL,
   `ext` varchar(5) DEFAULT NULL,
   `newFileName` varchar(50) DEFAULT NULL,
   `size` int(11) DEFAULT NULL,
   PRIMARY KEY (`no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_cimember;
+);
 
 -- pointpolicy 테이블 생성
 CREATE TABLE `pointpolicy` (
   `why` varchar(50) NOT NULL,
   `howMuch` int(11) DEFAULT NULL,
   PRIMARY KEY (`why`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 INSERT INTO `shk`.`pointpolicy` (`why`, `howMuch`) VALUES ('회원가입', '100');
 INSERT INTO `shk`.`pointpolicy` (`why`, `howMuch`) VALUES ('로그인', '5');

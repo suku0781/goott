@@ -27,6 +27,7 @@
 </style>
 <body>
 <%-- <c:out value="${contextPath }/src/main/webapp/memberImg/${sessionScope.loginMember.userImg }"></c:out> --%>
+<c:out value="${contextPath }/src/main/webapp/memberImg/${sessionScope.loginMember.userImg }"></c:out>
 	<div class="p-5 bg-primary text-white text-center">
 	  <h1>JSPMiniProject</h1>
 	  <p>2024 Jan</p> 
@@ -41,7 +42,7 @@
 	        <a class="nav-link" href="#">Board</a>
 	      </li>
 	      
-	      <c:choose>
+	      <c:choose> <%-- 로그인 하지 않은 경우 --%>
 	      	<c:when test="${sessionScope.loginMember == null }">
       		  <li class="nav-item">
 		        <a class="nav-link" href="${contextPath }/member/register.jsp">Join</a>
@@ -50,21 +51,21 @@
 		        <a class="nav-link" href="${contextPath }/member/login.jsp">login</a>
 		      </li>
 	      	</c:when>
-	      	<c:otherwise>
+	      	<c:otherwise><%-- 로그인한 경우 --%>
 	      	  <li class="nav-item" style="color:white">
-		        <a class="nav-link" href="${contextPath }/member/mypage.jsp">${sessionScope.loginMember.userId }
+		        <a class="nav-link" href="${contextPath }/member/myPage.jsp">${sessionScope.loginMember.userId }
 		        	<img alt="" src="${contextPath }/${sessionScope.loginMember.isAdmin }" class="userImg">
 		        </a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="${contextPath }/member/logout.jsp">logout</a>
+		        <a class="nav-link" href="${contextPath }/member/logout.mem">logout</a>
 		      </li>
 	      	</c:otherwise>
 	      </c:choose>
 	      
 	      <c:if test="${sessionScope.loginMember.memberImg == 'y' }">
 	      	<li class="nav-item">
-	      	<a class="nav-link" href="${contextPath }/admin/admin.jsp">adminPage</a>
+	      	<a class="nav-link" href="${contextPath }/admin/admin.mem">adminPage</a>
 	      	</li>
 	      </c:if>
 <!-- 	      과제 -->
@@ -75,6 +76,15 @@
 	    </ul>
 	  </div>
 	</nav>
-
+	<script type="text/javascript">
+// 		$(function(){
+			
+// 			// 이미지를 클릭할 경우 마이페이지 정보 수정 페이지로 이동
+// 			$(".userImg").click(function(e){
+// 			    console.log(e)
+// 			})
+// 		})
+		
+	</script>
 </body>
 </html>

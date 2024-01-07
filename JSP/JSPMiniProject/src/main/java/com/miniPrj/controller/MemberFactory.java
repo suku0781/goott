@@ -5,6 +5,8 @@ import com.miniPrj.service.member.CheckAuthCodeService;
 import com.miniPrj.service.member.DuplicateUserEmailService;
 import com.miniPrj.service.member.DuplicateUserIdService;
 import com.miniPrj.service.member.LoginMemberService;
+import com.miniPrj.service.member.LogoutMemberService;
+import com.miniPrj.service.member.ReadMemberInfoFromSes;
 import com.miniPrj.service.member.RegisterMemberService;
 import com.miniPrj.service.member.SendAuthMailService;
 
@@ -36,6 +38,10 @@ public class MemberFactory {
 			result = new CheckAuthCodeService();
 		} else if(command.equals("/member/loginMember.mem")) {
 			result = new LoginMemberService();
+		} else if(command.equals("/member/logout.mem")) {
+			result = new LogoutMemberService();
+		} else if(command.equals("/member/getMemberInfoFromSes.mem")) {
+			result = new ReadMemberInfoFromSes();
 		}
 		
 		return result;

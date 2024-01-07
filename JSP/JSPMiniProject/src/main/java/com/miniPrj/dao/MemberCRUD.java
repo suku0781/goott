@@ -43,6 +43,8 @@ public class MemberCRUD implements MemberDAO {
 
 			DBConnection.dbClose(rs, pstmt, con);
 		}
+		
+//		System.out.println("resultTEST"+result);
 
 		return result;
 	}

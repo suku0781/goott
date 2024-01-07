@@ -12,12 +12,12 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div class="container">
-		<h1>register.jsp</h1>
+		<h1>myPage.jsp</h1>
 		
 		<form action="registerMember.mem" method="POST" enctype="multipart/form-data">
 			<div class="mb-3 mt-3">
 				<label for="userId" class="form-label">ID</label> 
-				<input type="text" class="form-control" id="userId" name="userId" placeholder="Input your ID" >
+				<input type="text" class="form-control" id="userId" name="userId" placeholder="Input your ID" value="test">
 			</div>
 			<div class="mb-3 mt-3">
 				<label for="userPw" class="form-label">PW</label> 
@@ -118,6 +118,10 @@
 	
 
 	$(function(){
+		init();
+		
+		
+		
 		// 아이디 작성을 마쳤을 때 이벤트
 		$("#userId").blur(function(){
 			validUserId();
@@ -158,6 +162,20 @@
 		});
 		
 	}) // end of doc
+	
+	// 페이지 로딩 시 처음 실행되는 초기화 함수
+	function init(){
+		// 페이지 접속 시 세션에서 유저데이터 가져오기 
+		getData("getMemberInfoFromSes.mem", "POST");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 	// 아이디 유효성검사 : 3자 이상 ~ 8자 이하 영문 + 숫자조합 
 	function validUserId(){
