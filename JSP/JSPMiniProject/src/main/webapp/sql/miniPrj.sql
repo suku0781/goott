@@ -145,7 +145,10 @@ select * from uploadedfile;
 select * from board order by no desc;
 select * from board;
 select * from member;
-
+select * from uploadedFile;
 select max(no)+1 from board;
+
+select max(b.no)+1 from board b;
+
 -- 게시판 글 저장
 insert into board(writter, title, content, ref) values('test', '너무어렵다.', '자바로 게시판crud 테스트하는거 너무 어려워요.', (select max(b.no)+1 from board b));
