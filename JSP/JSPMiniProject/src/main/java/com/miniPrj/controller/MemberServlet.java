@@ -36,13 +36,19 @@ public class MemberServlet extends HttpServlet {
 		MemberService service = mf.getService(command);
 		
 		try {
-			service.executeService(req, resp);
+			mf = service.executeService(req, resp);
+			System.out.println("리턴받은 mf : " + mf);
 		} catch (ServletException | IOException | MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("에러 메시지 :: "+e.getMessage());
 		}
 		
+		if(mf!=null) {
+			resp.sendRedirect(mf.getWhereToGo());
+		}
+		
+		return;
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

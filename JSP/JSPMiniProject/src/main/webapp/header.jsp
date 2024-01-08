@@ -27,7 +27,7 @@
 </style>
 <body>
 <%-- <c:out value="${contextPath }/src/main/webapp/memberImg/${sessionScope.loginMember.userImg }"></c:out> --%>
-<c:out value="${contextPath }/src/main/webapp/memberImg/${sessionScope.loginMember.userImg }"></c:out>
+<%-- <c:out value="${contextPath }/src/main/webapp/memberImg/${sessionScope.loginMember.userImg }"></c:out> --%>
 	<div class="p-5 bg-primary text-white text-center">
 	  <h1>JSPMiniProject</h1>
 	  <p>2024 Jan</p> 
@@ -39,7 +39,7 @@
 	        <a class="nav-link active" href="${contextPath }/index.jsp">shk</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="#">Board</a>
+	        <a class="nav-link" href="${contextPath }/board/listAll.bo">Board</a>
 	      </li>
 	      
 	      <c:choose> <%-- 로그인 하지 않은 경우 --%>
@@ -53,7 +53,7 @@
 	      	</c:when>
 	      	<c:otherwise><%-- 로그인한 경우 --%>
 	      	  <li class="nav-item" style="color:white">
-		        <a class="nav-link" href="${contextPath }/member/myPage.jsp">${sessionScope.loginMember.userId }
+		        <a class="nav-link" href="${contextPath }/member/myPage.mem?userId=${sessionScope.loginMember.userId}">${sessionScope.loginMember.userId }
 		        	<img alt="" src="${contextPath }/${sessionScope.loginMember.isAdmin }" class="userImg">
 		        </a>
 		      </li>
@@ -65,7 +65,7 @@
 	      
 	      <c:if test="${sessionScope.loginMember.memberImg == 'y' }">
 	      	<li class="nav-item">
-	      	<a class="nav-link" href="${contextPath }/admin/admin.mem">adminPage</a>
+	      	<a class="nav-link" href="${contextPath }/admin/admin.jsp">adminPage</a>
 	      	</li>
 	      </c:if>
 <!-- 	      과제 -->

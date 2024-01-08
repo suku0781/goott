@@ -44,7 +44,10 @@ public class LoginMemberService implements MemberService {
 				ses.setAttribute("loginMember", loginMember); // 세션에 로그인 멤버 정보 바인딩
 				
 //				System.out.println("세션 확인 "+ ses.getAttribute("loginMember"));
-				req.getRequestDispatcher("../index.jsp").forward(req, resp);
+//				req.getRequestDispatcher("../index.jsp").forward(req, resp);
+				
+				mf.setRedirect(true);
+				mf.setWhereToGo(req.getContextPath() + "/index.jsp");
 			} else { // 로그인 실패
 				mf.setRedirect(true);
 				mf.setWhereToGo("login.jsp?status?fail");

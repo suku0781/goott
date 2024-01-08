@@ -28,7 +28,7 @@
 				<input type="password" class="form-control" id="userPwRepeat" placeholder="Input your PassWord Repeat" >
 			</div>
 			<div class="mb-3 mt-3">
-				<label for="userEmail" class="form-label">Email</label> s
+				<label for="userEmail" class="form-label">Email</label>
 				<div style="display:flex;">
 					<input type="text" class="form-control" id="userEmail" name="userEmail" placeholder="Input your Email" >
 					<button type="button" id="sendCode" class="btn btn-secondary sendCode">Auth</button>

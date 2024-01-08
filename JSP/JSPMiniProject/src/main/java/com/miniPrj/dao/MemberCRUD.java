@@ -4,11 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.NamingException;
 
 import com.miniPrj.etc.UploadedFile;
 import com.miniPrj.vo.Member;
+import com.miniPrj.vo.PointLog;
 
 public class MemberCRUD implements MemberDAO {
 	private static MemberCRUD instance = null;
@@ -291,6 +294,54 @@ public class MemberCRUD implements MemberDAO {
 		
 		con.close();
 		return result;
+	}
+
+	@Override
+	public Member getMemberInfo(String userId) throws SQLException, NamingException {
+		Member member = null;
+		Connection con = DBConnection.getInstance().dbConnect();
+		
+		String query = "select m.*, u.newFileName from member m inner join uploadedfile u on m.userImg = u.no where userId = ?";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setString(1,  userId);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			member = new Member(rs.getString("userId"), 
+									rs.getString("userPw"),
+									rs.getString("userEmail"),
+									rs.getDate("registDate"),
+									rs.getInt("userImg"), 
+									rs.getInt("userPoint"), 
+									rs.getString("newFileName"),
+									rs.getString("isAdmin") );
+		}
+		
+		DBConnection.dbClose(rs, pstmt, con);
+		return member;
+	}
+
+	@Override
+	public List<PointLog> getPointLog(String userId) throws SQLException, NamingException {
+		List<PointLog> lst = new ArrayList<>();
+		Connection con = DBConnection.getInstance().dbConnect();
+		
+		String query = "select * from pointlog where who = ?";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setString(1, userId);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			lst.add( new PointLog( 	rs.getInt("id"),
+									rs.getDate("when"),
+									rs.getString("why"),
+									rs.getInt("howMuch"),
+									rs.getString("who")) );
+		}
+		DBConnection.dbClose(rs, pstmt, con);
+		
+		return lst;
 	}
 
 }

@@ -10,21 +10,21 @@ CREATE TABLE `shk`.`member` (
   UNIQUE INDEX `userEmail_UNIQUE` (`userEmail` ASC) VISIBLE);
   
   -- uploadedfile 테이블 생성
-CREATE TABLE `uploadedfile` (
-  `no` int(11) NOT NULL AUTO_INCREMENT,
+  CREATE TABLE `uploadedfile` (
+  `no` int(11) NOT NULL,
   `originalFileName` varchar(50) DEFAULT NULL,
   `ext` varchar(5) DEFAULT NULL,
   `newFileName` varchar(50) DEFAULT NULL,
   `size` int(11) DEFAULT NULL,
   PRIMARY KEY (`no`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_cimember;
 
 -- pointpolicy 테이블 생성
 CREATE TABLE `pointpolicy` (
   `why` varchar(50) NOT NULL,
   `howMuch` int(11) DEFAULT NULL,
   PRIMARY KEY (`why`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `shk`.`pointpolicy` (`why`, `howMuch`) VALUES ('회원가입', '100');
 INSERT INTO `shk`.`pointpolicy` (`why`, `howMuch`) VALUES ('로그인', '5');
@@ -87,9 +87,65 @@ select m.*, u.newFileName from member m inner join uploadedfile u on m.userImg =
 
 select * from member m inner join uploadedfile u on m.userImg = u.no where userId = 'test' and userPw = sha1(md5('jkl123'));
 
+-- 회원정보 + memberImg
+
+
 -- 로그인 성공 시 member테이블 포인트를 update
 select * from pointLog ;
 update member set userPoint = userPoint + 1 where userId = 'test';
-insert into 
+
+-- 해당 아이디 회원의 정보 
+select m.*, u.newFileName from member m inner join uploadedfile u on m.userImg = u.no where userId = 'jkl123';
+
+-- 해당 회원의 포인트 내역
+select * from pointlog where who = 'jkl123';
+
+-- 게시판 테이블생성.
+CREATE TABLE `shk`.`board` (
+  `no` INT NOT NULL AUTO_INCREMENT,
+  `writter` VARCHAR(8) NULL,
+  `title` VARCHAR(100) NOT NULL,
+  `postDate` DATETIME NULL DEFAULT now(),
+  `content` VARCHAR(1000) NOT NULL,
+  `readCount` INT NULL DEFAULT 0,
+  `likeCount` INT NULL DEFAULT 0,
+  `ref` INT NULL DEFAULT NULL,
+  `step` INT NULL DEFAULT 0,
+  `refOrder` INT NULL DEFAULT 0,
+  `isDelete` VARCHAR(1) NULL DEFAULT 'n',
+  PRIMARY KEY (`no`),
+  INDEX `board_writer_fk_idx` (`writter` ASC) VISIBLE,
+  CONSTRAINT `board_writer_fk`
+    FOREIGN KEY (`writter`)
+    REFERENCES `shk`.`member` (`userId`)
+    ON DELETE SET NULL
+    ON UPDATE NO ACTION);
+
+-- updateFile테이블 수정
+ALTER TABLE `shk`.`uploadedfile` 
+ADD COLUMN `boardNo` INT(11) NULL AFTER `size`,
+ADD COLUMN `base64String` LONGTEXT NULL AFTER `boardNo`;
+
+ALTER TABLE `shk`.`uploadedfile` 
+ADD INDEX `uploadedFile_boardNo_fk_idx` (`boardNo` ASC) VISIBLE;
+
+-- uploadedFile의 boardNo 외래키 수정
+ALTER TABLE `shk`.`uploadedfile` 
+ADD CONSTRAINT `uploadedFile_boardNo_fk`
+  FOREIGN KEY (`boardNo`)
+  REFERENCES `shk`.`board` (`no`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+select * from board;
+select * from uploadedfile;
+
+
+-- 게시판 전체 글 목록
+select * from board order by no desc;
+select * from board;
 select * from member;
-rollback;
+
+select max(no)+1 from board;
+-- 게시판 글 저장
+insert into board(writter, title, content, ref) values('test', '너무어렵다.', '자바로 게시판crud 테스트하는거 너무 어려워요.', (select max(b.no)+1 from board b));

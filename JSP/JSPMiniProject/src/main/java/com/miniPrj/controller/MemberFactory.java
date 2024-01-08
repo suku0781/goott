@@ -42,6 +42,8 @@ public class MemberFactory {
 			result = new LogoutMemberService();
 		} else if(command.equals("/member/getMemberInfoFromSes.mem")) {
 			result = new ReadMemberInfoFromSes();
+		} else if(command.equals("/member/myPage.mem")) {
+			result = new MyPageService();
 		}
 		
 		return result;

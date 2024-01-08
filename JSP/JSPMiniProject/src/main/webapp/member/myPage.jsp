@@ -13,24 +13,34 @@
 	
 	<div class="container">
 		<h1>myPage.jsp</h1>
-		
+		<div style="display:;">
+			<h4>requestScope.memberInfo </h4>
+			<div>${requestScope.memberInfo }</div>
+			<h4>requestScope.pointLog  </h4>
+			<div>${requestScope.pointLog }</div>
+		</div>
 		<form action="registerMember.mem" method="POST" enctype="multipart/form-data">
+			<div class="mb-3 mt-3 userPhoto">
+				<div>${contextPath }/${requestScope.memberInfo.memberImg }</div>
+				<img alt="" src="${contextPath }/${requestScope.memberInfo.memberImg }">
+			</div>
+			<div><a href="">이미지 변경</a></div>
 			<div class="mb-3 mt-3">
 				<label for="userId" class="form-label">ID</label> 
-				<input type="text" class="form-control" id="userId" name="userId" placeholder="Input your ID" value="test">
+				<input type="text" class="form-control" id="userId" name="userId" placeholder="Input your ID" value="${requestScope.memberInfo.userId }">
 			</div>
 			<div class="mb-3 mt-3">
 				<label for="userPw" class="form-label">PW</label> 
-				<input type="password" class="form-control" id="userPw" name="userPw" placeholder="Input your PassWord" >
+				<input type="password" class="form-control" id="userPw" name="userPw" placeholder="Input your PassWord" value="${requestScope.memberInfo.userPw }">
 			</div>
 			<div class="mb-3 mt-3">
 				<label for="userPwRepeat" class="form-label">PW-repeat</label> 
-				<input type="password" class="form-control" id="userPwRepeat" placeholder="Input your PassWord Repeat" >
+				<input type="password" class="form-control" id="userPwRepeat" placeholder="Input your PassWord Repeat" value="${requestScope.memberInfo.userPw }">
 			</div>
 			<div class="mb-3 mt-3">
-				<label for="userEmail" class="form-label">Email</label> s
+				<label for="userEmail" class="form-label">Email</label>
 				<div style="display:flex;">
-					<input type="text" class="form-control" id="userEmail" name="userEmail" placeholder="Input your Email" >
+					<input type="text" class="form-control" id="userEmail" name="userEmail" placeholder="Input your Email" value="${requestScope.memberInfo.userEmail }">
 					<button type="button" id="sendCode" class="btn btn-secondary sendCode">Auth</button>
 				</div>
 				<div class="codeDiv" style="display:none;">
@@ -38,12 +48,35 @@
 					<button type="button" class="btn btn-secondary confirmCode">submit</button>
 				</div>
 			</div>
-			
 			<div class="mb-3 mt-3">
-				<label for="userImg" class="form-label">Image</label> 
-				<input type="file" class="form-control" id="userImg" name="userImg" placeholder="Input your Image" >
+				<label for="userEmail" class="form-label">적립금</label>
+				<div style="display:flex;">
+					<input type="text" class="form-control" id="userEmail" name="userEmail" placeholder="Input your Email" value="${requestScope.memberInfo.userPoint }">
+					<button type="button" id="sendCode" class="btn btn-secondary detailReserves">detail</button>
+				</div>
+				<div class="codeDiv" style="display:;">
+					 <table class="table">
+					    <thead>
+					      <tr>
+					        <th>when</th>
+					        <th>why</th>
+					        <th>howMuch</th>
+					      </tr>
+					    </thead>
+					    <tbody>
+					    	<c:forEach var="point" items="${requestScope.pointLog }">
+						    	<tr>
+							      <td>${point.when }</td>
+							      <td>${point.why }</td>
+							      <td>${point.howMuch }</td>
+							    </tr>
+					    	</c:forEach>
+					      
+					    </tbody>
+					  </table>
+				</div>
 			</div>
-
+			
 			<div class="form-check mb-3">
 				<label for="agree" class="form-check-label">Agree to terms and conditions</label>
 				<input class="form-check-input" type="checkbox" id="agree" name="agree" value="">
@@ -122,6 +155,8 @@
 		
 		
 		
+		
+		
 		// 아이디 작성을 마쳤을 때 이벤트
 		$("#userId").blur(function(){
 			validUserId();
@@ -165,8 +200,8 @@
 	
 	// 페이지 로딩 시 처음 실행되는 초기화 함수
 	function init(){
-		// 페이지 접속 시 세션에서 유저데이터 가져오기 
-		getData("getMemberInfoFromSes.mem", "POST");
+// 		페이지 접속 시 세션에서 유저데이터 가져오기 
+// 		getData("getMemberInfoFromSes.mem", "POST");
 	}
 	
 	

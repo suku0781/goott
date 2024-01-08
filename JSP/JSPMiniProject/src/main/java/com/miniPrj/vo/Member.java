@@ -20,12 +20,9 @@ public class Member {
 		this.registDate = registDate;
 		this.userImg = userImg;
 		this.userPoint = userPoint;
-		this.memberImg = memberImg;
-		this.isAdmin = isAdmin;
 	}
 	
-	public Member(String userId, String userPw, String userEmail, Date registDate, int userImg, int userPoint,
-			String memberImg, String isAdmin) {
+	public Member(String userId, String userPw, String userEmail, Date registDate, int userImg, int userPoint, String memberImg, String isAdmin) {
 		super();
 		this.userId = userId;
 		this.userPw = userPw;

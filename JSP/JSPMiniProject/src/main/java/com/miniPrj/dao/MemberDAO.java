@@ -2,11 +2,13 @@ package com.miniPrj.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.naming.NamingException;
 
 import com.miniPrj.etc.UploadedFile;
 import com.miniPrj.vo.Member;
+import com.miniPrj.vo.PointLog;
 
 public interface MemberDAO {
 	// 아이디가 중복되는지 검사
@@ -39,5 +41,9 @@ public interface MemberDAO {
 	// member포인트 업데이트
 	int addPointToMember(String userId, String why, int howMuch) throws NamingException, SQLException;
 
+	// 해당 아이디 멤버 정보 가져오기
+	Member getMemberInfo(String userId) throws SQLException, NamingException;
 	
+	// 해당 멤버 포인트 기록 가져오기
+	List<PointLog> getPointLog(String userId) throws SQLException, NamingException;
 }
