@@ -21,6 +21,6 @@ public interface BoardDAO {
 	int insertBoardTransaction(Board tmpBoard) throws NamingException, SQLException;
 
 	// 업로드된 파일 정보를 uploadedFile테이블에 insert
-	int insertUploadedFileInfo(UploadedFile uf, Connection con) throws NamingException, SQLException;
+	int insertUploadedFileInfo(UploadedFile uf, Connection con, int lastNo) throws NamingException, SQLException;
 	
 }

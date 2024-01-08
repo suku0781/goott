@@ -3,8 +3,6 @@ package com.miniPrj.service.board;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,7 +70,9 @@ public class WriteBoardService implements BoardService {
 						content = item.getString(encoding);
 					}
 					
-				} else if(item.isFormField() == false && item.getName() != null) {
+				} else if(item.isFormField() == false && item.getName() != "") {
+					uf = getNewFileName(item, realPath, writter);
+					
 					// 파일 하드디스크에 저장
 					File fileToSave = new File(realPath + File.separator + uf.getNewFileName());
 					System.out.println("fileToSave : "+fileToSave );
@@ -104,6 +104,9 @@ public class WriteBoardService implements BoardService {
 			} else {
 				result = dao.insertBoardTransaction(board);
 				System.out.println("업로드 파일이 없는 경우");
+				
+				bf.setRedirect(true);
+				bf.setWhereToGo("listAll.bo");
 			}
 		} catch (NamingException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -128,7 +131,7 @@ public class WriteBoardService implements BoardService {
 		
 		System.out.println(result == 0 ? "파일 저장 성공!" : "파일 저장 실패!");
 //		
-		return null;
+		return bf;
 	}
 	
 	
@@ -146,7 +149,7 @@ public class WriteBoardService implements BoardService {
 		
 		System.out.println("breakPoint");
 		
-		UploadedFile uf = new UploadedFile(originalFileName, ext, newFileName, item.getSize() );
+		UploadedFile uf = new UploadedFile(originalFileName, ext, newFileName, item.getSize()  );
 				
 		return uf;
 	}

@@ -12,7 +12,7 @@
 <jsp:include page="../header.jsp"></jsp:include>
 	
 	<div class="boardList">
-		<h1>listAll.jsp</h1>
+		<h1>boardDetail.jsp</h1>
 <%-- 		<div>${boardList }</div> --%>
 		<c:choose>
 			<c:when test="${boardList != null }">
@@ -30,7 +30,7 @@
 					<c:forEach var="board" items="${boardList }">
 						<tr>
 							<td>${board.no }</td>
-							<td><a href="boardDetail.bo?no=${board.no }">${board.title }</a></td>
+							<td>${board.title }</td>
 							<td>${board.writter }</td>
 							<td>${board.postDate }</td>
 							<td>${board.readCount }</td>
