@@ -16,6 +16,15 @@ public class UploadedFile {
 		this.size = size;
 	}
 	
+	public UploadedFile(String originalFileName, String ext, String newFileName, long size, int boardNo) {
+		super();
+		this.originalFileName = originalFileName;
+		this.ext = ext;
+		this.newFileName = newFileName;
+		this.size = size;
+		this.boardNo = boardNo;
+	}
+	
 	public UploadedFile(String originalFileName, String ext, String newFileName, long size, int boardNo, String base64String) {
 		super();
 		this.originalFileName = originalFileName;

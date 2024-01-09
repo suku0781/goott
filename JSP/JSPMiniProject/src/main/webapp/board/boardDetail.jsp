@@ -12,39 +12,33 @@
 <jsp:include page="../header.jsp"></jsp:include>
 	
 	<div class="boardList">
-		<h1>boardDetail.jsp</h1>
-<%-- 		<div>${boardList }</div> --%>
-		<c:choose>
-			<c:when test="${boardList != null }">
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th>글번호</th>
-							<th>제목</th>
-							<th>작성자</th>
-							<th>작성일</th>
-							<th>조회수</th>
-						</tr>
-					</thead>
-					<tbody>
-					<c:forEach var="board" items="${boardList }">
-						<tr>
-							<td>${board.no }</td>
-							<td>${board.title }</td>
-							<td>${board.writter }</td>
-							<td>${board.postDate }</td>
-							<td>${board.readCount }</td>
-						</tr>
-					</c:forEach>
-					</tbody>
-				</table>
-			</c:when>
-			<c:otherwise>
-				게시글 없음.
-			</c:otherwise>
-		</c:choose>
+		<div>${board }</div>
+		<div class="container">
+		<h1>writeBoard.jsp</h1>
+		
+		<form action="" method="POST" enctype="multipart/form-data">
+			<div class="mb-3 mt-3">
+				<label for="writter" class="form-label">작성자</label> 
+				<input type="text" class="form-control" id="writter" name="writter" value="${board.writter }" readonly>
+			</div>
+			<div class="mb-3 mt-3">
+				<label for="title" class="form-label">제목</label> 
+				<input type="text" class="form-control" id="title" name="title" placeholder="Input Title" value="${board.title }" >
+			</div>
+			<div class="mb-3 mt-3">
+				<label for="content" class="form-label">내용</label> 
+				<textarea type="text" class="form-control" id="content" name="content" placeholder="Input Context" rows="10" style="width:100%;">${board.content }</textarea>
+			</div>
+			<div class="mb-3 mt-3">
+				<label for="upFile" class="form-label">첨부파일</label> 
+				<input type="file" class="form-control" id="upFile" name="upFile" >
+			</div>
+
+			<button type="submit" class="btn btn-primary">글쓰기</button>
+			<button type="reset" class="btn btn-danger">취소</button>
+		</form>
 	</div>
-	<button type="button" class="btn btn-primary" onclick="location.href='writeBoard.jsp'">글쓰기</button>
+	</div>
 	<jsp:include page="../footer.jsp"></jsp:include>	
 </body>
 </html>

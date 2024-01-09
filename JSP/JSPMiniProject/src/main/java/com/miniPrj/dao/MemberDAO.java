@@ -39,11 +39,12 @@ public interface MemberDAO {
 	Member loginMember(String userId, String userPw) throws NamingException, SQLException;
 
 	// member포인트 업데이트
-	int addPointToMember(String userId, String why, int howMuch) throws NamingException, SQLException;
+	boolean addPointToMember(String userId, String why, int howMuch, Connection con) throws NamingException, SQLException;
 
 	// 해당 아이디 멤버 정보 가져오기
 	Member getMemberInfo(String userId) throws SQLException, NamingException;
 	
 	// 해당 멤버 포인트 기록 가져오기
 	List<PointLog> getPointLog(String userId) throws SQLException, NamingException;
+
 }

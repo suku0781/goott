@@ -3,6 +3,8 @@ package com.miniPrj.service.board;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +18,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 
 import com.miniPrj.controller.BoardFactory;
 import com.miniPrj.dao.BoardCRUD;
@@ -79,6 +82,8 @@ public class WriteBoardService implements BoardService {
 					
 					try {
 						item.write(fileToSave); // 파일 하드디스크 저장
+						
+						uf.setBase64String(changeToBase64(realPath + File.separator + uf.getNewFileName()));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -92,36 +97,26 @@ public class WriteBoardService implements BoardService {
 		
 		// 게시글 등록 진행
 		BoardDAO dao = BoardCRUD.getInstance();
-		Board board = new Board(0, writter, title, null, content, 0, 0, 0, 0, 0, "n");
+		Board board = new Board(-1, writter, title, null, content, -1, -1, -1, -1, -1, null);
 		int result = -1;
 		try {
 			if(uf != null) { // 업로드한 파일이 있는 경우
-				uf.setNewFileName("uploads/"+uf.getNewFileName());
-				System.out.println("uf.getNewFileName() : "+uf.getNewFileName());
-				result = dao.insertBoardWithUploadFileTransaction(board, uf);
-				
 				System.out.println("업로드 파일이 있는 경우");
+				
+				uf.setNewFileName(uf.getNewFileName());
+				result = dao.insertBoardWithUploadFileTransaction(board, uf);
 			} else {
-				result = dao.insertBoardTransaction(board);
 				System.out.println("업로드 파일이 없는 경우");
 				
-				bf.setRedirect(true);
-				bf.setWhereToGo("listAll.bo");
+				result = dao.insertBoardTransaction(board);
 			}
 		} catch (NamingException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			
 			if(uf != null) {
 				// 업로드된 파일이 있다면 삭제해야 함.
 				System.out.println("삭제할 이미지: " + uf.getNewFileName());
-				// memberImg/aaaa_c6645aaf-131b-4f83-b527-4e97a2dab0dc.png
-				// realPath =
-				// D:\lecture\jsp\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\JSPMiniProject\memberImg
-
 				String without = uf.getNewFileName().substring("uploads/".length());
-//	             System.out.println(without);
-
 				File deleteFile = new File(realPath + File.separator + without);
 				deleteFile.delete(); // 파일 삭제
 
@@ -129,8 +124,11 @@ public class WriteBoardService implements BoardService {
 		}
 		
 		
-		System.out.println(result == 0 ? "파일 저장 성공!" : "파일 저장 실패!");
+		System.out.println(result > -1 ? "파일 저장 성공!" : "파일 저장 실패!");
 //		
+		bf.setRedirect(true);
+		bf.setWhereToGo("listAll.bo");
+		
 		return bf;
 	}
 	
@@ -147,11 +145,51 @@ public class WriteBoardService implements BoardService {
 			newFileName += writter + "_" + uuid + ext;
 		}
 		
-		System.out.println("breakPoint");
-		
 		UploadedFile uf = new UploadedFile(originalFileName, ext, newFileName, item.getSize()  );
 				
 		return uf;
 	}
+	
+	// base64인코딩 함수
+	public String changeToBase64(String uploadedFile) {
+		String result = null;
+		
+		File upFile = new File(uploadedFile);
+		
+		byte[] file;
+		try {
+			file = FileUtils.readFileToByteArray(upFile);
+			result = Base64.getEncoder().encodeToString(file);
+			
+			System.out.println("Base64 인코딩 결과 : "+result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return result;
+	}
 
+	// base64인코딩 함수
+	public File changeToString(String base64, String realPath, String ext) {
+		byte[] result = null;
+		byte[] decodeArr = null;
+		File file = null;
+		
+		try {
+			decodeArr = Base64.getDecoder().decode(base64);
+			file = new File(realPath + file.separator + decodeArr + ext);
+			
+			FileUtils.writeByteArrayToFile(file, decodeArr);
+			
+			System.out.println("Base64 디코딩 결과 : "+decodeArr + ext);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return file;
+	}
 }

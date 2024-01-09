@@ -1,8 +1,10 @@
 package com.miniPrj.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.mail.MessagingException;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,7 +38,12 @@ public class MemberServlet extends HttpServlet {
 		MemberService service = mf.getService(command);
 		
 		try {
-			mf = service.executeService(req, resp);
+			try {
+				mf = service.executeService(req, resp);
+			} catch (NamingException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println("리턴받은 mf : " + mf);
 		} catch (ServletException | IOException | MessagingException e) {
 			// TODO Auto-generated catch block

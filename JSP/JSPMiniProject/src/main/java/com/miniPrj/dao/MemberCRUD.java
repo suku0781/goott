@@ -75,8 +75,7 @@ public class MemberCRUD implements MemberDAO {
 	}
 
 	@Override
-	public int registerMemberWithFile(UploadedFile uf, Member member, String why, int howMuch)
-			throws NamingException, SQLException {
+	public int registerMemberWithFile(UploadedFile uf, Member member, String why, int howMuch) throws NamingException, SQLException {
 		Connection con = DBConnection.getInstance().dbConnect();
 		int no = -1;
 		int insertCnt = -1;
@@ -263,10 +262,12 @@ public class MemberCRUD implements MemberDAO {
 	}
 
 	@Override
-	public int addPointToMember(String userId, String why, int howMuch) throws NamingException, SQLException  {
+	public boolean addPointToMember(String userId, String why, int howMuch, Connection con) throws NamingException, SQLException  {
 		// 멤버 포인트 업데이트
 		int result = -1;
-		Connection con = DBConnection.getInstance().dbConnect();
+		
+		boolean resultPoint = false;
+//		Connection con = DBConnection.getInstance().dbConnect();
 		con.setAutoCommit(false);
 		
 		String query = "update member set userPoint = userPoint + ? where userId = ?";
@@ -283,17 +284,17 @@ public class MemberCRUD implements MemberDAO {
 			int afterPointLog = insertPointLog(why, howMuch, userId, con);
 			if(afterPointLog == 1) {
 				con.commit();
-				result = 0;
+				resultPoint = true;
 			} else {
 				con.rollback();
 			}
 		} else {
 			con.rollback();
 		}
-		con.setAutoCommit(true);
+//		con.setAutoCommit(true);
 		
-		con.close();
-		return result;
+//		con.close();
+		return resultPoint;
 	}
 
 	@Override

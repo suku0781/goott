@@ -1,6 +1,7 @@
 package com.miniPrj.controller;
 
 import com.miniPrj.service.BoardService;
+import com.miniPrj.service.board.GetBoardService;
 import com.miniPrj.service.board.GetEntireBoardService;
 import com.miniPrj.service.board.WriteBoardService;
 
@@ -42,10 +43,14 @@ public class BoardFactory {
 	public BoardService getService(String command) {
 		BoardService service = null;
 		
+		System.out.println("board command : " + command);
+		
 		if(command.equals("/board/listAll.bo")) {
 			service = new GetEntireBoardService();
 		} else if(command.equals("/board/writeBoard.bo")) {
 			service = new WriteBoardService();
+		} else if(command.equals("/board/viewBoard.bo")) {
+			service = new GetBoardService();
 		}
 		
 		return service;

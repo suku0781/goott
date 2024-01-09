@@ -1,6 +1,7 @@
 package com.miniPrj.service.member;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.mail.MessagingException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.miniPrj.controller.MemberFactory;
+import com.miniPrj.dao.DBConnection;
 import com.miniPrj.dao.MemberCRUD;
 import com.miniPrj.dao.MemberDAO;
 import com.miniPrj.service.MemberService;
@@ -20,22 +22,22 @@ import com.miniPrj.vo.Member;
 public class LoginMemberService implements MemberService {
 
 	@Override
-	public MemberFactory executeService(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, MessagingException {
+	public MemberFactory executeService(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, MessagingException, NamingException, SQLException {
 		String userId = req.getParameter("userId");
 		String userPw = req.getParameter("userPw");
 		MemberFactory mf = MemberFactory.getInstance();
-		
+		Connection con = DBConnection.getInstance().dbConnect();
 		System.out.println("로그인하기");
 		
 		MemberDAO dao = MemberCRUD.getInstance();
-		int result = -1;
+		boolean result = false;
 		try {
 			Member loginMember = dao.loginMember(userId, userPw);
 			if(loginMember != null) {
 				System.out.println(loginMember.toString());
 				
 				// member테이블에 포인트 update하고 pointlog에 기록 남기기
-				result = dao.addPointToMember(userId, "로그인", 5);
+				result = dao.addPointToMember(userId, "로그인", 5, con);
 				loginMember.setUserPoint(loginMember.getUserPoint() + 5);
 				
 				System.out.println("로그인 트랜잭션 결과 : "+result);

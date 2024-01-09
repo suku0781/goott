@@ -28,9 +28,11 @@
 					</thead>
 					<tbody>
 					<c:forEach var="board" items="${boardList }">
-						<tr>
+					
+						<tr id="board${board.no }" class="board" onclick="location.href='viewBoard.bo?no=${board.no}'">
 							<td>${board.no }</td>
-							<td><a href="boardDetail.bo?no=${board.no }">${board.title }</a></td>
+<%-- 							<td><a href="boardDetail.bo?no=${board.no }">${board.title }</a></td> --%>
+							<td>${board.title }</td>
 							<td>${board.writter }</td>
 							<td>${board.postDate }</td>
 							<td>${board.readCount }</td>

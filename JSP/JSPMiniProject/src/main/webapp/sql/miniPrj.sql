@@ -152,3 +152,38 @@ select max(b.no)+1 from board b;
 
 -- 게시판 글 저장
 insert into board(writter, title, content, ref) values('test', '너무어렵다.', '자바로 게시판crud 테스트하는거 너무 어려워요.', (select max(b.no)+1 from board b));
+select * from board;
+alter table board auto_increment = 50;
+select * from board;
+select LAST_INSERT_ID();
+select * from board where no =54;
+select * from board b inner join uploadedFile u on b.no = u.boardNo where b.no = ?;
+
+-- 게시글 상세 조회
+-- 조회수 처리 테이블 생성
+CREATE TABLE `shk`.`readcountprocess` (
+  `no` INT NOT NULL AUTO_INCREMENT,
+  `ipAddr` VARCHAR(50) NOT NULL,
+  `boardNo` INT NULL,
+  `readTime` DATETIME NULL DEFAULT now(),
+  PRIMARY KEY (`no`),
+  INDEX `rcp_boardNo_fk_idx` (`boardNo` ASC) VISIBLE,
+  CONSTRAINT `rcp_boardNo_fk`
+    FOREIGN KEY (`boardNo`)
+    REFERENCES `shk`.`board` (`no`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+-- readcountprocess 테이블에 해당 아이피 주소와 글 번호가 같은게 있는지 없는지
+select * from readcountprocess where ipAddr = ? and boardNo = ?;
+-- 24시간이 지났는지 확인
+SELECT TIMEDIFF( (select * from readcountprocess where ipAddr = ? and boardNo = ?) , now()) AS time_diff;
+
+-- 아이피주소와 글번호와 읽은시간을 readCountProcess테이블에 insert하는 메서드
+insert into readCountProcess(ipAddr, boardNo) values(?, ?);
+
+-- 아이피주소와 글번호와 읽은시간을 readCountProcess테이블에 update하는 메서드
+update readCountProcess set readtime = now() where ipAddr = ? and boardNo = ?;
+
+-- no번 글에 조회수를 증가하는 쿼리문
+-- 과제
