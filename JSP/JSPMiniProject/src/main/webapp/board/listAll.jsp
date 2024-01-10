@@ -10,10 +10,8 @@
 </head>
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
-	
 	<div class="boardList">
 		<h1>listAll.jsp</h1>
-<%-- 		<div>${boardList }</div> --%>
 		<c:choose>
 			<c:when test="${boardList != null }">
 				<table class="table table-hover">
@@ -28,13 +26,11 @@
 					</thead>
 					<tbody>
 					<c:forEach var="board" items="${boardList }">
-					
-						<tr id="board${board.no }" class="board" onclick="location.href='viewBoard.bo?no=${board.no}'">
+						<tr id="board${board.no }" class="board" onclick="location.href='viewBoard.bo?no=${board.no}&amp;page=boardDetail'">
 							<td>${board.no }</td>
-<%-- 							<td><a href="boardDetail.bo?no=${board.no }">${board.title }</a></td> --%>
-							<td>${board.title }</td>
+							<td class="isNewDpTarget">${board.title }</td>
 							<td>${board.writter }</td>
-							<td>${board.postDate }</td>
+							<td class="isNewDpObj">${board.postDate }</td>
 							<td>${board.readCount }</td>
 						</tr>
 					</c:forEach>
@@ -48,5 +44,24 @@
 	</div>
 	<button type="button" class="btn btn-primary" onclick="location.href='writeBoard.jsp'">글쓰기</button>
 	<jsp:include page="../footer.jsp"></jsp:include>	
+	<script type="text/javascript">
+		$(function(){
+			$(".isNewDpTarget").each((idx, item) => {
+				if(getHowLong($(item).next().next().text())<5){
+					item.innerHTML = `<span class="badge bg-danger">New</span>`+ " " +item.innerHTML
+				}
+			})
+		})
+	
+		function getHowLong(d){
+			if(!d) return;
+			let regiDateTime = d.replaceAll("-", "/").substr(0, d.length-2);
+			let today = new Date();
+			let currentDateTime = new Date(today.getFullYear()+"/"+(today.getMonth() + 1)+"/"+today.getDate()+" "+today.getHours()+":"+today.getMinutes()+":"+today.getSeconds()); // 현재시간
+			let targetDateTime = new Date(regiDateTime); // 타겟 시간
+			
+			return Math.abs(Math.floor((currentDateTime.getTime() - targetDateTime.getTime()) / (60 * 60 * 1000)))
+		}
+	</script>
 </body>
 </html>

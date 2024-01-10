@@ -15,7 +15,7 @@ public interface BoardDAO {
 	List<Board> selectAllBoard() throws NamingException, SQLException;
 
 	// 게시판 글 저장(업로드 파일이 있는 경우)
-	int insertBoardWithUploadFileTransaction(Board tmpBoard, UploadedFile uf) throws NamingException, SQLException;
+	int insertBoardWithUploadFileTransaction(Board tmpBoard, UploadedFile uf, String type) throws NamingException, SQLException;
 	
 	// 게시판 글 저장(업로드 파일이 없는 경우)
 	int insertBoardTransaction(Board tmpBoard) throws NamingException, SQLException;
@@ -23,9 +23,6 @@ public interface BoardDAO {
 	// 업로드된 파일 정보를 uploadedFile테이블에 insert
 	int insertUploadedFileInfo(UploadedFile uf, Connection con, int lastNo) throws NamingException, SQLException;
 	
-	// 게시글 가져오기
-	Board selectBoard(int no) throws NamingException, SQLException;
-
 	// 조회수 처리
 	// readCountProcess테이블에 ip주소와 no(글번호)가 있는지 확인
 	boolean selectReadCountProcess(String userIp, int no) throws NamingException, SQLException;
@@ -34,6 +31,16 @@ public interface BoardDAO {
 	int selectHourDiff(String userIp, int no)throws NamingException, SQLException;
 
 	// 아이피주소와 글번호와 읽은시간을 readCountProcess테이블에 insert 하거나 update하는 메서드 
-	void readCountProcessWithReadCntInc(String userIp, int no, String string) throws NamingException, SQLException;
+	int readCountProcessWithReadCntInc(String userIp, int no, String type) throws NamingException, SQLException;
+	
+	// no번 게시글 가져오기
+	Board selectBoardByNo(int no) throws NamingException, SQLException;
 
+	// 게시판 첨부파일 가져오기
+	UploadedFile getFile(int no) throws NamingException, SQLException;
+	
+	// 게시글 삭제하기
+	int deleteBoard(int no) throws NamingException, SQLException;
+
+	Board editBoard(int no) throws NamingException, SQLException;
 }

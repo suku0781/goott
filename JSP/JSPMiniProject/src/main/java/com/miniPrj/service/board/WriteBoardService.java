@@ -36,6 +36,10 @@ public class WriteBoardService implements BoardService {
 	public BoardFactory doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, MessagingException, NamingException, SQLException {
 		System.out.println("게시글 저장하기.");
 		
+		String type = request.getParameter("type");
+		
+		System.out.println("type : " + type);
+		
 		BoardFactory bf = BoardFactory.getInstance();
 		
 		// 파일 업로드 디렉토리 생성.
@@ -100,15 +104,29 @@ public class WriteBoardService implements BoardService {
 		Board board = new Board(-1, writter, title, null, content, -1, -1, -1, -1, -1, null);
 		int result = -1;
 		try {
-			if(uf != null) { // 업로드한 파일이 있는 경우
-				System.out.println("업로드 파일이 있는 경우");
-				
-				uf.setNewFileName(uf.getNewFileName());
-				result = dao.insertBoardWithUploadFileTransaction(board, uf);
-			} else {
-				System.out.println("업로드 파일이 없는 경우");
-				
-				result = dao.insertBoardTransaction(board);
+			if(type.equals("regist")) {
+				if(uf != null) { // 업로드한 파일이 있는 경우
+					System.out.println("등록 업로드 파일이 있는 경우");
+					
+					uf.setNewFileName(uf.getNewFileName());
+					result = dao.insertBoardWithUploadFileTransaction(board, uf, type);
+				} else {
+					System.out.println("등록 업로드 파일이 없는 경우");
+					
+					result = dao.insertBoardTransaction(board);
+				}
+			} else if(type.equals("edit")) {
+				// 게시글 수정 로직 짜야함. 
+				if(uf != null) { // 업로드한 파일이 있는 경우
+					System.out.println("수정 업로드 파일이 있는 경우");
+					
+					uf.setNewFileName(uf.getNewFileName());
+					result = dao.insertBoardWithUploadFileTransaction(board, uf, type);
+				} else {
+					System.out.println("수정 업로드 파일이 없는 경우");
+					
+					result = dao.insertBoardTransaction(board);
+				}
 			}
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
@@ -119,9 +137,11 @@ public class WriteBoardService implements BoardService {
 				String without = uf.getNewFileName().substring("uploads/".length());
 				File deleteFile = new File(realPath + File.separator + without);
 				deleteFile.delete(); // 파일 삭제
-
+				
 			}
 		}
+			
+		
 		
 		
 		System.out.println(result > -1 ? "파일 저장 성공!" : "파일 저장 실패!");

@@ -1,7 +1,9 @@
 package com.miniPrj.controller;
 
 import com.miniPrj.service.BoardService;
-import com.miniPrj.service.board.GetBoardService;
+import com.miniPrj.service.board.DeleteBoardServiceByNo;
+import com.miniPrj.service.board.EditBoardServiceByNo;
+import com.miniPrj.service.board.GetBoardServiceByNo;
 import com.miniPrj.service.board.GetEntireBoardService;
 import com.miniPrj.service.board.WriteBoardService;
 
@@ -50,7 +52,9 @@ public class BoardFactory {
 		} else if(command.equals("/board/writeBoard.bo")) {
 			service = new WriteBoardService();
 		} else if(command.equals("/board/viewBoard.bo")) {
-			service = new GetBoardService();
+			service = new GetBoardServiceByNo();
+		} else if(command.equals("/board/deleteBoard.bo")) {
+			service = new DeleteBoardServiceByNo();
 		}
 		
 		return service;

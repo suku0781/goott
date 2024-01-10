@@ -178,7 +178,9 @@ CREATE TABLE `shk`.`readcountprocess` (
 select * from readcountprocess where ipAddr = ? and boardNo = ?;
 -- 24시간이 지났는지 확인
 SELECT TIMEDIFF( (select * from readcountprocess where ipAddr = ? and boardNo = ?) , now()) AS time_diff;
-
+SELECT TIMESTAMPDIFF(hour, (select readTime from readcountprocess where ipAddr = ? and boardNo = ?) , now()) AS hourDiff;
+select readTime from readcountprocess where ipAddr = ? and boardNo = ?;
+select * from board;
 -- 아이피주소와 글번호와 읽은시간을 readCountProcess테이블에 insert하는 메서드
 insert into readCountProcess(ipAddr, boardNo) values(?, ?);
 
@@ -187,3 +189,16 @@ update readCountProcess set readtime = now() where ipAddr = ? and boardNo = ?;
 
 -- no번 글에 조회수를 증가하는 쿼리문
 -- 과제
+update board set readCount = readCount+1 where no = ?;
+select * from board;
+
+-- no번 글 데이터 가져오기
+select * from board where no = ?;
+
+select * from readcountprocess;
+
+select * from uploadedfile;
+
+-- 게시글 삭제하기 
+update board set isDelete = 'n' where no = 58;
+select * from board where no = 58;

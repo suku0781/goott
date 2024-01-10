@@ -10,6 +10,7 @@ import java.util.List;
 import javax.naming.NamingException;
 
 import com.miniPrj.etc.UploadedFile;
+import com.miniPrj.service.board.GetBoardServiceByNo;
 import com.miniPrj.vo.Board;
 
 public class BoardCRUD implements BoardDAO {
@@ -27,7 +28,7 @@ public class BoardCRUD implements BoardDAO {
 		List<Board> lst = new ArrayList<>();
 		Connection con = DBConnection.getInstance().dbConnect();
 		
-		String query = "select * from board order by no desc";
+		String query = "select * from board where isDelete = 'n' order by no desc ";
 		PreparedStatement pstmt = con.prepareStatement(query);
 		ResultSet rs = pstmt.executeQuery();
 		while(rs.next()) {
@@ -50,7 +51,7 @@ public class BoardCRUD implements BoardDAO {
 	
 	// 게시판 글 작성 : 파일 입로드 한 경우
 	@Override
-	public int insertBoardWithUploadFileTransaction(Board tmpBoard, UploadedFile uf) throws NamingException, SQLException {
+	public int insertBoardWithUploadFileTransaction(Board tmpBoard, UploadedFile uf, String type) throws NamingException, SQLException {
 		// 1. 게시글 정보를 board테이르에 insert
 		// 2. uploadedFile테이블에 업로드 파일정보를 insert(board 테이블의 no값을 boardNo값으로 추가)
 		// 3. 게시물 작성에 대한 포인트 부여
@@ -116,6 +117,7 @@ public class BoardCRUD implements BoardDAO {
 		
 		if(lastNo > -1) {
 			result = insertBoard(tmpBoard, con, lastNo);
+			result = updateBoard(tmpBoard, con, lastNo);
 			if(result == 1) {
 				System.err.println("step2");
 				System.out.println(setAutoIncrement(lastNo, con) > -1 ? "auto-increment 가"+lastNo+"로 재설정됨." : "");
@@ -161,38 +163,27 @@ public class BoardCRUD implements BoardDAO {
 	}
 	
 	@Override
-	public Board selectBoard(int no) throws NamingException, SQLException {
+	public Board selectBoardByNo(int no) throws NamingException, SQLException {
 		Connection con = DBConnection.getInstance().dbConnect();
 		Board board = null;
-		UploadedFile uf = null;
-		if(con != null) {
-			String query = "select * from board b inner join uploadedFile u on b.no = u.boardNo where b.no = ?";
-			PreparedStatement pstmt = con.prepareStatement(query);
-			pstmt.setInt(1, no);
-			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
-				board =  new Board(  	rs.getInt("no"),
-									 	rs.getString("writter"), 
-									 	rs.getString("title"), 
-									 	rs.getTimestamp("postDate"), 
-									 	rs.getString("content"),
-									 	rs.getInt("readCount"),
-									 	rs.getInt("likeCount"),
-									 	rs.getInt("ref"),
-									 	rs.getInt("step"),
-									 	rs.getInt("reforder"),
-									 	rs.getString("isDelete") );
-				uf = new UploadedFile(  rs.getString("originalFileName"),
-										rs.getString("ext"), 
-										rs.getString("newFileName"), 
-										rs.getLong("size"), 
-										rs.getInt("boardNo") , 
-										rs.getString("base64String") );
-			}
-			
-			DBConnection.dbClose(rs, pstmt, con);;
+		String query = "select * from board where no = ?";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setInt(1,  no);
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			board = new Board( rs.getInt("no"),
+					 rs.getString("writter"), 
+					 rs.getString("title"), 
+					 rs.getTimestamp("postDate"), 
+					 rs.getString("content"),
+					 rs.getInt("readCount"),
+					 rs.getInt("likeCount"),
+					 rs.getInt("ref"),
+					 rs.getInt("step"),
+					 rs.getInt("reforder"),
+					 rs.getString("isDelete") );
 		}
-		System.out.println("board : " + board.toString());
+		DBConnection.dbClose(rs, pstmt, con);
 		
 		return board;
 	}
@@ -231,6 +222,23 @@ public class BoardCRUD implements BoardDAO {
 		return result;
 	}
 	
+	// 게시글 update함수
+	public int updateBoard(Board tmpBoard, Connection con, int lastNo) throws SQLException {
+		String query = "insert into board(writter, title, content, ref ) values(?, ?, ?, ?)";
+		int result = -1;
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setString(1, tmpBoard.getWritter());
+		pstmt.setString(2, tmpBoard.getTitle());
+		pstmt.setString(3, tmpBoard.getContent());
+		pstmt.setInt(4, lastNo);
+		
+		result = pstmt.executeUpdate();
+		
+		pstmt.close();
+		
+		return result;
+	}
+	
 	// board 테이블 auto_increment설정
 	public int setAutoIncrement(int no, Connection con) throws SQLException {
 		int result = -1;
@@ -245,28 +253,160 @@ public class BoardCRUD implements BoardDAO {
 		return result;
 	}
 	
+	// con.rollback(), autoIncrement 초기화 함수 
 	public void conRollback(Connection con, int lastNo) throws SQLException {
 		con.rollback();	
 		System.out.println("con.rollback() 됨.");
 		System.out.println(setAutoIncrement(lastNo, con) > -1 ? "auto-increment 가"+lastNo+"로 재설정됨." : "");
 	}
 
+	// ----------------------조회수 처리------------------------------
+	//해당 아이피 주소와 글 번호가 같은게 있는지 없는지 리턴하는 함수
 	@Override
 	public boolean selectReadCountProcess(String userIp, int no) throws NamingException, SQLException {
-		// TODO Auto-generated method stub
-		return false;
+		boolean result = false;
+		Connection con = DBConnection.getInstance().dbConnect();
+		String query = "select * from readcountprocess where boardNo = ? and ipAddr = ?";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setInt(1, no);
+		pstmt.setString(2, userIp);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			result = true;
+		}
+		
+		DBConnection.dbClose(rs, pstmt, con);
+		
+		return result;
 	}
 
+	// 시간이 24시간 지났는지 확인 
 	@Override
 	public int selectHourDiff(String userIp, int no) throws NamingException, SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = -1; // 시간 차이
+		Connection con = DBConnection.getInstance().dbConnect();
+		String query = "SELECT TIMESTAMPDIFF(hour, (select readTime from readcountprocess where ipAddr = ? and boardNo = ?) , now()) AS hourDiff";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setString(1, userIp);
+		pstmt.setInt(2, no);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			result = rs.getInt("hourDiff");
+		}
+		
+		DBConnection.dbClose(rs, pstmt, con);
+		
+		return result;
 	}
 
+	// 아이피주소와 글번호와 읽은시간을 readCountProcess테이블에 update 또는 insert
+	// 조회수 1증가(update)
 	@Override
-	public void readCountProcessWithReadCntInc(String userIp, int no, String string)
-			throws NamingException, SQLException {
-		// TODO Auto-generated method stub
+	public int readCountProcessWithReadCntInc(String userIp, int no, String type) throws NamingException, SQLException {
+		int result = -1;
 		
+		Connection con = DBConnection.getInstance().dbConnect();
+		con.setAutoCommit(false);
+		
+		String query = "";
+		
+		if(type.equals("update")) {
+			query = "update readCountProcess set readtime = now() where ipAddr = ? and boardNo = ?";
+		} else if(type.equals("insert")) {
+			query = "insert into readCountProcess(ipAddr, boardNo) values(?, ?)";
+		}
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setString(1, userIp);
+		pstmt.setInt(2, no);
+		result = pstmt.executeUpdate();
+		
+		// 조회수 1증가(update)
+		if(result == 1) {
+			if(updateReadCount(no, con)) {
+				result = 0;
+				con.commit();
+			} else {
+				con.rollback();
+			}
+		} else {
+			con.rollback();
+		}
+		
+		con.setAutoCommit(true);
+		con.close();
+		
+		return result;
+	}
+
+	// 조회수 1 증가
+	private boolean updateReadCount(int no, Connection con) throws SQLException {
+		boolean result = false;
+		
+		String query = "update board set readCount = readCount+1 where no = ?";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setInt(1, no);
+		
+		if(pstmt.executeUpdate() == 1) {
+			result = true;
+		}
+		
+		pstmt.close();
+		
+		return result;
+	}
+
+	// 게시판 첨부파일 가져오기
+	@Override
+	public UploadedFile getFile(int no) throws NamingException, SQLException {
+		UploadedFile result = null;
+		Connection con = DBConnection.getInstance().dbConnect();
+		String query = "select * from uploadedfile where boardNo = ?";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setInt(1, no);
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			result = new UploadedFile(	rs.getString("originalFileName"),
+										rs.getString("ext"),
+										rs.getString("newFileName"),
+										rs.getInt("size"),
+										rs.getInt("BoardNo"),
+										rs.getString("base64String"));
+		}
+		
+		DBConnection.dbClose(rs, pstmt, con);
+		
+		return result;
+	}
+
+	// 게시글 삭제
+	@Override
+	public int deleteBoard(int no) throws NamingException, SQLException {
+		Connection con = DBConnection.getInstance().dbConnect();
+		int result = -1;
+		if(con != null) {
+			String query = "update board set isDelete = 'y' where no = ?";
+			PreparedStatement pstmt = con.prepareStatement(query);
+			pstmt.setInt(1,  no);
+			
+			result = pstmt.executeUpdate();
+			
+			DBConnection.dbClose(pstmt, con);
+		}
+		
+		return result;
+	}
+
+	// 게시글 수정
+	@Override
+	public Board editBoard(int no) throws NamingException, SQLException {
+		Connection con = DBConnection.getInstance().dbConnect();
+		if(con != null) {
+			String query = "";
+			PreparedStatement pstmt = con.prepareStatement(query);
+		}
+		return null;
 	}
 }

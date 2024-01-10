@@ -16,9 +16,9 @@
 </c:if>
 
 <div class="container">
-		<h1>writeBoard.jsp</h1>
+		<h1>editBoard.jsp</h1>
 		
-		<form action="writeBoard.bo" method="POST" enctype="multipart/form-data">
+		<form action="writeBoard.bo?type=regist" method="POST" enctype="multipart/form-data">
 			<div class="mb-3 mt-3">
 				<label for="writter" class="form-label">작성자</label> 
 				<input type="text" class="form-control" id="writter" name="writter" value="${sessionScope.loginMember.userId }" readonly>
