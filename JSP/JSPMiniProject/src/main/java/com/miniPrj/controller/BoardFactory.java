@@ -5,6 +5,7 @@ import com.miniPrj.service.board.DeleteBoardServiceByNo;
 import com.miniPrj.service.board.EditBoardServiceByNo;
 import com.miniPrj.service.board.GetBoardServiceByNo;
 import com.miniPrj.service.board.GetEntireBoardService;
+import com.miniPrj.service.board.ReplyBoardService;
 import com.miniPrj.service.board.WriteBoardService;
 
 public class BoardFactory {
@@ -55,6 +56,8 @@ public class BoardFactory {
 			service = new GetBoardServiceByNo();
 		} else if(command.equals("/board/deleteBoard.bo")) {
 			service = new DeleteBoardServiceByNo();
+		} else if(command.equals("/board/reply.bo")) {
+			service = new ReplyBoardService();
 		}
 		
 		return service;

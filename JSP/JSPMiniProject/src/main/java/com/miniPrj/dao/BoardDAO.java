@@ -15,7 +15,7 @@ public interface BoardDAO {
 	List<Board> selectAllBoard() throws NamingException, SQLException;
 
 	// 게시판 글 저장(업로드 파일이 있는 경우)
-	int insertBoardWithUploadFileTransaction(Board tmpBoard, UploadedFile uf, String type) throws NamingException, SQLException;
+	int insertBoardWithUploadFileTransaction(Board tmpBoard, UploadedFile uf) throws NamingException, SQLException;
 	
 	// 게시판 글 저장(업로드 파일이 없는 경우)
 	int insertBoardTransaction(Board tmpBoard) throws NamingException, SQLException;
@@ -43,4 +43,9 @@ public interface BoardDAO {
 	int deleteBoard(int no) throws NamingException, SQLException;
 
 	Board editBoard(int no) throws NamingException, SQLException;
+	
+	boolean insertReplyTransaction(Board board) throws NamingException, SQLException;
+
+	List<Board> selectReplyBoard(int no) throws NamingException, SQLException;
+	
 }

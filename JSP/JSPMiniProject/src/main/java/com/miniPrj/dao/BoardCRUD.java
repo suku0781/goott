@@ -28,7 +28,7 @@ public class BoardCRUD implements BoardDAO {
 		List<Board> lst = new ArrayList<>();
 		Connection con = DBConnection.getInstance().dbConnect();
 		
-		String query = "select * from board where isDelete = 'n' order by no desc ";
+		String query = "select * from board where isDelete = 'n' order by ref desc, refOrder asc";
 		PreparedStatement pstmt = con.prepareStatement(query);
 		ResultSet rs = pstmt.executeQuery();
 		while(rs.next()) {
@@ -51,7 +51,7 @@ public class BoardCRUD implements BoardDAO {
 	
 	// 게시판 글 작성 : 파일 입로드 한 경우
 	@Override
-	public int insertBoardWithUploadFileTransaction(Board tmpBoard, UploadedFile uf, String type) throws NamingException, SQLException {
+	public int insertBoardWithUploadFileTransaction(Board tmpBoard, UploadedFile uf) throws NamingException, SQLException {
 		// 1. 게시글 정보를 board테이르에 insert
 		// 2. uploadedFile테이블에 업로드 파일정보를 insert(board 테이블의 no값을 boardNo값으로 추가)
 		// 3. 게시물 작성에 대한 포인트 부여
@@ -69,19 +69,13 @@ public class BoardCRUD implements BoardDAO {
 		lastNo = getLastBoardNo(con);
 		
 		if(lastNo > -1) {
-			System.err.println("step1");
-			
 			result = insertBoard(tmpBoard, con, lastNo); // 1
 			if(result == 1) {
-				System.err.println("step2");
 				saveFileYn = insertUploadedFileInfo(uf, con, lastNo); // 2
 				if(saveFileYn > -1) {
-					System.err.println("step3");
 					writePointYn = MemberCRUD.getInstance().addPointToMember(tmpBoard.getWritter(), "게시물작성", 2, con);	
 					if(writePointYn) {
-						System.err.println("finish!");
 						con.commit();
-						
 					} else {
 						con.rollback();	
 					}
@@ -94,6 +88,8 @@ public class BoardCRUD implements BoardDAO {
 		} else {
 			con.rollback();
 		}
+		
+		con.setAutoCommit(true);
 		
 		con.close();
 		return result;
@@ -117,19 +113,13 @@ public class BoardCRUD implements BoardDAO {
 		
 		if(lastNo > -1) {
 			result = insertBoard(tmpBoard, con, lastNo);
-			result = updateBoard(tmpBoard, con, lastNo);
 			if(result == 1) {
-				System.err.println("step2");
-				System.out.println(setAutoIncrement(lastNo, con) > -1 ? "auto-increment 가"+lastNo+"로 재설정됨." : "");
 				writePointYn = MemberCRUD.getInstance().addPointToMember(tmpBoard.getWritter(), "게시물작성", 2, con);	
 				if(writePointYn) {
-					System.err.println("finish!");
 					con.commit();
-					
 				} else {
 					conRollback(con, lastNo);
 				}
-				con.commit();
 			} else {
 				conRollback(con, lastNo);
 			}
@@ -137,6 +127,8 @@ public class BoardCRUD implements BoardDAO {
 			con.rollback();
 		}
 		con.close();
+		
+		con.setAutoCommit(true);
 		
 		return result;
 	}
@@ -207,23 +199,6 @@ public class BoardCRUD implements BoardDAO {
 	
 	// 게시글 insert함수
 	public int insertBoard(Board tmpBoard, Connection con, int lastNo) throws SQLException {
-		String query = "insert into board(writter, title, content, ref ) values(?, ?, ?, ?)";
-		int result = -1;
-		PreparedStatement pstmt = con.prepareStatement(query);
-		pstmt.setString(1, tmpBoard.getWritter());
-		pstmt.setString(2, tmpBoard.getTitle());
-		pstmt.setString(3, tmpBoard.getContent());
-		pstmt.setInt(4, lastNo);
-		
-		result = pstmt.executeUpdate();
-		
-		pstmt.close();
-		
-		return result;
-	}
-	
-	// 게시글 update함수
-	public int updateBoard(Board tmpBoard, Connection con, int lastNo) throws SQLException {
 		String query = "insert into board(writter, title, content, ref ) values(?, ?, ?, ?)";
 		int result = -1;
 		PreparedStatement pstmt = con.prepareStatement(query);
@@ -408,5 +383,95 @@ public class BoardCRUD implements BoardDAO {
 			PreparedStatement pstmt = con.prepareStatement(query);
 		}
 		return null;
+	}
+
+	public int updateRefOrder(Board board, Connection con) throws NamingException, SQLException {
+		int result = -1;
+		
+		String query = "update board set reforder = reforder + 1 where ref = ? and reforder > ?";
+		
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setInt(1,  board.getRef());
+		pstmt.setInt(2,  board.getRefOrder());;
+		
+		result = pstmt.executeUpdate();
+		
+		return result;
+	}
+
+	@Override
+	public boolean insertReplyTransaction(Board board) throws NamingException, SQLException {
+		boolean result = false;
+		
+		Connection con = DBConnection.getInstance().dbConnect();
+		con.setAutoCommit(false);
+		int updateResult = updateRefOrder(board, con);
+		
+		if(updateResult >= 0) {
+			if(insertReply(board, updateResult, con) == 1) {
+				if(MemberCRUD.getInstance().addPointToMember(board.getWritter(), "답글작성", 1, con)) {
+					result = true;
+					con.commit();
+				} else {
+					con.rollback();
+				}
+			} else {
+				con.rollback();
+			}
+		} else {
+			con.rollback();
+		}
+		
+		con.setAutoCommit(true);
+		con.close();
+		
+		return result;
+	}
+
+	private int insertReply(Board board, int updateResult, Connection con) throws SQLException {
+		int result = -1;
+		String tmpTitle = "("+board.getNo()+"번글의 "+ (updateResult+1) + "번째 답글)" + board.getContent();
+		
+		String query = "insert into board(writter, content, ref, step, refOrder, title ) values(?, ?, ?, ?, ?, ?)";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setString(1,  board.getWritter());
+		pstmt.setString(2,  board.getContent());
+		pstmt.setInt(3,  board.getRef());
+		pstmt.setInt(4,  board.getStep()+1);
+		pstmt.setInt(5,  board.getRefOrder()+1);
+		pstmt.setString(6,  tmpTitle);
+		
+		result = pstmt.executeUpdate();
+		
+		pstmt.close();
+		
+		return result;
+	}
+
+	// 답글 객체 가져오기
+	@Override
+	public List<Board> selectReplyBoard(int no) throws NamingException, SQLException {
+		Connection con = DBConnection.getInstance().dbConnect();
+		List<Board> lst = new ArrayList<>();
+		String query = "select * from board where no != ref and ref = ?";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setInt(1,  no);
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			lst.add( new Board( rs.getInt("no"),
+					 rs.getString("writter"), 
+					 rs.getString("title"), 
+					 rs.getTimestamp("postDate"), 
+					 rs.getString("content"),
+					 rs.getInt("readCount"),
+					 rs.getInt("likeCount"),
+					 rs.getInt("ref"),
+					 rs.getInt("step"),
+					 rs.getInt("reforder"),
+					 rs.getString("isDelete") ) );
+		}
+		DBConnection.dbClose(rs, pstmt, con);
+		
+		return lst;
 	}
 }

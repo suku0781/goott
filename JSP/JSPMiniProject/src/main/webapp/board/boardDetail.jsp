@@ -12,7 +12,9 @@ img{
 	max-width: fit-content;
 /* 	max-	width : width: calc(100vh - 250px); */
 }
-
+.boardList{
+	margin: 0 50px;
+}
 </style>
 </head>
 <body>
@@ -38,6 +40,7 @@ img{
 			<div class="mb-3 mt-3">
 				<label for="content" class="form-label">내용</label> 
 				<textarea type="text" class="form-control" id="content" name="content" placeholder="Input Context" rows="10" style="width:100%;" readonly>${board.content }</textarea>
+<%-- 				<div id="content" name="content">${board.content }</div> --%>
 			</div>
 			<div class="mb-3 mt-3">
 				<c:if test="${requestScope.uploadedFile != null}">
@@ -51,9 +54,45 @@ img{
 				<button type="button" class="btn btn-primary" onclick="location.href='viewBoard.bo?no=${board.no}&amp;page=editBoard'">수정</button>
 				<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제</button>
 			</c:if>
-			
+				
 			<button type="button" class="btn btn-secondary" onclick="location.href='${contextPath }/board/listAll.bo'">목록으로</button>
 		</form>
+		<div class="mb-3 mt-3">
+			<label for="reply" class="form-label" id="replyCount">답글</label> 
+			<div style="display:flex">
+				<input type="text" class="form-control" id="reply" name="reply" placeholder="Input Reply Context" value="">
+				<button type="button" class="btn btn-primary" onclick="submitReply()" style="width: 100px;">답글달기</button>
+			</div>
+			<div>
+				<c:choose>
+					<c:when test="${replyBoardList != null }">
+						<table class="table">
+							<c:forEach var="board" items="${replyBoardList }">
+								<tr id="board${board.no }" class="board">
+									<td>
+										<c:if test="${board.step >= 0 }">
+											<img alt="" src="${contextPath }/img/down.png" width="10">
+										</c:if>
+										${board.writter }
+									</td>
+
+									<td>${board.content }</td>
+									<td class="isNewDpObj">${board.postDate }</td>
+									<td>${board.readCount }</td>
+									<td>${board.likeCount }</td>
+									<td>${board.ref }</td>
+									<td>${board.step }</td>
+									<td>${board.refOrder }</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</c:when>
+					<c:otherwise>
+						게시글 없음.
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</div>
 	</div>
 	</div>
 	<jsp:include page="../footer.jsp"></jsp:include>	
@@ -114,6 +153,20 @@ img{
 		getData("deleteBoard.bo", "GET", obj);
 	}
 	
+	function submitReply(){
+		let obj = {};
+		obj.writter = '${board.writter}';
+		obj.content = $("#reply").val();
+		obj.ref = '${board.ref}';
+		obj.step = '${board.step}';
+		obj.refOrder = '${board.refOrder}';
+		obj.boardNo = '${board.no}';
+		
+		console.log(obj)
+		
+		getData("reply.bo", "POST", obj, "json", false);
+	}
+	
 	
 	function getData(url, type, data, dataType, async){
 		let result = false;
@@ -126,14 +179,10 @@ img{
 			success : function(data){
 				console.log(data)
 				
-				if(data.target == "deleteBoard"){
-					debugger
-					$("#exampleModal").hide();
-// 					setTimeout(() => {
-// 						$("#exampleModal").show();
-						
-// 					}, 500);
-					location.href="${contextPath }/board/listAll.bo";	
+				
+				if(data.target == "writeReply"){
+					alert("댓글 작성되었습니다.")
+					location.href='viewBoard.bo?no=${board.no}&amp;page=boardDetail'
 				}
 			},
 			fail: function(data){

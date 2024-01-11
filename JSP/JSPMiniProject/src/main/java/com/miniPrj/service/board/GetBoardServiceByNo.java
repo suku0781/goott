@@ -2,6 +2,7 @@ package com.miniPrj.service.board;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
@@ -47,10 +48,13 @@ public class GetBoardServiceByNo implements BoardService {
 			}
 			
 			Board board = dao.selectBoardByNo(no);
+			List<Board> replyBoardList = dao.selectReplyBoard(no);
+			
 			UploadedFile uf = dao.getFile(no);
 //			-> 해당 글을 가져옴.(select)
 			if(board != null) {
 				request.setAttribute("board", board);
+				request.setAttribute("replyBoardList", replyBoardList);
 				request.setAttribute("uploadedFile", uf);
 				request.getRequestDispatcher(page+".jsp").forward(request, response);
 			}
@@ -58,6 +62,12 @@ public class GetBoardServiceByNo implements BoardService {
 		} catch (NamingException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			e.getMessage(); // String 으로 반환
+			e.getStackTrace(); // array로 반환
+			
+			request.setAttribute("errorMsg", e.getMessage());
+			request.setAttribute("errorStack", e.getStackTrace());
+			request.getRequestDispatcher("../commonError.jsp").forward(request, response);
 		}
 		
 		return null;

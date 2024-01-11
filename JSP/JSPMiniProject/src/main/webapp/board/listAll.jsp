@@ -7,8 +7,14 @@
 <meta charset="UTF-8">
 <title>board</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<style type="text/css">
+.boardList{
+	margin: 0 50px;
+}
+</style>
 </head>
 <body>
+<c:set var="contextPath" value="<%=request.getContextPath() %>"></c:set>
 <jsp:include page="../header.jsp"></jsp:include>
 	<div class="boardList">
 		<h1>listAll.jsp</h1>
@@ -22,16 +28,32 @@
 							<th>작성자</th>
 							<th>작성일</th>
 							<th>조회수</th>
+							<th>좋아요</th>
+							<th>ref</th>
+							<th>step</th>
+							<th>refOrder</th>
 						</tr>
 					</thead>
 					<tbody>
 					<c:forEach var="board" items="${boardList }">
 						<tr id="board${board.no }" class="board" onclick="location.href='viewBoard.bo?no=${board.no}&amp;page=boardDetail'">
 							<td>${board.no }</td>
-							<td class="isNewDpTarget">${board.title }</td>
+							<td class="isNewDpTarget">
+							<c:if test="${board.step >= 0 }">
+								<c:forEach var="i" begin="1" end="${board.step }">
+									<img alt="" src="${contextPath }/img/down.png" width="10">
+								</c:forEach>
+								${board.title }
+							
+							</c:if>
+							</td>
 							<td>${board.writter }</td>
 							<td class="isNewDpObj">${board.postDate }</td>
 							<td>${board.readCount }</td>
+							<td>${board.likeCount }</td>
+							<td>${board.ref }</td>
+							<td>${board.step }</td>
+							<td>${board.refOrder }</td>
 						</tr>
 					</c:forEach>
 					</tbody>

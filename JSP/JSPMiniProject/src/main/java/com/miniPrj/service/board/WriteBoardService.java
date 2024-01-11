@@ -36,10 +36,6 @@ public class WriteBoardService implements BoardService {
 	public BoardFactory doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, MessagingException, NamingException, SQLException {
 		System.out.println("게시글 저장하기.");
 		
-		String type = request.getParameter("type");
-		
-		System.out.println("type : " + type);
-		
 		BoardFactory bf = BoardFactory.getInstance();
 		
 		// 파일 업로드 디렉토리 생성.
@@ -49,6 +45,10 @@ public class WriteBoardService implements BoardService {
 		String realPath = request.getSession().getServletContext().getRealPath(uploadDir);
 		
 		System.out.println("realPath : "+realPath);
+		
+		File folder = new File(realPath);
+		
+		if(!folder.exists()) folder.mkdir(); // 폴더가 없을 경우 생성.
 		
 		// 파일 객체 만들기 
 		File saveFileDir = new File(realPath); 
@@ -74,7 +74,7 @@ public class WriteBoardService implements BoardService {
 					}else if(item.getFieldName().equals("title")) {
 						title = item.getString(encoding);
 					} else if(item.getFieldName().equals("content")) {
-						content = item.getString(encoding);
+						content = item.getString(encoding);					
 					}
 					
 				} else if(item.isFormField() == false && item.getName() != "") {
@@ -100,33 +100,22 @@ public class WriteBoardService implements BoardService {
 		}
 		
 		// 게시글 등록 진행
+		// 본문에 줄바꿈이 잇다면 줄바꿈 처리를 해줘야한다.
 		BoardDAO dao = BoardCRUD.getInstance();
+//		System.out.println(content);
+//		content = content.replace("\r\n", "<br>");
 		Board board = new Board(-1, writter, title, null, content, -1, -1, -1, -1, -1, null);
 		int result = -1;
 		try {
-			if(type.equals("regist")) {
-				if(uf != null) { // 업로드한 파일이 있는 경우
-					System.out.println("등록 업로드 파일이 있는 경우");
-					
-					uf.setNewFileName(uf.getNewFileName());
-					result = dao.insertBoardWithUploadFileTransaction(board, uf, type);
-				} else {
-					System.out.println("등록 업로드 파일이 없는 경우");
-					
-					result = dao.insertBoardTransaction(board);
-				}
-			} else if(type.equals("edit")) {
-				// 게시글 수정 로직 짜야함. 
-				if(uf != null) { // 업로드한 파일이 있는 경우
-					System.out.println("수정 업로드 파일이 있는 경우");
-					
-					uf.setNewFileName(uf.getNewFileName());
-					result = dao.insertBoardWithUploadFileTransaction(board, uf, type);
-				} else {
-					System.out.println("수정 업로드 파일이 없는 경우");
-					
-					result = dao.insertBoardTransaction(board);
-				}
+			if(uf != null) { // 업로드한 파일이 있는 경우
+				System.out.println("등록 업로드 파일이 있는 경우");
+				
+				uf.setNewFileName(uf.getNewFileName());
+				result = dao.insertBoardWithUploadFileTransaction(board, uf);
+			} else {
+				System.out.println("등록 업로드 파일이 없는 경우");
+				
+				result = dao.insertBoardTransaction(board);
 			}
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
@@ -141,11 +130,8 @@ public class WriteBoardService implements BoardService {
 			}
 		}
 			
-		
-		
-		
 		System.out.println(result > -1 ? "파일 저장 성공!" : "파일 저장 실패!");
-//		
+
 		bf.setRedirect(true);
 		bf.setWhereToGo("listAll.bo");
 		

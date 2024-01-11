@@ -17,9 +17,10 @@
 
 <div class="container">
 		<h1>writeBoard.jsp</h1>
-		<c:out value="${requestScope.board }"></c:out>
-		<c:out value="${requestScope.uploadedFile }"></c:out>
-		<form action="editBoard.bo?type=edit" method="POST" enctype="multipart/form-data">
+<%-- 		<c:out value="${requestScope.board }"></c:out> --%>
+<%-- 		<c:out value="${requestScope.uploadedFile }"></c:out> --%>
+		<c:out value="${boardList }"></c:out>
+		<form action="writeBoard.bo" method="POST" enctype="multipart/form-data">
 			<div class="mb-3 mt-3">
 				<label for="writter" class="form-label">작성자</label> 
 				<input type="text" class="form-control" id="writter" name="writter" value="${requestScope.board.writter }" readonly>
@@ -60,10 +61,6 @@
 	    dataTransfer.items.add(myFile);
 	    fileInput.files = dataTransfer.files;
 	
-// 	    const validation = () => {
-// 	    	printErrMsg("title", "Input ID is Unusable. Id is Duplicated", false)
-// 	    	return false;
-// 	    };
 
 </script>
 </body>
