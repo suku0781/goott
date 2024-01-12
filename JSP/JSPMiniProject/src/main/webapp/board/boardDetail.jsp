@@ -179,11 +179,6 @@ img{
 			success : function(data){
 				console.log(data)
 				
-				
-				if(data.target == "writeReply"){
-					alert("댓글 작성되었습니다.")
-					location.href='viewBoard.bo?no=${board.no}&amp;page=boardDetail'
-				}
 			},
 			fail: function(data){
 				

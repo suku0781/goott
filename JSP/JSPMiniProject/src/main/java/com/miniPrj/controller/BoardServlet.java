@@ -61,6 +61,8 @@ public class BoardServlet extends HttpServlet {
 		}
 		
 		if(bf!=null && bf.isRedirect()) {
+			System.out.println("여기서 페이지 이동되는 부분 같은데");
+			System.out.println(bf);
 			response.sendRedirect(bf.getWhereToGo());
 		}
 		

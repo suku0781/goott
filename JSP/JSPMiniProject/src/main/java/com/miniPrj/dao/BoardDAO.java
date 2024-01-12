@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import com.miniPrj.etc.PagingInfo;
 import com.miniPrj.etc.UploadedFile;
 import com.miniPrj.vo.Board;
 
@@ -13,6 +14,7 @@ public interface BoardDAO {
 
 	// 전체 게시판 글 목록
 	List<Board> selectAllBoard() throws NamingException, SQLException;
+	List<Board> selectAllBoard(PagingInfo pi) throws NamingException, SQLException;
 
 	// 게시판 글 저장(업로드 파일이 있는 경우)
 	int insertBoardWithUploadFileTransaction(Board tmpBoard, UploadedFile uf) throws NamingException, SQLException;
@@ -47,5 +49,9 @@ public interface BoardDAO {
 	boolean insertReplyTransaction(Board board) throws NamingException, SQLException;
 
 	List<Board> selectReplyBoard(int no) throws NamingException, SQLException;
+
+	// 페이징 처리
+	// 총 게시글 수 가져오기
+	int getTotalPostCnt() throws NamingException, SQLException;
 	
 }

@@ -35,13 +35,16 @@
 						</tr>
 					</thead>
 					<tbody>
-					<c:forEach var="board" items="${boardList }">
+							
+					<c:forEach var="board" items="${boardList }" >
 						<tr id="board${board.no }" class="board" onclick="location.href='viewBoard.bo?no=${board.no}&amp;page=boardDetail'">
 							<td>${board.no }</td>
 							<td class="isNewDpTarget">
 							<c:if test="${board.step >= 0 }">
-								<c:forEach var="i" begin="1" end="${board.step }">
-									<img alt="" src="${contextPath }/img/down.png" width="10">
+								<c:forEach var="i" begin="1" end="${board.step }" varStatus="status">
+									<c:if test="${status.last }">
+										<img alt="" src="${contextPath }/img/down.png" width="10" style="margin-left:calc(10px * ${i});">
+									</c:if>
 								</c:forEach>
 								${board.title }
 							
@@ -65,6 +68,47 @@
 		</c:choose>
 	</div>
 	<button type="button" class="btn btn-primary" onclick="location.href='writeBoard.jsp'">글쓰기</button>
+	<div>
+	${requestScope.pagingInfo.totalPageCnt%10}
+	${requestScope.pagingInfo}
+	</div>
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+			<c:choose>
+				<c:when test="${param.pageNo == null || param.pageNo == 1}">
+					<li class="page-item disabled"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo - 1}" tabindex="-1">Previous</a></li>	
+				</c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo - 1}" tabindex="-1">Previous</a></li>	
+				</c:otherwise>
+			</c:choose>
+			<c:forEach var="i"  begin="${requestScope.pagingInfo.startNumOfCurrentPagingBlock }" end="${requestScope.pagingInfo.endNumOfCurrentPagingBlock }" >
+				
+				<c:if test="${requestScope.pagingInfo.totalPageCnt / 10 gt 1 }">
+					<c:choose>
+						<c:when test="${requestScope.pagingInfo.pageNo eq i }">
+							<li class="page-item active">
+						</c:when>
+						<c:otherwise>
+							<li class="page-item">
+						</c:otherwise>
+					</c:choose>
+						<a class="page-link" href="listAll.bo?pageNo=${i}" tabindex="-1">${i}</a>
+					</li>
+				</c:if>
+			</c:forEach>
+			<c:choose>
+				<c:when test="${requestScope.pagingInfo.pageBlockOfCurrentPage == requestScope.pagingInfo.totalPagingBlockCnt && param.pageNo == requestScope.pagingInfo.endNumOfCurrentPagingBlock}">
+					<li class="page-item disabled"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo + 1}">Next</a></li>	
+				</c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo + 1}">Next</a></li>
+				</c:otherwise>
+			</c:choose>
+			
+			
+		</ul>
+	</nav>
 	<jsp:include page="../footer.jsp"></jsp:include>	
 	<script type="text/javascript">
 		$(function(){

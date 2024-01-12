@@ -35,10 +35,12 @@ public class ReplyBoardService implements BoardService {
 		
 		BoardDAO dao = BoardCRUD.getInstance();
 		Board board = new Board(boardNo, writter, null, null, content, -1, -1, ref, step, refOrder, null);
+		
 		try {
-			
-			bf.setRedirect(true);
-			bf.setWhereToGo("viewBoard.bo?no="+boardNo+"&page=boardDetail");
+			if(dao.insertReplyTransaction(board)) {
+				bf.setRedirect(true);
+				bf.setWhereToGo("viewBoard.bo?no="+boardNo+"&page=boardDetail");
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

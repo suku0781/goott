@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import com.miniPrj.etc.PagingInfo;
 import com.miniPrj.etc.UploadedFile;
 import com.miniPrj.service.board.GetBoardServiceByNo;
 import com.miniPrj.vo.Board;
@@ -46,6 +47,34 @@ public class BoardCRUD implements BoardDAO {
 		}
 		DBConnection.dbClose(rs, pstmt, con);
 
+		return lst;
+	}
+	
+	@Override
+	public List<Board> selectAllBoard(PagingInfo pi) throws NamingException, SQLException{
+		List<Board> lst = new ArrayList<>();
+		Connection con = DBConnection.getInstance().dbConnect();
+		
+		String query = "select * from board where isDelete = 'n' order by ref desc, refOrder asc limit ?, ?";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setInt(1, pi.getStartRowIndex()); // 시작할 pageNo
+		pstmt.setInt(2, pi.getViewPostCntPerPage()); // 한 페이지에 출력할 글의 갯수
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			lst.add( new Board( rs.getInt("no"),
+					rs.getString("writter"), 
+					rs.getString("title"), 
+					rs.getTimestamp("postDate"), 
+					rs.getString("content"),
+					rs.getInt("readCount"),
+					rs.getInt("likeCount"),
+					rs.getInt("ref"),
+					rs.getInt("step"),
+					rs.getInt("reforder"),
+					rs.getString("isDelete") ) );
+		}
+		DBConnection.dbClose(rs, pstmt, con);
+		
 		return lst;
 	}
 	
@@ -128,7 +157,7 @@ public class BoardCRUD implements BoardDAO {
 		}
 		con.close();
 		
-		con.setAutoCommit(true);
+//		con.setAutoCommit(true);
 		
 		return result;
 	}
@@ -399,6 +428,7 @@ public class BoardCRUD implements BoardDAO {
 		return result;
 	}
 
+	// 답글 등록
 	@Override
 	public boolean insertReplyTransaction(Board board) throws NamingException, SQLException {
 		boolean result = false;
@@ -453,7 +483,7 @@ public class BoardCRUD implements BoardDAO {
 	public List<Board> selectReplyBoard(int no) throws NamingException, SQLException {
 		Connection con = DBConnection.getInstance().dbConnect();
 		List<Board> lst = new ArrayList<>();
-		String query = "select * from board where no != ref and ref = ?";
+		String query = "select * from board where no != ref and ref = ? order by ref desc, refOrder asc";
 		PreparedStatement pstmt = con.prepareStatement(query);
 		pstmt.setInt(1,  no);
 		ResultSet rs = pstmt.executeQuery();
@@ -473,5 +503,24 @@ public class BoardCRUD implements BoardDAO {
 		DBConnection.dbClose(rs, pstmt, con);
 		
 		return lst;
+	}
+
+	// 전체 게시글 수 가져오기
+	@Override
+	public int getTotalPostCnt() throws NamingException, SQLException {
+		int result = -1;
+		Connection con = DBConnection.getInstance().dbConnect();
+		
+		String query = "select count(*) as totalPostCnt from board";
+		PreparedStatement pstmt = con.prepareStatement(query);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			result = rs.getInt("totalPostCnt");
+		}
+		
+		DBConnection.dbClose(rs, pstmt, con);
+		
+		return result;
 	}
 }
