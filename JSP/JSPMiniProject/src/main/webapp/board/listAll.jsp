@@ -76,15 +76,15 @@
 		<ul class="pagination justify-content-center">
 			<c:choose>
 				<c:when test="${param.pageNo == null || param.pageNo == 1}">
-					<li class="page-item disabled"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo - 1}" tabindex="-1">Previous</a></li>	
+					<li class="page-item disabled"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo - 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}" tabindex="-1">Previous</a></li>	
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo - 1}" tabindex="-1">Previous</a></li>	
+					<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo - 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}" tabindex="-1">Previous</a></li>	
 				</c:otherwise>
 			</c:choose>
 			<c:forEach var="i"  begin="${requestScope.pagingInfo.startNumOfCurrentPagingBlock }" end="${requestScope.pagingInfo.endNumOfCurrentPagingBlock }" >
 				
-				<c:if test="${requestScope.pagingInfo.totalPageCnt / 10 gt 1 }">
+<%-- 				<c:if test="${requestScope.pagingInfo.totalPageCnt / 10 gt 1 }"> --%>
 					<c:choose>
 						<c:when test="${requestScope.pagingInfo.pageNo eq i }">
 							<li class="page-item active">
@@ -93,22 +93,30 @@
 							<li class="page-item">
 						</c:otherwise>
 					</c:choose>
-						<a class="page-link" href="listAll.bo?pageNo=${i}" tabindex="-1">${i}</a>
+						<a class="page-link" href="listAll.bo?pageNo=${i}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}" tabindex="-1">${i}</a>
 					</li>
-				</c:if>
+<%-- 				</c:if> --%>
 			</c:forEach>
 			<c:choose>
 				<c:when test="${requestScope.pagingInfo.pageBlockOfCurrentPage == requestScope.pagingInfo.totalPagingBlockCnt && param.pageNo == requestScope.pagingInfo.endNumOfCurrentPagingBlock}">
-					<li class="page-item disabled"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo + 1}">Next</a></li>	
+					<li class="page-item disabled"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo + 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}">Next</a></li>	
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo + 1}">Next</a></li>
+					<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo + 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}">Next</a></li>
 				</c:otherwise>
 			</c:choose>
-			
-			
 		</ul>
 	</nav>
+	<!-- 	검색 -->
+	<form action="listAll.bo" method="get">
+		<select id="searchType" name="searchType">
+			<option value="writter">작성자</option>
+			<option value="title">제목</option>
+			<option value="content">내용</option>
+		</select>
+		<input type="text" id="searchWord" name="searchWord">
+		<input type="submit">
+	</form>
 	<jsp:include page="../footer.jsp"></jsp:include>	
 	<script type="text/javascript">
 		$(function(){

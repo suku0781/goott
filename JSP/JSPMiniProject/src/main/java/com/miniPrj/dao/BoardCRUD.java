@@ -13,6 +13,7 @@ import com.miniPrj.etc.PagingInfo;
 import com.miniPrj.etc.UploadedFile;
 import com.miniPrj.service.board.GetBoardServiceByNo;
 import com.miniPrj.vo.Board;
+import com.miniPrj.vo.SearchCriteria;
 
 public class BoardCRUD implements BoardDAO {
 	private static BoardCRUD instance = null;
@@ -73,6 +74,49 @@ public class BoardCRUD implements BoardDAO {
 					rs.getInt("reforder"),
 					rs.getString("isDelete") ) );
 		}
+		DBConnection.dbClose(rs, pstmt, con);
+		
+		return lst;
+	}
+	
+	// 게시글 목록 (페이징 처리, 검색어가 있을 때)
+	@Override
+	public List<Board> selectAllBoard(PagingInfo pi, SearchCriteria sc) throws NamingException, SQLException {
+		List<Board> lst = new ArrayList<>();
+		
+		Connection con = DBConnection.getInstance().dbConnect();
+		
+		String query = "select * from board where ";
+		if(sc.getSearchType().equals("writter")) {
+			query += "writter";
+		} else if(sc.getSearchType().equals("title")) {
+			query += "title";
+		} else if(sc.getSearchType().equals("content")) {
+			query += "content";
+		}
+		query += " like ? order by ref desc, refOrder asc limit ?, ?";
+		
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setString(1, "%"+ sc.getSearchWord() + "%");
+		pstmt.setInt(2,  pi.getStartRowIndex());
+		pstmt.setInt(3,  pi.getViewPostCntPerPage());
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			lst.add( new Board( rs.getInt("no"),
+					 rs.getString("writter"), 
+					 rs.getString("title"), 
+					 rs.getTimestamp("postDate"), 
+					 rs.getString("content"),
+					 rs.getInt("readCount"),
+					 rs.getInt("likeCount"),
+					 rs.getInt("ref"),
+					 rs.getInt("step"),
+					 rs.getInt("reforder"),
+					 rs.getString("isDelete") ) );
+		}
+		
 		DBConnection.dbClose(rs, pstmt, con);
 		
 		return lst;
@@ -523,4 +567,33 @@ public class BoardCRUD implements BoardDAO {
 		
 		return result;
 	}
+
+	// 검색한 유형의 게시글의 수 가져오기
+	@Override
+	public int getTotalPostCnt(SearchCriteria sc) throws NamingException, SQLException {
+		int result = -1;
+		
+		Connection con = DBConnection.getInstance().dbConnect();
+		String query = "select count(*) as totalPostCnt from board where ";
+		if(sc.getSearchType().equals("writter")){
+			query += "writter like ?";
+		} else if(sc.getSearchType().equals("title")){
+			query += "title like ?";
+		} else if(sc.getSearchType().equals("content")){
+			query += "content like ?";
+		}
+		
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setString(1, "%" + sc.getSearchWord() + "%");
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			result = rs.getInt("totalPostCnt");
+		}
+		
+		return result;
+	}
+
+
 }

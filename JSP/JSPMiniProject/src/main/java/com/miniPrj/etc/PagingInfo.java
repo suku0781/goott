@@ -6,7 +6,7 @@ public class PagingInfo {
 	private int totalPageCnt; // 총 페이지 수 
 	private int startRowIndex; // 보여주기 시작할 글의 row index번호
 	private int pageNo; // 유저가 클릭한 페이지번호
-	
+
 	// 페이징 블럭 처리 
 	private int pageCntPerBlock = 10; // 한개의 블럭 당 보여줄 펭지ㅣ 갯수
 	private int totalPagingBlockCnt; // 전체 페이징 블럭 갯수 
@@ -29,11 +29,11 @@ public class PagingInfo {
 	public int getTotalPageCnt() {
 		return this.totalPageCnt;
 	}
-	public void setTotalPageCnt(int totalPageCnt, int viewPostCntPerPage) {
-		if(totalPageCnt % viewPostCntPerPage == 0) {
-			this.totalPageCnt = totalPageCnt / viewPostCntPerPage;
+	public void setTotalPageCnt(int totalPostCnt, int viewPostCntPerPage) {
+		if(totalPostCnt % viewPostCntPerPage == 0) {
+			this.totalPageCnt = totalPostCnt / viewPostCntPerPage;
 		} else {
-			this.totalPageCnt = (totalPageCnt / viewPostCntPerPage) + 1;
+			this.totalPageCnt = (totalPostCnt / viewPostCntPerPage) + 1;
 		}
 	}
 	public int getPageNo() {
@@ -48,7 +48,7 @@ public class PagingInfo {
 	public void setStartRowIndex() {
 		this.startRowIndex = (this.pageNo-1)*this.viewPostCntPerPage;
 	}
-	
+
 	// 페이징 블럭 관련 변수 getter, setter
 	public int getTotalPagingBlockCnt() {
 		return this.totalPagingBlockCnt;
@@ -74,14 +74,14 @@ public class PagingInfo {
 	}
 	public int getStartNumOfCurrentPagingBlock() {
 		return this.startNumOfCurrentPagingBlock;
-		
+
 	}
 	public void setStartNumOfCurrentPagingBlock() { // 현재 페이징 블럭에서의 시작 페이지 번호
 		this.startNumOfCurrentPagingBlock = (this.pageBlockOfCurrentPage - 1) * this.pageCntPerBlock + 1;
 	}
 	public int getEndNumOfCurrentPagingBlock() {
 		return this.endNumOfCurrentPagingBlock;
-		
+
 	}
 	public void setEndNumOfCurrentPagingBlock() {
 		// 현재 페이징 블럭에서의 끝페이지 번호
@@ -98,8 +98,8 @@ public class PagingInfo {
 				+ ", pageBlockOfCurrentPage=" + pageBlockOfCurrentPage + ", startNumOfCurrentPagingBlock="
 				+ startNumOfCurrentPagingBlock + ", endNumOfCurrentPagingBlock=" + endNumOfCurrentPagingBlock + "]";
 	}
-	
-	
-	
-	
+
+
+
+
 }

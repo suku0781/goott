@@ -10,7 +10,6 @@
 <style type="text/css">
 img{
 	max-width: fit-content;
-/* 	max-	width : width: calc(100vh - 250px); */
 }
 .boardList{
 	margin: 0 50px;
