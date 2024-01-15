@@ -109,6 +109,17 @@
 			
 		</ul>
 	</nav>
+	<nav class="navbar navbar-light bg-light">
+		<form class="form-inline">
+			<select name="searchType">
+				<option value="writer" selected>작성자</option>
+				<option value="title">제목</option>
+				<option value="content">내용</option>
+			</select>
+			<input class="form-control mr-sm-2" type="search" name="searchWord" placeholder="Search" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		</form>
+	</nav>
 	<jsp:include page="../footer.jsp"></jsp:include>	
 	<script type="text/javascript">
 		$(function(){

@@ -31,6 +31,9 @@ public class GetEntireBoardService implements BoardService {
 		
 		System.out.println(pageNo+"페이지 전체 목록 가져오기.");
 		
+		System.out.println("searchType : " + request.getParameter("searchType"));
+		System.out.println("searchWord : " + request.getParameter("searchWord"));
+		
 		try {
 			PagingInfo pi = pagingProcess(pageNo);
 			
