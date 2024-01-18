@@ -43,6 +43,9 @@ public class GetEntireBoardService implements BoardService {
 		System.out.println("searchType : " + searchType);
 		System.out.println("searchWord : " + searchWord);
 		
+		System.out.println("searchType : " + request.getParameter("searchType"));
+		System.out.println("searchWord : " + request.getParameter("searchWord"));
+		
 		try {
 			PagingInfo pi;
 			if(searchType == null || searchWord == null) {
@@ -149,5 +152,8 @@ public class GetEntireBoardService implements BoardService {
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> branch 'main' of https://github.com/suku0781/goott
 }
