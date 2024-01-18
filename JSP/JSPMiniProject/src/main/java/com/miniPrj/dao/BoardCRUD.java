@@ -97,7 +97,11 @@ public class BoardCRUD implements BoardDAO {
 		query += " like ? order by ref desc, refOrder asc limit ?, ?";
 		
 		PreparedStatement pstmt = con.prepareStatement(query);
+<<<<<<< HEAD
 		pstmt.setString(1, "%"+ sc.getSearchWord() + "%");
+=======
+		pstmt.setString(1,  sc.getSearchWord());
+>>>>>>> branch 'main' of https://github.com/suku0781/goott
 		pstmt.setInt(2,  pi.getStartRowIndex());
 		pstmt.setInt(3,  pi.getViewPostCntPerPage());
 		
