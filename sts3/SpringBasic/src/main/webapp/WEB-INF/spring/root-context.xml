@@ -15,14 +15,22 @@
 		
 		
 		
-		
-	<!-- 데이터베이스 connection -->
+	<!-- DB log4jdbc설정 -->
+	<!-- 부하가 좀 큼. 에러가날 경우에만 사용 -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="url" value="jdbc:mysql://localhost:3306/shk?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8"></property>
+		<property name="url" value="jdbc:log4jdbc:mysql://localhost:3306/shk?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8"></property>
 		<property name="username" value="root"></property>
 		<property name="password" value="1234"></property>
-		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 	</bean>
+	
+	<!-- 데이터베이스 connection -->
+<!-- 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="url" value="jdbc:mysql://localhost:3306/shk?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8"></property> -->
+<!-- 		<property name="username" value="root"></property> -->
+<!-- 		<property name="password" value="1234"></property> -->
+<!-- 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property> -->
+<!-- 	</bean> -->
 	
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
