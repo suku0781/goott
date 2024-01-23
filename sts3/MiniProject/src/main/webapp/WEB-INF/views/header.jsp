@@ -43,10 +43,10 @@
 	      <c:choose> <%-- 로그인 하지 않은 경우 --%>
 	      	<c:when test="${sessionScope.loginMember == null }">
       		  <li class="nav-item">
-		        <a class="nav-link" href="${contextPath }/member/register.jsp">Join</a>
+		        <a class="nav-link" href="${contextPath }/member/register">Join</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="${contextPath }/member/login.jsp">login</a>
+		        <a class="nav-link" href="${contextPath }/member/login">login</a>
 		      </li>
 	      	</c:when>
 	      	<c:otherwise><%-- 로그인한 경우 --%>
@@ -56,14 +56,14 @@
 		        </a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="${contextPath }/member/logout.mem">logout</a>
+		        <a class="nav-link" href="${contextPath }/member/logout">logout</a>
 		      </li>
 	      	</c:otherwise>
 	      </c:choose>
 	      
 	      <c:if test="${sessionScope.loginMember.memberImg == 'y' }">
 	      	<li class="nav-item">
-	      	<a class="nav-link" href="${contextPath }/admin/admin.jsp">adminPage</a>
+	      	<a class="nav-link" href="${contextPath }/admin/admin">adminPage</a>
 	      	</li>
 	      </c:if>
 <!-- 	      과제 -->
@@ -74,15 +74,6 @@
 	    </ul>
 	  </div>
 	</nav>
-	<script type="text/javascript">
-// 		$(function(){
-			
-// 			// 이미지를 클릭할 경우 마이페이지 정보 수정 페이지로 이동
-// 			$(".userImg").click(function(e){
-// 			    console.log(e)
-// 			})
-// 		})
-		
-	</script>
+
 </body>
 </html>

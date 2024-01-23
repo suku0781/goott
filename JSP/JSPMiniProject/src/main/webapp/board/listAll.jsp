@@ -107,18 +107,6 @@
 			</c:choose>
 		</ul>
 	</nav>
-<<<<<<< HEAD
-	<!-- 	검색 -->
-	<form action="listAll.bo" method="get">
-		<select id="searchType" name="searchType">
-			<option value="writter">작성자</option>
-			<option value="title">제목</option>
-			<option value="content">내용</option>
-		</select>
-		<input type="text" id="searchWord" name="searchWord">
-		<input type="submit">
-	</form>
-=======
 	<nav class="navbar navbar-light bg-light">
 		<form class="form-inline">
 			<select name="searchType">
@@ -130,7 +118,6 @@
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 		</form>
 	</nav>
->>>>>>> branch 'main' of https://github.com/suku0781/goott
 	<jsp:include page="../footer.jsp"></jsp:include>	
 	<script type="text/javascript">
 		$(function(){

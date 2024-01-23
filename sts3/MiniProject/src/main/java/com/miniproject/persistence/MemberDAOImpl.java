@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository // DAO단임을 알림.
 public class MemberDAOImpl implements MemberDAO {
 	private static String ns = "com.miniproject.mappers.memberMapper";
 	
@@ -15,7 +15,7 @@ public class MemberDAOImpl implements MemberDAO {
 		
 	@Override
 	public String getDate() {
-		String q = ns + ".curDate";
+		String q = ns + ".selectUserId";
 		
 		return ses.selectOne(q);
 	}

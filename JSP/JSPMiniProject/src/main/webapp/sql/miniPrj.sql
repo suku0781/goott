@@ -264,5 +264,6 @@ select * from board order by ref desc, refOrder asc limit 9, 3;
 -- 3. 현재 페이징 블럭 시작 페이지 번호 = (블럭번호 - 1) * pageCntPerBlock + 1
 -- 4. 현재 페이징 블럭 끝 페이지 번호 = 블럭번호 * pageCntPerBlock
 select * from board;
+use shk;
 
-
+select * from board;

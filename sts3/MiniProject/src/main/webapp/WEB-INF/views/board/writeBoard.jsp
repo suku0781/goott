@@ -12,9 +12,6 @@
 		// 드래그
 		$(".upFileArea").on("dragenter dragover", function (e){
 			e.preventDefault(); // 진행중인 이벤트 버블링을 캔슬함.
-			
-			
-			
 		});
 		
 		// 드롭
@@ -42,23 +39,86 @@
 		$.ajax({
 			url : url || "", 
 			type : type || "POST", 
-			data : data || "null", 
+			data : data || null, 
 			dataType : dataType || "json", 
 			async : async || false,
 			processData : processData || false, // false일 경우 textData에 쿼리스트링 처리를 하지 않는다..
 			contentType : contentType || false, // false일 경우 enctype="application/x-www-form-urlencoded"(기본값)으로 처리하지 않는다. 
-			success : function(e){
-				cnosole.log(e)
+			success : function(data){
+				console.log(data)
+				if(data !== null){
+					displayUploaedfile(data);
+				}
 			},
-			error : function(e){
-				cnosole.log(e)
+			error : function(data){
 			},
 			
 		})
 		
 	}
 	
+	// 삭제요청 ajax
+	// ajax 통신
+	function sendData2(url, type, data, dataType, async) {
+		$.ajax({
+			url : url || "", 
+			type : type || "POST", 
+			data : data || null, 
+			dataType : dataType || "json", 
+			async : async || false,
+			success : function(data){
+				
+			},
+			error : function(data){
+			},
+			
+		})
+		return true;
+	}
 	
+	// 업로드한 파일을 출력
+	function displayUploaedfile(data) {
+		let output = "";
+		
+		$.each(data, function(i, elt){
+			let name = elt.newFileName.replaceAll("\\", "/");
+			
+			if(elt.thumbFileName != null){ // 업로드한 파일이 이미지인 경우
+				let thumb = elt.thumbFileName.replaceAll("\\", "/");
+				output += `<div id="thumbnailObj\${i}" class="thumbnailObj">`; 
+				output += `<img id="\${elt.originalFileName}" alt="" src="../resources/uploads/\${thumb}">`; // \${thumb} \는 el이 아니다라는 표시
+				output += `<img class="rmBtn" alt="" src="../resources/img/remove.png" onclick="rmFile(this)">`;
+				output += `</div>`;
+				
+			} else { // 업로드한 파일이 이미지가 아닌 경우
+				output += `<a href="../resources/uploads/\${name}">\${elt.originalFileName}</a>`; // \${thumb} \는 el이 아니다라는 표시
+			}
+			
+		})
+		
+		$(".uploadedFileArea").html(output);
+	}
+	
+	function rmFile(ele){
+// 		console.log(ele);
+		let removeFile = $(ele).prev().attr("id"); // 타겟 아이디 가져오기
+		console.log(removeFile)
+		
+		if(sendData2("removeFile", "GET", {"removeFile":removeFile}, "text")){
+			$(ele).prev().parents().eq(0).remove();
+		}
+		
+		
+	}
+	
+	function cancel(){
+		if(confirm("취소하시겠습니까?")){
+			
+			if(sendData2("removeAllFile", "GET")){
+				$(".thumbnailObj").remove();				
+			}
+		}
+	}
 	
 </script>
 <style>
@@ -73,14 +133,18 @@
     text-align: center;
     line-height: 200px;
 	}
+	.rmBtn{
+		width: 20px;
+		
+	}
 </style>
 </head>
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
 <!-- 로그인 하지 않은 유저는 login.jsp페이지로 이동시키기. -->
-<%-- <c:if test="${sessionScope.loginMember == null }"> --%>
-<%-- 	<c:redirect url="../member/login.jsp"></c:redirect> --%>
-<%-- </c:if> --%>
+<c:if test="${sessionScope.loginMember == null }">
+	<c:redirect url="../member/login"></c:redirect>
+</c:if>
 
 <div class="container">
 		<h1>editBoard.jsp</h1>
@@ -102,13 +166,14 @@
 				<label for="upFile" class="form-label">첨부파일</label> 
 				<input type="file" class="form-control" id="upFile" name="upFile" >
 				<div class="upFileArea" >업로드할 파일을 드래그 앤 드롭하시오.</div>
+				<div class="uploadedFileArea"></div>
 			</div>
 
 			<button type="submit" class="btn btn-primary">글쓰기</button>
-			<button type="reset" class="btn btn-danger">취소</button>
+			<button type="reset" class="btn btn-danger" onclick="cancel()">취소</button>
 		</form>
 	</div>
-
+	
 <jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>
