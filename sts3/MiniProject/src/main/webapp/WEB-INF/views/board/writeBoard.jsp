@@ -142,17 +142,17 @@
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
 <!-- 로그인 하지 않은 유저는 login.jsp페이지로 이동시키기. -->
-<c:if test="${sessionScope.loginMember == null }">
-	<c:redirect url="../member/login"></c:redirect>
-</c:if>
+<%-- <c:if test="${sessionScope.loginMember == null }"> --%>
+<%-- 	<c:redirect url="../member/login"></c:redirect> --%>
+<%-- </c:if> --%>
 
 <div class="container">
 		<h1>editBoard.jsp</h1>
 		
-		<form action="writeBoard.bo" method="POST" >
+		<form action="writeBoard" method="POST" >
 			<div class="mb-3 mt-3">
 				<label for="writter" class="form-label">작성자</label> 
-				<input type="text" class="form-control" id="writter" name="writter" value="${sessionScope.loginMember.userId }" readonly>
+				<input type="text" class="form-control" id="writter" name="writter" value="${sessionScope.loginMember.userId }" >
 			</div>
 			<div class="mb-3 mt-3">
 				<label for="title" class="form-label">제목</label> 
@@ -171,6 +171,9 @@
 
 			<button type="submit" class="btn btn-primary">글쓰기</button>
 			<button type="reset" class="btn btn-danger" onclick="cancel()">취소</button>
+			
+			<!-- 글쓰기 버튼을 누를때 같이 전송됨. -->
+			<input type="hidden" name="csrfToken" value="${sessionScope.csrfToken }">
 		</form>
 	</div>
 	

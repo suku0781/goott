@@ -11,4 +11,10 @@
 		select * from member where userId = #{userId}
 	</select>
 
+	<update id="updateUserPoint">
+		<selectKey keyProperty="howMuch" resultType="int" order="BEFORE">
+			select howMuch from pointPolicy where why = #{why};
+		</selectKey>
+		update member set userPoint = userPoint + #{howMuch} where userId = #{userId};
+	</update>
 </mapper>

@@ -1,5 +1,8 @@
 package com.miniproject.persistence;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -15,9 +18,20 @@ public class MemberDAOImpl implements MemberDAO {
 		
 	@Override
 	public String getDate() {
-		String q = ns + ".selectUserId";
+		String q = ns + ".curDate";
 		
 		return ses.selectOne(q);
+	}
+
+
+	@Override
+	public int updateUserPoint(String why, String writter) throws Exception {
+		Map<String, Object> param = new HashMap<String, Object>();
+		
+		param.put("why", why);
+		param.put("userId", writter);
+		
+		return ses.update(ns + ".updateUserPoint", param);
 	}
 
 }
