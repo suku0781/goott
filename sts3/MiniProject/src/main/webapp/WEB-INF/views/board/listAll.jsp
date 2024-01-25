@@ -37,7 +37,7 @@
 					<tbody>
 							
 					<c:forEach var="board" items="${boardList }" >
-						<tr id="board${board.no }" class="board" onclick="location.href='viewBoard.bo?no=${board.no}&amp;page=boardDetail'">
+						<tr id="board${board.no }" class="board" onclick="location.href='viewBoard?no=${board.no}&amp;page=boardDetail'">
 							<td>${board.no }</td>
 							<td class="isNewDpTarget">
 							<c:if test="${board.step >= 0 }">
@@ -51,7 +51,7 @@
 							</c:if>
 							</td>
 							<td>${board.writter }</td>
-							<td class="isNewDpObj">${board.postDate }</td>
+							<td>${board.postDate }</td>
 							<td>${board.readCount }</td>
 							<td>${board.likeCount }</td>
 							<td>${board.ref }</td>

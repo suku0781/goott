@@ -3,6 +3,7 @@ package com.miniproject.controller.board;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.miniproject.domain.Board;
 import com.miniproject.domain.UploadedFile;
+import com.miniproject.etc.GetUserIpAddr;
 import com.miniproject.etc.UploadFileProcess;
 import com.miniproject.service.board.BoardService;
 
@@ -78,7 +80,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="writeBoard", method=RequestMethod.POST)
-	public void writeBoard(Board newBoard, @RequestParam("csrfToken") String inputscrf, HttpSession ses) {
+	public String writeBoard(Board newBoard, @RequestParam("csrfToken") String inputscrf, HttpSession ses) {
 		logger.info("게시판 글 작성 newBoard : " + newBoard.toString() );
 		logger.info("게시판 글 작성 csrfToken : " + inputscrf.toString() );
 		logger.info("게시판 글 작성 ses : " + ses.toString() );
@@ -86,21 +88,25 @@ public class BoardController {
 		logger.info("게시판 글 작성 (((String)ses.getAttribute(\"csrfToken\")).equals(inputscrf)) : " + ses.getAttribute("csrfToken") );
 		logger.info("게시판 글 작성 inputscrf : " + inputscrf );
 		
+		String redirectPage = "";
+		
 		if( (((String)ses.getAttribute("csrfToken")).equals(inputscrf)) ) { //scrfToken이 같을때만 게시글을 저장한다. 
 			try {
 				bService.saveNewBoard(newBoard, ufList);
+				redirectPage = "listAll";
 				
 			} catch (Exception e) {
 //				System.out.println("break!");
 				e.printStackTrace();
+				redirectPage = "listAll?status=fail";
 //				for(UploadedFile uf : ufList) {
 //					removeFile(uf.getOriginalFileName());
 //				}
 			}
 			
 			
-			
 		}
+		return "redirect:"+redirectPage;
 		
 	}
 	
@@ -209,6 +215,23 @@ public class BoardController {
 		result = new ResponseEntity<String>("success", HttpStatus.OK);
 		
 		return result;
+	}
+	
+	@RequestMapping("viewBoard")
+	public void viewBoard(@RequestParam("no") int no, HttpServletRequest req, Model model) throws Exception {
+		logger.info(no+"번 게시글 상세보기 요청이 들어옴.");
+		
+		Map<String, Object> result = bService.getBoardByNo(no, GetUserIpAddr.getIp(req));
+		
+		model.addAttribute("board", (Board)result.get("board"));
+		model.addAttribute("uploadedFileList", (List<UploadedFile>)result.get("uploadedFileList"));
+	}
+	
+	@RequestMapping(value="like", method=RequestMethod.POST)
+	public void like(@RequestParam("no") int no, HttpServletRequest req, Model model) throws Exception {
+		logger.info(no+"번 게시글 좋아요 요청이 들어옴.");
+		
+		bService.setLikeCount(no, GetUserIpAddr.getIp(req));
 	}
 	
 }

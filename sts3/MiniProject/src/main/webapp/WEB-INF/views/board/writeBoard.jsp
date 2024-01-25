@@ -164,7 +164,7 @@
 			</div>
 			<div class="mb-3 mt-3">
 				<label for="upFile" class="form-label">첨부파일</label> 
-				<input type="file" class="form-control" id="upFile" name="upFile" >
+				<input type="file" class="form-control" id="upFile" name="upFile" multiple >
 				<div class="upFileArea" >업로드할 파일을 드래그 앤 드롭하시오.</div>
 				<div class="uploadedFileArea"></div>
 			</div>

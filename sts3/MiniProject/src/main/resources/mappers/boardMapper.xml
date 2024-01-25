@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.miniproject.mappers.boardMapper">
-	<select id="getAllList" resultType="com.miniproject.domain.Board">
+	<select id="getAllList" resultType="Board">
 		select * from board order by no desc
 	</select>
 	
@@ -18,4 +18,32 @@
 	<insert id="insertUploadedFile">
 		insert into uploadedFile(originalFileName, newFileName,size, boardNo, thumbFileName ) values(#{originalFileName}, #{newFileName}, #{size}, #{boardNo}, #{thumbFileName})
 	</insert>
+	
+	<select id="selectBoardViewCnt" resultType="ReadCountProcess">
+		select * from readcountprocess where boardno = #{boardNo} and ipAddr = #{ipAddr}
+	</select>
+	
+	<select id="getHourDiffReadTime" resultType="int">
+		select timestampdiff(hour, (select readTime from readcountprocess where ipAddr = #{ipAddr} and boardNo = #{boardNo}) , now()) AS hourDiff
+	</select>
+	
+	<update id="updateReadCountProcess">
+		update readCountProcess set readTime = now() where ipAddr = #{ipAddr} and boardNo = #{boardNo}
+	</update>
+	
+	<update id="updateReadCount">
+		update board set readCount = readCount + 1 where no = #{no}
+	</update>
+	
+	<insert id="insertReadCountProcess">
+		insert into readCountProcess(ipAddr, boardNo) values(#{ipAddr}, #{boardNo})
+	</insert>
+	
+	<select id="selectBoard" resultType="Board">
+		select * from board where no = #{no}
+	</select>
+	
+	<select id="selectUploadedFile" resultType="UploadedFile">
+		select * from uploadedFile where boardNo = #{no}
+	</select>
 </mapper>

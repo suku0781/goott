@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.miniproject.domain.Board;
+import com.miniproject.domain.ReadCountProcess;
 import com.miniproject.domain.UploadedFile;
 
 @Repository // DAO단임을 알림.
@@ -33,7 +34,6 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Override
 	public int selectBoardNo() {
-		
 		return ses.selectOne(ns + ".selectBoardNo");
 	}
 
@@ -48,6 +48,51 @@ public class BoardDAOImpl implements BoardDAO {
 		param.put("thumbFileName", file.getThumbFileName());
 		
 		return ses.insert(ns + ".insertUploadedFile", param);
+	}
+
+	@Override
+	public ReadCountProcess selectReadCountProcess(int no, String ipAddr) throws Exception {
+		Map<String, Object> param = new HashMap<String, Object>();
+		
+		param.put("boardNo", no);
+		param.put("ipAddr", ipAddr);
+		
+		return ses.selectOne(ns + ".selectBoardViewCnt", param);
+	}
+
+	@Override
+	public int getHourDiffReadTime(int no, String ipAddr) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		
+		param.put("boardNo", no);
+		param.put("ipAddr", ipAddr);
+			
+		return ses.selectOne(ns + ".getHourDiffReadTime", param);
+	}
+
+	@Override
+	public int updateReadCountProcess(ReadCountProcess readCountProcess) {
+		return ses.update(ns + ".updateReadCountProcess", readCountProcess);
+	}
+
+	@Override
+	public int updateReadCount(int no) {
+		return ses.update(ns + ".updateReadCount", no);
+	}
+
+	@Override
+	public int insertReadCountProcess(ReadCountProcess readCountProcess) throws Exception {
+		return ses.insert(ns + ".insertReadCountProcess", readCountProcess);
+	}
+
+	@Override
+	public Board selectBoardByNo(int no) throws Exception {
+		return ses.selectOne(ns + ".selectBoard", no);
+	}
+
+	@Override
+	public List<UploadedFile> selectUploadedFile(int no) {
+		return ses.selectList(ns + ".selectUploadedFile", no);
 	}
 
 }

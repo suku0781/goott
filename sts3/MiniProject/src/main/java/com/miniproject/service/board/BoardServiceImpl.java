@@ -1,14 +1,18 @@
 package com.miniproject.service.board;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.domain.Board;
 import com.miniproject.domain.PointLog;
+import com.miniproject.domain.ReadCountProcess;
 import com.miniproject.domain.UploadedFile;
 import com.miniproject.persistence.BoardDAO;
 import com.miniproject.persistence.MemberDAO;
@@ -61,5 +65,80 @@ public class BoardServiceImpl implements BoardService {
 		
 //		이 중에서 하나라도 실패한다면 모두 롤백해야한다. (all or nothing)
 	}
+
+	@Override
+	@Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public Map getBoardByNo(int no, String ipAddr) throws Exception {
+//		해당 아이피 주소와 글 번호가 같은게 있는지 없는지 찾아보기
+//		해당 아이피 주소와 글번호 같은 것이 없다면
+//		-> 아이피주소와 글번호와 읽은시간을 readCountProcess테이블에 insert
+//		-> 해당 글 번호의 readCound를 증가(update)
+//		-> 해당 글을 가져옴.(select)
+//
+//		해당 아이피 주소와 글번호 같은 것이 있다면
+//
+//		1. 시간이 24시간 지난 경우
+//		-> 아이피주소와 글번호와 읽은시간을 readCountProcess테이블에 update
+//		-> 조회수 1증가(update)
+//		-> 해당 글을 가져옴.(select)
+//		2. 시간이 24시간 지나지 않은 경우
+//		-> 해당 글을 가져옴.(select)
+//		
+//		해당 아이피 주소와 글번호 같은 것이 없다면
+//		-> 해당 글을 가져옴.(select)
+//		-----------------------------------------------------------------------------------------
+		int readCntResult = -1; 
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		if(dao.selectReadCountProcess(no, ipAddr) != null) { // 조회한 적이 있을 경우
+			System.out.println("시간차이 : "+dao.getHourDiffReadTime(no, ipAddr));
+			if(dao.getHourDiffReadTime(no, ipAddr) > 23) { // 시간이 24시간이 지난 경우
+//				ip주소와 글번호와 읽은 시간을 readCountProcess 테이블에서 update
+				if(dao.updateReadCountProcess(new ReadCountProcess(-1, ipAddr, no, null)) == 1) {
+//					 해당 글번호의 readCount 1 증가(update)
+					readCntResult = dao.updateReadCount(no);
+				}
+			} else { // 시간이 24시간이 지나지 않은 경우
+				readCntResult = 1;
+			}
+		} else { // 조회한 적이 없을 경우
+			if(dao.insertReadCountProcess(new ReadCountProcess(-1, ipAddr, no, null)) == 1) {
+//				 해당 글번호의 readCount 1 증가(update)
+				readCntResult = dao.updateReadCount(no);
+			}
+		}
+		
+//		해당 글을 가져옴
+		if(readCntResult == 1) {
+			Board board = dao.selectBoardByNo(no);
+			
+			// 업로드한 파일정보 가져오기 
+			List<UploadedFile> ufLst = dao.selectUploadedFile(no);
+			System.out.println("업로드 파일 : "+ufLst);
+			result.put("board", board);
+			result.put("uploadedFileList", ufLst);
+		}
+		
+		return result;
+	}
+
+	@Override
+	public void setLikeCount(int no, String ipAddr, String userId) throws Exception {
+		// 만약 동일한 아이피와 아이디가 존재하지않을 경우 좋아요 1 증가
+		dao.selectBoardLikeYn(no, ipAddr, userId);
+		// no번 게시글에 좋아요 했는지 조회
+		void selectBoardLikeYn(int no, String ipAddr, String userId);
+		// 아닐 경우 -1 감소
+	}
+
+//	@Override
+//	public void setLikeCount(int no, String ipAddr, String userId) throws Exception {
+//		// 만약 동일한 아이피와 아이디가 존재하지않을 경우 좋아요 1 증가
+//		dao.selectBoardLikeYn(no, ip, );
+//		
+//		// 아닐 경우 -1 감소
+//		
+//		
+//	}
 
 }
