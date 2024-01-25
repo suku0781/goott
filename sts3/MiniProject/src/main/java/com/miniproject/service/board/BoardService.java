@@ -18,6 +18,6 @@ public interface BoardService {
 	Map getBoardByNo(int no, String ipAddr) throws Exception;
 
 	// 게시글 좋아요
-	void setLikeCount(int no, String ipAddr, String userId) throws Exception;
+	void setLikeCount(int no, String userId) throws Exception;
 
 }

@@ -228,10 +228,10 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="like", method=RequestMethod.POST)
-	public void like(@RequestParam("no") int no, HttpServletRequest req, Model model) throws Exception {
+	public void like(@RequestParam("no") int no, @RequestParam("userId") String userId, HttpServletRequest req, Model model) throws Exception {
 		logger.info(no+"번 게시글 좋아요 요청이 들어옴.");
 		
-		bService.setLikeCount(no, GetUserIpAddr.getIp(req));
+		bService.setLikeCount(no, userId);
 	}
 	
 }

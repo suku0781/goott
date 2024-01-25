@@ -15,6 +15,7 @@ import com.miniproject.domain.PointLog;
 import com.miniproject.domain.ReadCountProcess;
 import com.miniproject.domain.UploadedFile;
 import com.miniproject.persistence.BoardDAO;
+import com.miniproject.persistence.LikeCountProcessDAO;
 import com.miniproject.persistence.MemberDAO;
 import com.miniproject.persistence.PointLogDAO;
 
@@ -26,6 +27,8 @@ public class BoardServiceImpl implements BoardService {
 	MemberDAO mDao;
 	@Inject
 	PointLogDAO plDao;
+	@Inject
+	LikeCountProcessDAO likeDao;
 	
 	@Override
 	public List<Board> getEntireBoard() throws Exception {
@@ -123,12 +126,17 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void setLikeCount(int no, String ipAddr, String userId) throws Exception {
+	public void setLikeCount(int no, String userId) throws Exception {
+		Map<String, Object> likeRecord = likeDao.selectBoardLikeYn(no, userId);
+		
 		// 만약 동일한 아이피와 아이디가 존재하지않을 경우 좋아요 1 증가
-		dao.selectBoardLikeYn(no, ipAddr, userId);
-		// no번 게시글에 좋아요 했는지 조회
-		void selectBoardLikeYn(int no, String ipAddr, String userId);
-		// 아닐 경우 -1 감소
+		if(likeRecord != null) {
+			
+		} else { // 아닐 경우 -1 감소
+			
+		}
+			
+		
 	}
 
 //	@Override
