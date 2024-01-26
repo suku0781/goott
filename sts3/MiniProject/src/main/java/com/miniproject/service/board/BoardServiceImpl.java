@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.domain.Board;
+import com.miniproject.domain.Like;
 import com.miniproject.domain.PointLog;
 import com.miniproject.domain.ReadCountProcess;
 import com.miniproject.domain.UploadedFile;
@@ -126,27 +127,16 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void setLikeCount(int no, String userId) throws Exception {
-		Map<String, Object> likeRecord = likeDao.selectBoardLikeYn(no, userId);
-		
+	public void setLikeCount(Like like) throws Exception {
 		// 만약 동일한 아이피와 아이디가 존재하지않을 경우 좋아요 1 증가
-		if(likeRecord != null) {
-			
-		} else { // 아닐 경우 -1 감소
+		if(likeDao.selectBoardLikeYn(like)) {
+			System.out.println("Like +1");
+		} else {
+			System.out.println("Like -1");
 			
 		}
-			
+		// 아닐 경우 -1 감소
 		
 	}
-
-//	@Override
-//	public void setLikeCount(int no, String ipAddr, String userId) throws Exception {
-//		// 만약 동일한 아이피와 아이디가 존재하지않을 경우 좋아요 1 증가
-//		dao.selectBoardLikeYn(no, ip, );
-//		
-//		// 아닐 경우 -1 감소
-//		
-//		
-//	}
 
 }

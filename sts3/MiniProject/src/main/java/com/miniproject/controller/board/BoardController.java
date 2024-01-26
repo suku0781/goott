@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.miniproject.domain.Board;
+import com.miniproject.domain.Like;
+import com.miniproject.domain.Reply;
 import com.miniproject.domain.UploadedFile;
 import com.miniproject.etc.GetUserIpAddr;
 import com.miniproject.etc.UploadFileProcess;
@@ -176,32 +179,6 @@ public class BoardController {
 		logger.info("result : "+result);
 		return result;
 	}
-//	public ResponseEntity<String> removeFile(String removeFile) {
-//		logger.info(removeFile+"파일 삭제 요청이 들어옴.");
-//		
-//		ResponseEntity result = null;
-//		UploadFileProcess.fileDelete(ufList, removeFile, realPath);
-//		List<UploadedFile> tmpUfList = new ArrayList<UploadedFile>();
-//		int index = 0;
-//		
-//		for(UploadedFile uf : ufList) {
-//			if(!removeFile.equals(uf.getOriginalFileName())) {
-//				index++;
-//			} else if(removeFile.equals(uf.getOriginalFileName())) {
-//				break;
-//			}
-//		}
-//		
-//		
-//		System.out.println("삭제할 인텍스 : " + index);
-//		
-//		ufList.remove(index);
-//		result = new ResponseEntity<String>("success", HttpStatus.OK);
-//		
-//		logger.info("result : "+result);
-//		return result;
-//	}
-	
 	
 	@RequestMapping("removeAllFile")
 	public ResponseEntity<String> removeAllFile(HttpServletRequest req) {
@@ -227,12 +204,13 @@ public class BoardController {
 		model.addAttribute("uploadedFileList", (List<UploadedFile>)result.get("uploadedFileList"));
 	}
 	
-	@RequestMapping(value="like", method=RequestMethod.POST)
-	public void like(@RequestParam("no") int no, @RequestParam("userId") String userId, HttpServletRequest req, Model model) throws Exception {
-		logger.info(no+"번 게시글 좋아요 요청이 들어옴.");
-		
-		bService.setLikeCount(no, userId);
-	}
+//	@RequestMapping(value="like", method=RequestMethod.POST)
+//	public void like(@RequestBody Like like) throws Exception {
+//		logger.info(like.getNo()+"번 게시글 좋아요 요청이 들어옴.");
+//		
+//		bService.setLikeCount(like);
+//	}
+//	
 	
 }
 

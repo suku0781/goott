@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.miniproject.domain.Board;
+import com.miniproject.domain.Like;
 import com.miniproject.domain.UploadedFile;
 
 public interface BoardService {
@@ -18,6 +19,6 @@ public interface BoardService {
 	Map getBoardByNo(int no, String ipAddr) throws Exception;
 
 	// 게시글 좋아요
-	void setLikeCount(int no, String userId) throws Exception;
+	void setLikeCount(Like like) throws Exception;
 
 }

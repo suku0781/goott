@@ -7,5 +7,6 @@
 	  <typeAlias alias="Board" type="com.miniproject.domain.Board"/>
 	  <typeAlias alias="ReadCountProcess" type="com.miniproject.domain.ReadCountProcess"/>
 	  <typeAlias alias="UploadedFile" type="com.miniproject.domain.UploadedFile"/>
+	  <typeAlias alias="Reply" type="com.miniproject.domain.Reply"/>
 	</typeAliases>
 </configuration>
