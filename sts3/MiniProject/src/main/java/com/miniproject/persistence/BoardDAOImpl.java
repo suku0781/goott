@@ -26,6 +26,18 @@ public class BoardDAOImpl implements BoardDAO {
 	public List<Board> selectAllBoard(PagingInfo pi) throws Exception {
 		return ses.selectList(ns + ".getAllList", pi);	
 	}
+	
+	@Override
+	public List<Board> selectAllBoard(PagingInfo pi, SearchCriteria sc) throws Exception {
+		Map<String, Object> param = new HashMap<String, Object>();
+		
+		param.put("searchType", sc.getSearchType());
+		param.put("searchWord", "%" + sc.getSearchWord() + "%");
+		param.put("startRowIndex", pi.getStartRowIndex());
+		param.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
+		
+		return ses.selectList(ns + ".getAllBoardWithSearch", param);
+	}
 
 	@Override
 	public int insertNewBoard(Board newBoard) throws Exception {
@@ -109,16 +121,6 @@ public class BoardDAOImpl implements BoardDAO {
 		return ses.selectOne(ns + ".getAllListCntWithSearch", param);
 	}
 
-	@Override
-	public List<Board> selectAllBoard(PagingInfo pi, SearchCriteria sc) throws Exception {
-		Map<String, Object> param = new HashMap<String, Object>();
-		
-		param.put("searchType", sc.getSearchType());
-		param.put("searchWord", "%" + sc.getSearchWord() + "%");
-		param.put("startRowIndex", pi.getStartRowIndex());
-		param.put("viewPostCntPerPage", pi.getViewPostCntPerPage());
-		
-		return ses.selectList(ns + ".getAllBoardWithSearch", param);
-	}
+
 
 }

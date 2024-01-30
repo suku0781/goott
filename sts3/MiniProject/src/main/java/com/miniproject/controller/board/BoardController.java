@@ -141,6 +141,7 @@ public class BoardController {
 		
 		// 파일이 실제로 저장될 경로 realPath
 		realPath = req.getSession().getServletContext().getRealPath("resources/uploads"); // 파일이 저장되는 실제 경로
+		
 		UploadedFile uf = null;
 		// 파일처리 
 		try {
