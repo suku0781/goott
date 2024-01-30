@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.domain.Board;
-import com.miniproject.domain.Like;
 import com.miniproject.domain.PointLog;
 import com.miniproject.domain.ReadCountProcess;
+import com.miniproject.domain.SearchCriteria;
 import com.miniproject.domain.UploadedFile;
+import com.miniproject.etc.PagingInfo;
 import com.miniproject.persistence.BoardDAO;
-import com.miniproject.persistence.LikeCountProcessDAO;
 import com.miniproject.persistence.MemberDAO;
 import com.miniproject.persistence.PointLogDAO;
 
@@ -28,15 +28,25 @@ public class BoardServiceImpl implements BoardService {
 	MemberDAO mDao;
 	@Inject
 	PointLogDAO plDao;
-	@Inject
-	LikeCountProcessDAO likeDao;
 	
 	@Override
-	public List<Board> getEntireBoard() throws Exception {
-		List<Board> lst = dao.selectAllBoard();
+	public Map<String, Object> getEntireBoard(int pageNo, SearchCriteria sc) throws Exception {
+		PagingInfo pi = getPagingInfo(pageNo, sc);
+		List<Board> lst = null;
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		return lst;
+		if(!sc.getSearchWord().equals("")) {
+			lst = dao.selectAllBoard(pi, sc);
+		} else {
+			lst = dao.selectAllBoard(pi);
+		}
+		
+		resultMap.put("boardList", lst);
+		resultMap.put("pagingInfo", pi);
+		
+		return resultMap;
 	}
+
 
 	@Override
 	@Transactional(rollbackFor=Exception.class)
@@ -126,17 +136,83 @@ public class BoardServiceImpl implements BoardService {
 		return result;
 	}
 
-	@Override
-	public void setLikeCount(Like like) throws Exception {
-		// 만약 동일한 아이피와 아이디가 존재하지않을 경우 좋아요 1 증가
-		if(likeDao.selectBoardLikeYn(like)) {
-			System.out.println("Like +1");
-		} else {
-			System.out.println("Like -1");
-			
-		}
-		// 아닐 경우 -1 감소
+	private PagingInfo getPagingInfo(int pageNo) throws Exception {
+		PagingInfo result = new PagingInfo();
 		
+		// pageNo세팅
+		result.setPageNo(pageNo);
+		
+		// 전체 게시글 수 세팅
+		result.setTotalPostCnt(dao.getTotalPostCnt());
+		
+		System.out.println("전체 게시글 수 : "+dao.getTotalPostCnt());
+
+		// 총 페이지 수 
+		result.setTotalPageCnt(result.getTotalPostCnt(), result.getViewPostCntPerPage());
+		
+		// 보여주기 시작할 row Index번호 구하기 
+		result.setStartRowIndex();
+		
+		// 전체 페이징 블럭 갯수
+		result.setTotalPagingBlockCnt();
+		
+		// 현재 페이지가 속한 페이징 블럭 번호 
+		result.setPageBlockOfCurrentPage();
+		
+		// 현재 페이징 블럭 페이지 시작 번호
+		result.setStartNumOfCurrentPagingBlock();
+		
+		// 현재 페이징 블럭 페이지 끝 번호
+		result.setEndNumOfCurrentPagingBlock();
+		
+		
+		
+		return result;
 	}
+	
+	private PagingInfo getPagingInfo(int pageNo, SearchCriteria sc) throws Exception {
+		PagingInfo result = new PagingInfo();
+		
+		// pageNo세팅
+		result.setPageNo(pageNo);
+		
+		// 전체 게시글 수 세팅
+		// 검색어가 있을 경우 
+		if(!sc.getSearchWord().equals("")) {
+			result.setTotalPostCnt(dao.getBoardCntWithSearch(sc));
+			System.out.println("검색어 결과 총 갯수 : "+dao.getBoardCntWithSearch(sc));
+		} else if(sc.getSearchWord().equals("")) { // 검색어가 없을 경우 
+			result.setTotalPostCnt(dao.getTotalPostCnt());
+		}
+		
+		result.setTotalPostCnt(dao.getTotalPostCnt());
+		
+		System.out.println("전체 게시글 수 : "+dao.getTotalPostCnt());
+
+		// 총 페이지 수 
+		result.setTotalPageCnt(result.getTotalPostCnt(), result.getViewPostCntPerPage());
+		
+		// 보여주기 시작할 row Index번호 구하기 
+		result.setStartRowIndex();
+		
+		// 전체 페이징 블럭 갯수
+		result.setTotalPagingBlockCnt();
+		
+		// 현재 페이지가 속한 페이징 블럭 번호 
+		result.setPageBlockOfCurrentPage();
+		
+		// 현재 페이징 블럭 페이지 시작 번호
+		result.setStartNumOfCurrentPagingBlock();
+		
+		// 현재 페이징 블럭 페이지 끝 번호
+		result.setEndNumOfCurrentPagingBlock();
+		
+		
+		
+		return result;
+	}
+
+
+
 
 }

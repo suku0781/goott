@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.miniproject.domain.Board;
 import com.miniproject.domain.ReadCountProcess;
+import com.miniproject.domain.SearchCriteria;
 import com.miniproject.domain.UploadedFile;
+import com.miniproject.etc.PagingInfo;
 
 public interface BoardDAO {
 	// 전체 게시글 조회 
-	List<Board> selectAllBoard() throws Exception;
+	List<Board> selectAllBoard(PagingInfo pi) throws Exception;
 
 	// 게시글 저장
 	int insertNewBoard(Board newBoard) throws Exception;
@@ -38,8 +40,15 @@ public interface BoardDAO {
 	Board selectBoardByNo(int no) throws Exception;
 
 	// no번 글에 업로드한 파일 조회
-	List<UploadedFile> selectUploadedFile(int no);
+	List<UploadedFile> selectUploadedFile(int no) throws Exception;
 
+	// 전체게시글 수 조회
+	int getTotalPostCnt() throws Exception;
 
+	// 검색어 갯수 조회
+	int getBoardCntWithSearch(SearchCriteria sc) throws Exception;
 	
+	//
+	List<Board> selectAllBoard(PagingInfo pi, SearchCriteria sc) throws Exception;
+
 }

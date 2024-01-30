@@ -264,6 +264,76 @@ select * from board order by ref desc, refOrder asc limit 9, 3;
 -- 3. 현재 페이징 블럭 시작 페이지 번호 = (블럭번호 - 1) * pageCntPerBlock + 1
 -- 4. 현재 페이징 블럭 끝 페이지 번호 = 블럭번호 * pageCntPerBlock
 select * from board;
-use shk;
 
+
+-- 검색어 + 유형 처리
+select count(*) as totalPostCnt from board; -- 전체 게시글 수
+
+-- 검색 유형 = writer
+select count(*) as totalPostCnt from board where writter like '%jkl%';
+-- 검색 유형 = title 
+select count(*) as totalPostCnt from board where title like '%test%';
+-- 검색 유형 = content
+select count(*) as totalPostCnt from board where content like '%test%';
+
+-- 검색된 글 목록 
+select * from board where writter like ? order by ref desc, refOrder asc limit ?, ?;
+
+update member set userId = "admin" where userId = 'admin';
+select * from member;
 select * from board;
+select * from uploadedFile;
+desc uploadedFile;
+-- board테이블이 uploadedFile테이블의 부모이다. -> 글을 먼저 저장해야하고 그 후 파일을 저장해야한다. 
+-- 게시글 작성에 대한 memberPoint부여하기위한 howMuch 조회
+select howMuch from pointPolicy where why = "게시물작성";
+-- update member set userPoint = userPoint + #{howMuch} where userId = #{userId};
+
+select * from pointLog;
+desc pointLog ;
+-- insert into pointLog(why, howMuch, who) values(#{why}, #{howMuch}, #{who});
+select max(writter) from board;
+
+select * from uploadedfile;
+select * from pointLog;
+select * from board;
+
+-- update readCountProcess set readTime = now() where ipAddr = #{ipAddr} and boardNo = #{boardNo}
+
+-- 댓글 게시판 생성
+CREATE TABLE `shk`.`reply` (
+  `replyNo` INT NOT NULL,
+  `parentNo` INT NULL,
+  `replyText` VARCHAR(500) NULL,
+  `replier` VARCHAR(8) NULL,
+  `postDate` DATETIME NULL DEFAULT now(),
+  PRIMARY KEY (`replyNo`),
+  INDEX `parentNo_fk_idx` (`parentNo` ASC) VISIBLE,
+  INDEX `replier_fk_idx` (`replier` ASC) VISIBLE,
+  CONSTRAINT `parentNo_fk`
+    FOREIGN KEY (`parentNo`)
+    REFERENCES `shk`.`board` (`no`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `replier_fk`
+    FOREIGN KEY (`replier`)
+    REFERENCES `shk`.`member` (`userId`)
+    ON DELETE SET NULL
+    ON UPDATE NO ACTION);
+
+
+select * from readCountProcess;
+select * from likecountProcess;
+select * from likecountProcess;
+
+select * from reply;
+select * from pointLog;
+select * from member where userId = "jk1l23";
+desc reply;
+
+-- no 번 게시글 모든 댓글 조회
+select * from reply where parentNo = 233 order by replyNo desc;
+select * from reply where parentNo = 233 order by replyNo desc;
+
+desc pointPolicy;
+desc pointLog;

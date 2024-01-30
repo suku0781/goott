@@ -8,5 +8,6 @@
 	  <typeAlias alias="ReadCountProcess" type="com.miniproject.domain.ReadCountProcess"/>
 	  <typeAlias alias="UploadedFile" type="com.miniproject.domain.UploadedFile"/>
 	  <typeAlias alias="Reply" type="com.miniproject.domain.Reply"/>
+	  <typeAlias alias="SearchCriteria" type="com.miniproject.domain.SearchCriteria"/>
 	</typeAliases>
 </configuration>

@@ -69,17 +69,18 @@
 	</div>
 	<button type="button" class="btn btn-primary" onclick="location.href='writeBoard'">글쓰기</button>
 	<div>
-	${requestScope.pagingInfo.totalPageCnt%10}
-	${requestScope.pagingInfo}
+<%-- 	${requestScope.pagingInfo.totalPageCnt%10} --%>
+<%-- 	${requestScope.pagingInfo} --%>
+<%-- 	${boardList } --%>
 	</div>
 	<nav aria-label="Page navigation example">
 		<ul class="pagination justify-content-center">
 			<c:choose>
 				<c:when test="${param.pageNo == null || param.pageNo == 1}">
-					<li class="page-item disabled"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo - 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}" tabindex="-1">Previous</a></li>	
+					<li class="page-item disabled"><a class="page-link" href="listAll?pageNo=${param.pageNo - 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}" tabindex="-1">Previous</a></li>	
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo - 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}" tabindex="-1">Previous</a></li>	
+					<li class="page-item"><a class="page-link" href="listAll?pageNo=${param.pageNo - 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}" tabindex="-1">Previous</a></li>	
 				</c:otherwise>
 			</c:choose>
 			<c:forEach var="i"  begin="${requestScope.pagingInfo.startNumOfCurrentPagingBlock }" end="${requestScope.pagingInfo.endNumOfCurrentPagingBlock }" >
@@ -93,16 +94,16 @@
 							<li class="page-item">
 						</c:otherwise>
 					</c:choose>
-						<a class="page-link" href="listAll.bo?pageNo=${i}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}" tabindex="-1">${i}</a>
+						<a class="page-link" href="listAll?pageNo=${i}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}" tabindex="-1">${i}</a>
 					</li>
 <%-- 				</c:if> --%>
 			</c:forEach>
 			<c:choose>
 				<c:when test="${requestScope.pagingInfo.pageBlockOfCurrentPage == requestScope.pagingInfo.totalPagingBlockCnt && param.pageNo == requestScope.pagingInfo.endNumOfCurrentPagingBlock}">
-					<li class="page-item disabled"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo + 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}">Next</a></li>	
+					<li class="page-item disabled"><a class="page-link" href="listAll?pageNo=${param.pageNo + 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}">Next</a></li>	
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo + 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}">Next</a></li>
+					<li class="page-item"><a class="page-link" href="listAll?pageNo=${param.pageNo + 1}&amp;searchType=${param.searchType}&amp;searchWord=${param.searchWord}">Next</a></li>
 				</c:otherwise>
 			</c:choose>
 		</ul>
@@ -110,12 +111,12 @@
 	<nav class="navbar navbar-light bg-light">
 		<form class="form-inline">
 			<select name="searchType">
-				<option value="writer" selected>작성자</option>
+				<option value="writter" selected>작성자</option>
 				<option value="title">제목</option>
 				<option value="content">내용</option>
 			</select>
 			<input class="form-control mr-sm-2" type="search" name="searchWord" placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			<button class="btn btn-outline-success my-2 my-sm-0" onclick="return search()">Search</button>
 		</form>
 	</nav>
 	<jsp:include page="../footer.jsp"></jsp:include>	
@@ -136,6 +137,33 @@
 			let targetDateTime = new Date(regiDateTime); // 타겟 시간
 			
 			return Math.abs(Math.floor((currentDateTime.getTime() - targetDateTime.getTime()) / (60 * 60 * 1000)))
+		}
+		
+		function search(){
+			let type = $("select[name=searchType]").val();
+			let value = $("input[name=searchWord]").val();
+			let sql = new Array("or", "select", "insert", "update", "delete", "create", "drop","exec", "union", "fetch", "declare", "truncate", "alter");
+			
+			let expText = /[%=><]/;
+			let regExp = "";
+			
+			if(!value){
+				alert("검색어를 입력하십시오.");
+				return false;
+			}
+			if(expText.test(vlaue)){
+				alert("특수문자를 사용할 수 없습니다.");
+				return false;
+			}
+			for(let i = 0 ; i < sql.length ; i++){
+				regExp = new RegExp(sql[i], "gi");
+				if(regExp.test(value) == true){
+					alert("특정 문자로 검색할 수 없습니다.");
+					return false;
+				}
+			}
+			
+			location.href="listAll?searchType=writer&searchWord=김수혁";
 		}
 	</script>
 </body>

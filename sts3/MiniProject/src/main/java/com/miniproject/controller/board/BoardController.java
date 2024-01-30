@@ -24,10 +24,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.miniproject.domain.Board;
-import com.miniproject.domain.Like;
 import com.miniproject.domain.Reply;
+import com.miniproject.domain.SearchCriteria;
 import com.miniproject.domain.UploadedFile;
 import com.miniproject.etc.GetUserIpAddr;
+import com.miniproject.etc.PagingInfo;
 import com.miniproject.etc.UploadFileProcess;
 import com.miniproject.service.board.BoardService;
 
@@ -57,12 +58,21 @@ public class BoardController {
 	 * @throws Exception 
 	 */
 	@RequestMapping("listAll")
-	public void listAll(Model model) throws Exception {
-		logger.info("listAll 호출됨.");
+	public void listAll(Model model, 
+						@RequestParam(value = "pageNo", defaultValue="1") int pageNo, 
+						@RequestParam(value="searchType", defaultValue="") String searchType, 
+						@RequestParam(value="searchWord", defaultValue="") String searchWord ) throws Exception {
 		
-		List<Board> lst = bService.getEntireBoard();
+		logger.info(searchType + ", " +  searchWord + "페이지 listAll 호출됨.");
+		logger.info(pageNo + "페이지 listAll 호출됨.");
 		
-		model.addAttribute("boardList", lst); // 게시판 글 목록 바인딩
+		SearchCriteria sc = new SearchCriteria(searchWord, searchType); 
+		
+		System.out.println("sc : " + sc.toString());
+		Map<String, Object> map = bService.getEntireBoard(pageNo, sc);
+		
+		model.addAttribute("boardList", (List<Map>)map.get("boardList")); // 게시판 글 목록 바인딩
+		model.addAttribute("pagingInfo", (PagingInfo)map.get("pagingInfo")); 
 		
 	}
 	
@@ -203,14 +213,6 @@ public class BoardController {
 		model.addAttribute("board", (Board)result.get("board"));
 		model.addAttribute("uploadedFileList", (List<UploadedFile>)result.get("uploadedFileList"));
 	}
-	
-//	@RequestMapping(value="like", method=RequestMethod.POST)
-//	public void like(@RequestBody Like like) throws Exception {
-//		logger.info(like.getNo()+"번 게시글 좋아요 요청이 들어옴.");
-//		
-//		bService.setLikeCount(like);
-//	}
-//	
 	
 }
 
