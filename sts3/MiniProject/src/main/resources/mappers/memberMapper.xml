@@ -17,4 +17,13 @@
 		</selectKey>
 		update member set userPoint = userPoint + #{howMuch} where userId = #{userId};
 	</update>
+	
+<!-- 	<select id="login" resultType="Member"> -->
+<!--       select m.*, u.newFileName as memberImg from member m -->
+<!--       inner join uploadedfile u on m.userImg = u.no -->
+<!--       where m.userId = #{userId} and m.userPw = sha1(md5(#{userPw})) -->
+<!--    </select> -->
+   <select id="login" resultType="Member">
+      select * from member where userId = #{userId} and userPw = sha1(md5(#{userPw}))
+   </select>
 </mapper>

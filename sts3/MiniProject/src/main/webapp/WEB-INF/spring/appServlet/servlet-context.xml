@@ -28,5 +28,31 @@
 		<beans:property name="maxUploadSize" value="5242880"></beans:property>
 	</beans:bean>
 	
+	
+   <!-- 인터셉터 객체 등록 -->
+   <beans:bean id="testInterceptor" class="com.miniproject.interceptor.TestInterceptor"></beans:bean>
+   <beans:bean id="loginInterceptor" class="com.miniproject.interceptor.LoginInterceptor"></beans:bean>
+   <beans:bean id="authInterceptor" class="com.miniproject.interceptor.AuthenticationInterceptor"></beans:bean>
+   
+   <interceptors>
+      <interceptor>
+         <mapping path="/doInterceptorA"/> <!-- 이 URI가 매핑이 되면 -->
+         <beans:ref bean="testInterceptor"/> <!-- 이 객체가 동작하도록 -->
+      </interceptor>
+      
+      <interceptor>
+         <mapping path="/member/login"/> <!-- 이 URI가 매핑이 되면 -->
+         <beans:ref bean="loginInterceptor"/> <!-- 이 객체가 동작하도록 -->
+      </interceptor>
+      
+      <interceptor>
+         <!-- 로그인 인증이 필요한 mapping 주소들 -->
+         <mapping path="/board/writeBoard"/> <!-- 이 URI가 매핑이 되면 -->
+         <beans:ref bean="authInterceptor"/> <!-- 이 객체가 동작하도록 -->
+      </interceptor>
+      
+   </interceptors>
+	
+	
 
 </beans:beans>

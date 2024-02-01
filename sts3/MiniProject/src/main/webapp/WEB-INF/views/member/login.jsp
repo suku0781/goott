@@ -14,7 +14,7 @@
 	<div class="container">
 		<h1>login.jsp</h1>
 		
-		<form action="loginMember" method="POST">
+		<form action="login" method="POST">
 			<div class="mb-3 mt-3">
 				<label for="userId" class="form-label">ID</label> 
 				<input type="text" class="form-control" id="userId" name="userId" placeholder="Input your ID" >
