@@ -73,8 +73,8 @@ img{
 			</div>
 
 			<c:if test="${userId eq writter}">
-				<button type="button" class="btn btn-primary" onclick="location.href='viewBoard?no=${board.no}&amp;page=editBoard'">수정</button>
-				<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제</button>
+				<button type="button" class="btn btn-primary" onclick="location.href='editBoard?no=${board.no}&writter=${board.writter}'">수정</button>
+				<button type="button" class="btn btn-danger" onclick="location.href='deleteBoard?no=${board.no}&writter=${board.writter}'" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제</button>
 			</c:if>
 				
 			<button type="button" class="btn btn-secondary" onclick="location.href='${contextPath }/board/listAll'">목록으로</button>
@@ -114,7 +114,10 @@ img{
 	
 	<script type="text/javascript">
 	$(function(){
-		let pageNo = 1
+
+		let status = '${param.status}';
+		status == "noPermission" ? alert("수정 권한 없음.") : "";
+		
 		// 댓글 정보 불러오기
 		getData("/reply/all/${board.no}");
 		

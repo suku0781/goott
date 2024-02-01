@@ -6,6 +6,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.miniproject.domain.Member;
+import com.miniproject.etc.DestinationPath;
+
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
@@ -14,11 +17,28 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		
 		System.out.println("로그인 했는지 안했는지 검사하기. - AuthenticationInterceptor preHandler() : ");
 		
+		DestinationPath.savePrePath(request);
 		HttpSession ses = request.getSession();
 		
 		if(ses.getAttribute("loginMember") != null) {
 			System.out.println("로그인 됨.");
 			result = true;
+			
+			String uri = request.getRequestURI();
+			
+			// 수정/삭제의 경우 로그인 userId -- 작성자writer 조건을 만족해야함.
+			String writter = request.getParameter("writter");
+			Member loginMember = (Member)ses.getAttribute("loginMember");
+			System.out.println("writter : "+writter);
+			
+			if(uri.contains("editBoard") || uri.contains("deleteBoard")) { // 쿼리스트링에 editBoard가 포함되어있을 경우(수정/삭제 경우)
+				if(!loginMember.getUserId().equals(writter)) {
+					response.sendRedirect("viewBoard?no=" + request.getParameter("no") + "&writter="+writter + "&status=noPermission");
+					return false;
+				}
+			}
+			
+			
 		} else {
 			System.out.println("로그인 안됨.");
 			response.sendRedirect("/member/login");

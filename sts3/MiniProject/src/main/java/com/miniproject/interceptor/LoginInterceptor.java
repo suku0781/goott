@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.miniproject.domain.Member;
+import com.miniproject.etc.SessionCheck;
 
 // 제어를 빼앗아 실제 로그인을 처리하는 interceptor
 public class LoginInterceptor extends HandlerInterceptorAdapter {
@@ -33,7 +34,19 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		if(loginMember != null) { // 로그인 성공 시 세션에 로그인 기록을 남긴다.
 			System.out.println(loginMember.getUserId() + " 로그인 성공!");
 			ses.setAttribute("loginMember", loginMember);
-			response.sendRedirect("/");
+			
+			// 중복 로그인 체크
+			SessionCheck.replaceSessionKey(ses, loginMember.getUserId());
+			
+			// 로그인 성공 후 돌아갈 경로 처리
+			String returnPath = "";
+			if(ses.getAttribute("returnPath") != null) {
+				returnPath = (String) ses.getAttribute("returnPath");
+			}
+			
+			System.out.println("보고싶은 리턴 패스는 " + returnPath);
+			
+			response.sendRedirect(!returnPath.equals("") ? returnPath : "/");
 		}
 		
 	}

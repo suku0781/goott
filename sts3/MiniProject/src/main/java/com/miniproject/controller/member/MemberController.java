@@ -1,6 +1,10 @@
 package com.miniproject.controller.member;
 
 import javax.inject.Inject;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.miniproject.domain.Login;
 import com.miniproject.domain.Member;
+import com.miniproject.etc.SessionCheck;
 import com.miniproject.service.member.MemberService;
 
 @Controller
@@ -26,6 +31,7 @@ public class MemberController {
    public void loginGET() {
       logger.info("loginGET 방식 호출됨");
    }
+   
    @RequestMapping(value="login", method=RequestMethod.POST)
    public void loginPOST(Login tmpMember, Model model) throws Exception {
       System.out.println(tmpMember.toString() + "으로 로그인해보자.");
@@ -36,11 +42,32 @@ public class MemberController {
          System.out.println("로그인 성공!");
          
          model.addAttribute("loginMember", loginMember);
+//         model.addAttribute("isLoginSuccess", "success");
          // 이 모델 객체를 가지고 인터셉터 postHandle로 감
       } else {
          System.out.println("로그인 실패");
-         return;
+//         model.addAttribute("isLoginSuccess", "fail");
       }
       
    }
+   
+   @RequestMapping("logout")
+   public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession ses) {
+	   HttpSession reqSes = request.getSession(); // 이렇게 request에서 가져와도 되고 파라미터로 받은 ses에서 가져와도 됨.
+	   System.out.println(reqSes.getId() + " 로그아웃. ");
+	   
+//	   if(reqSes.getAttribute("loginMember") != null) {
+//		   reqSes.removeAttribute("loginMember");
+//		   reqSes.invalidate();
+//	   }
+	   
+	   // 로그아웃 할 때 세션map에 담긴 세션 제거
+	   if((Member)ses.getAttribute("loginMember") != null) {
+		   SessionCheck.removeKey(((Member)ses.getAttribute("loginMember")).getUserId());
+	   }
+	   
+	   return "redirect:/";
+   }
+   
+   
 }

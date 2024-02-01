@@ -215,5 +215,15 @@ public class BoardController {
 		model.addAttribute("uploadedFileList", (List<UploadedFile>)result.get("uploadedFileList"));
 	}
 	
+	@RequestMapping("editBoard")
+	public void editBoard(@RequestParam("no") String boardNo, @RequestParam("writter") String writter) {
+		System.out.println(boardNo + "번 글 수정.");
+	}
+	
+	@RequestMapping("deleteBoard")
+	public void deleteBoard(@RequestParam("no") String boardNo, @RequestParam("writter") String writter) {
+		System.out.println(boardNo + "번 글 삭제.");
+	}
+	
 }
 
