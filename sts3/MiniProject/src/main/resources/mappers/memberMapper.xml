@@ -24,6 +24,11 @@
 <!--       where m.userId = #{userId} and m.userPw = sha1(md5(#{userPw})) -->
 <!--    </select> -->
    <select id="login" resultType="Member">
-      select * from member where userId = #{userId} and userPw = sha1(md5(#{userPw}))
+   	select m.*, u.newFileName as memberImg from member m inner join uploadedfile u on m.userImg = u.no where userId = #{userId} and userPw = sha1(md5(#{userPw}))
    </select>
+   <update id="updateSessionInfo">
+      update member set sessionLimit = #{sessionLimit}, sessionKey = #{sessionKey} where userId = #{userId}
+   </update>
+   
+
 </mapper>

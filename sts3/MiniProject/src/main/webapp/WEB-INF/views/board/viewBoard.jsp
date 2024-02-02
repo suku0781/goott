@@ -73,8 +73,8 @@ img{
 			</div>
 
 			<c:if test="${userId eq writter}">
-				<button type="button" class="btn btn-primary" onclick="location.href='editBoard?no=${board.no}&writter=${board.writter}'">수정</button>
-				<button type="button" class="btn btn-danger" onclick="location.href='deleteBoard?no=${board.no}&writter=${board.writter}'" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제</button>
+				<button type="button" class="btn btn-primary" onclick="location.href='editBoard?no=${board.no}'">수정</button>
+				<button type="button" class="btn btn-danger" onclick="location.href='deleteBoard?no=${board.no}'" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제</button>
 			</c:if>
 				
 			<button type="button" class="btn btn-secondary" onclick="location.href='${contextPath }/board/listAll'">목록으로</button>
@@ -199,8 +199,8 @@ img{
 		let html = '';
 		let replyCount = 0;
 // 		debugger
-		if(data.replyList.length){ // 댓글이 있으면 출력
-			$.each(data.replyList, function(index, item){
+		if(data.length){ // 댓글이 있으면 출력
+			$.each(data, function(index, item){
 					html += `<div id="reply\${index}" class="reply">
 										<tr>
 											<td>
@@ -224,7 +224,7 @@ img{
 			html += `<div>댓글없음.</div>`;
 		}
 		$("#replyTag").html(html);
-		$("#replyCount").html("댓글("+data.replyList.length+")");
+		$("#replyCount").html("댓글("+data.length+")");
 	}
 	
 	// 몇 일전, 몇 시간전, 몇 분전, 방금전 출력
@@ -256,35 +256,43 @@ img{
 	}
 
 	function saveReply(){
+		debugger
 		let parentNo = '${board.no}';
 		let replyText = $("#reply").val();
-		let replier = 'jkl123'; // 로그인유저이지만 임시로 j1kl23
+		let replier = '${sessionScope.loginMember.userId}'; // 로그인유저이지만 임시로 j1kl23
 		let newReply = {
 				"parentNo" : parentNo,
 				"replyText" : replyText,
 				"replier" : replier,
 			};
 		
-		$.ajax({
-			url : "/reply/",
-			type : "POST",
-			data : JSON.stringify(newReply),
-			headers : {
-				"Content-type" : "application/json", // 송신하는 데이터의 타입(MIME-TYPE)
-				"x-HTTP-Method-Override" : "POST", // 과거의 웹브라우저에서 POST방식으로 동작하도록 한다.
-			},
-			dataType : "text",
-			success : function(data){
-				console.log("data : "+data)
-				if(data == "success"){
-					getData("/reply/all/${board.no}");
-					$("#reply").val("");
+		if(replier == ""){
+			location.href="/member/login?redirectURL=viewBoard&no="+parentNo;
+		} else {
+			
+			$.ajax({
+				url : "/reply/",
+				type : "POST",
+				data : JSON.stringify(newReply),
+				headers : {
+					"Content-type" : "application/json", // 송신하는 데이터의 타입(MIME-TYPE)
+					"x-HTTP-Method-Override" : "POST", // 과거의 웹브라우저에서 POST방식으로 동작하도록 한다.
+				},
+				dataType : "text",
+				success : function(data){
+					console.log("data : "+data)
+					if(data == "success"){
+						getData("/reply/all/${board.no}");
+						$("#reply").val("");
+					}
+				},
+				error: function(data){
+					console.error("error! : "+data);
 				}
-			},
-			error: function(data){
-				console.error("error! : "+data);
-			}
-		});
+			});
+			
+		}
+		
 		
 	}
 	

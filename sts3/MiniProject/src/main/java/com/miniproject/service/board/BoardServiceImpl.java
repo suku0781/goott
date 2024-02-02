@@ -213,6 +213,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 
+	@Override
+	public String getBoardWritter(int no) throws Exception {
+		Board board = dao.selectBoardByNo(no);
+		
+		return board.getWritter();
+	}
+
+
 
 
 }

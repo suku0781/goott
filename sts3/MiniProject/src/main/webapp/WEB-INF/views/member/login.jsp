@@ -23,6 +23,10 @@
 				<label for="userPw" class="form-label">PW</label> 
 				<input type="password" class="form-control" id="userPw" name="userPw" placeholder="Input your PassWord" >
 			</div>
+			<div>
+				<input type="checkbox" class="form-check-input" id="autoLogin" name="autoLogin" >
+				<label for="autoLogin" class="form-label" >자동 로그인</label> 
+			</div>
 
 			<button type="submit" class="btn btn-primary" onclick="">Submit</button>
 			<button type="reset" class="btn btn-danger">Cancel</button>
@@ -91,6 +95,15 @@
 	}
 
 	$(function(){
+// 		if(location.search.slice(1) == "fail"){
+// 			alert("정확한 아이디 또는 비밀번호를 입력하십시오.");
+			
+// 		}
+		let loginStatus = '${status}'; // addFlashAttribute
+		if(loginStatus == 'fail'){
+			alert("정확한 아이디 또는 비밀번호를 입력하십시오.");
+		}
+		
 		// 아이디 작성을 마쳤을 때 이벤트
 		$("#userId").blur(function(){
 			validUserId();
@@ -114,7 +127,7 @@
 				
 				obj.userEmail = userEmail;
 				
-				getData("sendAuthMail.mem", "GET", obj, "json", false);
+				getData("sendAuthMail", "GET", obj, "json", false);
 				
 				$(".codeDiv").show();
 			}
@@ -126,7 +139,7 @@
 			let obj = {};
 			
 			obj.userEmailAuthInp = userEmailAuthInp;
-			getData("confirmCode.mem", "GET", obj, "json", false);
+			getData("confirmCode", "GET", obj, "json", false);
 		});
 		
 	}) // end of doc

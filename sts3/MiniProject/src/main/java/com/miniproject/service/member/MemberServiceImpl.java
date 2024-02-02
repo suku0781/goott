@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.miniproject.domain.Login;
 import com.miniproject.domain.Member;
 import com.miniproject.domain.PointLog;
+import com.miniproject.domain.Session;
 import com.miniproject.persistence.MemberDAO;
 import com.miniproject.persistence.PointLogDAO;
 
@@ -44,6 +45,18 @@ public class MemberServiceImpl implements MemberService {
 public boolean duplChkUserId() {
 	// TODO Auto-generated method stub
 	return false;
+}
+
+@Override
+public boolean remember(Session session) throws Exception {
+	boolean result = false;
+	System.out.println("mDao.updateSession(session) 결과 값 : " + mDao.updateSession(session));
+	if(mDao.updateSession(session) == 1) {
+		System.out.println("쿠키 저장됨. -1");
+		result = true;
+	}
+	
+	return result;
 }
 
 }

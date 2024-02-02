@@ -21,6 +21,6 @@ public interface BoardService {
 	// no번 게시글 가져오기
 	Map getBoardByNo(int no, String ipAddr) throws Exception;
 
-	// 페이징 정보 가져오기
-	
+	// no를 받아서 해당 글의 작성자 정보를 가져오기
+	String getBoardWritter(int no) throws Exception;
 }

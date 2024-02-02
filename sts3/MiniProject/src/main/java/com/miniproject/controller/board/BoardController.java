@@ -216,12 +216,12 @@ public class BoardController {
 	}
 	
 	@RequestMapping("editBoard")
-	public void editBoard(@RequestParam("no") String boardNo, @RequestParam("writter") String writter) {
+	public void editBoard(@RequestParam("no") String boardNo) {
 		System.out.println(boardNo + "번 글 수정.");
 	}
 	
 	@RequestMapping("deleteBoard")
-	public void deleteBoard(@RequestParam("no") String boardNo, @RequestParam("writter") String writter) {
+	public void deleteBoard(@RequestParam("no") String boardNo) {
 		System.out.println(boardNo + "번 글 삭제.");
 	}
 	

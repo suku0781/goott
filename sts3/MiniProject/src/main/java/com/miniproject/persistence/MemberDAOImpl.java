@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.miniproject.domain.Login;
 import com.miniproject.domain.Member;
+import com.miniproject.domain.Session;
 
 @Repository // DAO단임을 알림.
 public class MemberDAOImpl implements MemberDAO {
@@ -38,5 +39,10 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public Member login(Login tmpMember) throws Exception {
 		return ses.selectOne(ns + ".login", tmpMember);
+	}
+
+	@Override
+	public int updateSession(Session session) throws Exception{
+		return ses.update(ns + ".updateSessionInfo", session);
 	}
 }

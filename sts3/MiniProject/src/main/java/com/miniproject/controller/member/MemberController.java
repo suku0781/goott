@@ -10,8 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miniproject.domain.Login;
 import com.miniproject.domain.Member;
@@ -33,7 +35,7 @@ public class MemberController {
    }
    
    @RequestMapping(value="login", method=RequestMethod.POST)
-   public void loginPOST(Login tmpMember, Model model) throws Exception {
+   public String loginPOST(Login tmpMember, Model model, RedirectAttributes rttr) throws Exception {
       System.out.println(tmpMember.toString() + "으로 로그인해보자.");
       
       Member loginMember = mService.login(tmpMember);
@@ -44,9 +46,14 @@ public class MemberController {
          model.addAttribute("loginMember", loginMember);
 //         model.addAttribute("isLoginSuccess", "success");
          // 이 모델 객체를 가지고 인터셉터 postHandle로 감
+         return "index";
       } else {
          System.out.println("로그인 실패");
 //         model.addAttribute("isLoginSuccess", "fail");
+//         return "redirect:login?fail";
+//         rttr.addAttribute("status", "fail"); // 쿼리스트링에 붙여서 보낸다.
+         rttr.addFlashAttribute("status", "fail"); // 쿼리스트링으로 가지 않는다.
+         return "redirect:login";
       }
       
    }

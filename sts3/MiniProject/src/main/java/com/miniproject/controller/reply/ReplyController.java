@@ -25,22 +25,17 @@ public class ReplyController {
 	private ReplyService service; 
 	
 	@RequestMapping(value = "all/{boardNo}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>>  getAllReplies(@PathVariable("boardNo") int boardNo) {
+	public ResponseEntity<List<Reply>>  getAllReplies(@PathVariable("boardNo") int boardNo) {
 		System.out.println(boardNo+"번 게시글 댓글 가져오기");
-		ResponseEntity<Map<String, Object>> result = null; 
+		ResponseEntity<List<Reply>> result = null; 
 		try {
 			PagingInfo pi = new PagingInfo();
 			
 			List<Reply> lst = service.getAllReplies(boardNo);
-			System.out.println("lst : "+lst);
-//			result = new ResponseEntity<List<Reply>>(lst, HttpStatus.OK);
-			Map<String, Object> map = new HashMap<String, Object>();
 			
-			map.put("replyList", lst);
-			map.put("pagingInfo", pi);
+			System.out.println("댓글 잘 가져오는지 테스트 : " + lst);
 			
-			result = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
-			
+			result = new ResponseEntity<List<Reply>>(lst, HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -48,7 +43,6 @@ public class ReplyController {
 			result = new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		
-		System.out.println("result : "+result);
 		return result;
 	}
 	
