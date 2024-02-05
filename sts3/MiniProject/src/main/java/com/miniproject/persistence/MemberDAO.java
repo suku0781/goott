@@ -16,4 +16,7 @@ public interface MemberDAO {
 
 	// 자동 로그인 정보를 저장
 	int updateSession(Session session) throws Exception;
+
+	// 자동로그인 멤버 확인
+	Member selectAutoLoginUser(String sessinoKey) throws Exception;
 }

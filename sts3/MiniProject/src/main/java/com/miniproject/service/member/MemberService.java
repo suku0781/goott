@@ -11,4 +11,7 @@ public interface MemberService {
 
 	// member테이블에 유저 정보를 저장
 	boolean remember(Session session) throws Exception;
+	
+	// 자동 로그인 유저인지 확인
+	Member checkAutoLoginUser(String cookieValue) throws Exception; 
 }

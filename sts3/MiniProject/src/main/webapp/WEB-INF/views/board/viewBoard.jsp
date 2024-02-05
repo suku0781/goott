@@ -256,7 +256,6 @@ img{
 	}
 
 	function saveReply(){
-		debugger
 		let parentNo = '${board.no}';
 		let replyText = $("#reply").val();
 		let replier = '${sessionScope.loginMember.userId}'; // 로그인유저이지만 임시로 j1kl23

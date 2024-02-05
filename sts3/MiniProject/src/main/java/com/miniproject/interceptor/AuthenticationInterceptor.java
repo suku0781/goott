@@ -25,7 +25,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		HttpSession ses = request.getSession();
 		
 		if(ses.getAttribute("loginMember") != null) {
-			System.out.println("로그인 됨.");
+			System.out.println("로그인 됨." + request.getParameter("no"));
 			result = true;
 			
 			String uri = request.getRequestURI();

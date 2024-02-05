@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.util.WebUtils;
 
 import com.miniproject.domain.Member;
 import com.miniproject.domain.Session;
@@ -36,8 +37,41 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				
 				request.getSession().setAttribute("returnPath", uri + queryString);
 			}
-		}
+			
+		} 
 	
+		
+		// 자동로그인을 체크한 유저에 대한 로그인 처리
+		// 1. 쿠키가 있는지 없는지 검사
+		Cookie cookie = WebUtils.getCookie(request, "loginCookie");
+		System.out.println("자동로그인쿠키 : " + cookie);
+		
+		if(cookie != null) {
+			// 쿠키에 저장된 세션아이디와 DB에 저장된 sessionKey가 같은지 비교 
+			// DB에 저장된 sessionLimit가 현재 시간보다 큰지 비교
+			String cookieValue = cookie.getValue(); // 쿠키에 저장된 세션아이디
+			Member autoLoginUser = mService.checkAutoLoginUser(cookieValue);
+			
+			if(autoLoginUser != null) {
+				System.out.println("자동 로그인할 유저 : " + autoLoginUser.toString());
+				
+				// 중복 로긍니 체크
+				SessionCheck.replaceSessionKey(request.getSession(), cookieValue);
+				
+				// 로그인 처리 
+				WebUtils.setSessionAttribute(request, "loginMember", autoLoginUser);
+				
+				System.out.println("자동 로그인되었습니다. "  + ((Member)WebUtils.getSessionAttribute(request, "loginMember")).toString());
+				
+				if(WebUtils.getSessionAttribute(request, "returnPath") != null) {
+					response.sendRedirect((String)WebUtils.getSessionAttribute(request, "returnPath"));
+				} else {
+					response.sendRedirect("/");
+				}
+			}
+		}
+		
+
 		return true;
 	}
 

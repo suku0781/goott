@@ -45,4 +45,11 @@ public class MemberDAOImpl implements MemberDAO {
 	public int updateSession(Session session) throws Exception{
 		return ses.update(ns + ".updateSessionInfo", session);
 	}
+
+	@Override
+	public Member selectAutoLoginUser(String sessionKey) throws Exception {
+		return ses.selectOne(ns+".selectAutoLoginMember", sessionKey);
+	}
+
+	
 }

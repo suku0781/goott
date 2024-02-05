@@ -41,22 +41,27 @@ public class MemberServiceImpl implements MemberService {
       return loginMember;
    }
 
-@Override
-public boolean duplChkUserId() {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-public boolean remember(Session session) throws Exception {
-	boolean result = false;
-	System.out.println("mDao.updateSession(session) 결과 값 : " + mDao.updateSession(session));
-	if(mDao.updateSession(session) == 1) {
-		System.out.println("쿠키 저장됨. -1");
-		result = true;
+	@Override
+	public boolean duplChkUserId() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
-	return result;
-}
+	@Override
+	public boolean remember(Session session) throws Exception {
+		boolean result = false;
+		System.out.println("mDao.updateSession(session) 결과 값 : " + mDao.updateSession(session));
+		if(mDao.updateSession(session) == 1) {
+			System.out.println("쿠키 저장됨. -1");
+			result = true;
+		}
+		
+		return result;
+	}
+
+	@Override	
+   public Member checkAutoLoginUser(String sessionKey) throws Exception {
+	      return mDao.selectAutoLoginUser(sessionKey);
+   }
 
 }

@@ -1,7 +1,10 @@
 package com.miniproject.controller.member;
 
+import java.sql.Timestamp;
+
 import javax.inject.Inject;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,9 +17,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.WebUtils;
 
 import com.miniproject.domain.Login;
 import com.miniproject.domain.Member;
+import com.miniproject.domain.Session;
 import com.miniproject.etc.SessionCheck;
 import com.miniproject.service.member.MemberService;
 
@@ -59,7 +64,7 @@ public class MemberController {
    }
    
    @RequestMapping("logout")
-   public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession ses) {
+   public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession ses) throws Exception {
 	   HttpSession reqSes = request.getSession(); // 이렇게 request에서 가져와도 되고 파라미터로 받은 ses에서 가져와도 됨.
 	   System.out.println(reqSes.getId() + " 로그아웃. ");
 	   
@@ -67,6 +72,17 @@ public class MemberController {
 //		   reqSes.removeAttribute("loginMember");
 //		   reqSes.invalidate();
 //	   }
+	   
+//	   쿠키 삭제
+	   Cookie loginCookie = WebUtils.getCookie(request,  "loginCookie");
+	   if(loginCookie != null){
+		   loginCookie.setMaxAge(0); // 쿠키 삭제
+		   loginCookie.setPath("/");
+		   
+		   response.addCookie(loginCookie);
+		   
+		   mService.remember(new Session( ((Member)ses.getAttribute("loginMember")).getUserId(), null, null ) );
+	   }
 	   
 	   // 로그아웃 할 때 세션map에 담긴 세션 제거
 	   if((Member)ses.getAttribute("loginMember") != null) {
